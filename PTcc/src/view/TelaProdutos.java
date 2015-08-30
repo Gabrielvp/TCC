@@ -17,6 +17,8 @@ public class TelaProdutos extends javax.swing.JDialog {
     public TelaProdutos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
+        
     }
 
     /**

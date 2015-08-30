@@ -15,8 +15,8 @@ public class MySQL {
             Class.forName("com.mysql.jdbc.Driver");
 
             String nomeServidor = "localhost";
-            String database = "agendaFinanceira";
-            String url = "jdbc:mysql://" + "127.0.0.1" + "/" + "agendaFinanceira";
+            String database = "BD_TCC";
+            String url = "jdbc:mysql://" + "127.0.0.1" + "/" + "BD_TCC";
             String username = "root";
             String password = "";
 

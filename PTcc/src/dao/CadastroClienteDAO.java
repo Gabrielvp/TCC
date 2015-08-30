@@ -41,33 +41,7 @@ public class CadastroClienteDAO extends MySQL {
         }
         return false;
     }
-
-    public boolean updateEmailCadCompleto(Pessoa pessoa) {
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("UPDATE pessoa "
-                    + " SET email "
-                    + " WHERE idPessoa = ?");
-            ps.setString(1, pessoa.getEmail());
-            ps.setBoolean(2, true);
-
-            ps.execute();
-
-            ps.close();
-            return true;
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return false;
-    }
-
+    
     public void update(Pessoa pessoa, int id) {
 
         Connection c = this.getConnection();
@@ -188,9 +162,7 @@ public class CadastroClienteDAO extends MySQL {
         List<Pessoa> listaPessoasCompleto = new ArrayList<Pessoa>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome, pessoa.email, documento.cpf, documento.rg, telefone.numero"
-                    + " FROM pessoa LEFT JOIN documento ON pessoa.idpessoa = documento.idpessoa"
-                    + " LEFT JOIN telefone ON pessoa.idpessoa = telefone.idpessoa ");
+            PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome, pessoa.email FROM pessoa");
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

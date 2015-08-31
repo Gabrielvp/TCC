@@ -15,8 +15,8 @@ public class MySQL {
             Class.forName("com.mysql.jdbc.Driver");
 
             String nomeServidor = "localhost";
-            String database = "BD_TCC";
-            String url = "jdbc:mysql://" + "127.0.0.1" + "/" + "BD_TCC";
+            String database = "bd_tcc";
+            String url = "jdbc:mysql://" + "127.0.0.1" + "/" + "bd_tcc";
             String username = "root";
             String password = "";
 

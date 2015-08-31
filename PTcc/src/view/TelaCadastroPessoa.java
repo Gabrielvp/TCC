@@ -8,6 +8,7 @@ package view;
 import dao.CadastroClienteDAO;
 import entity.Pessoa;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,7 +32,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     CadastroClienteDAO pDAO = new CadastroClienteDAO();
     Pessoa p = new Pessoa();
     boolean alterar = false;
-    int id;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,13 +72,14 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jLabel14 = new javax.swing.JLabel();
         txtFoneComercial = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jTxtObservacoes = new javax.swing.JTextArea();
+        btnSalvar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblPessoa = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         ckbCadastroIncompleto = new javax.swing.JCheckBox();
+        btnExcluir = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Pessoas - Agenda Financeira");
@@ -219,13 +220,12 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel5)
                                 .addComponent(jLabel4))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Telefones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
@@ -259,19 +259,19 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtFoneResidencial, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtFoneCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtFoneComercial, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,50 +293,49 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Observações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 10))); // NOI18N
-        jScrollPane1.setViewportView(jTextArea1);
+        jTxtObservacoes.setColumns(20);
+        jTxtObservacoes.setRows(5);
+        jTxtObservacoes.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Observações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 10))); // NOI18N
+        jScrollPane1.setViewportView(jTxtObservacoes);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Delete.png"))); // NOI18N
-        jButton1.setText("Excluir");
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Apply.png"))); // NOI18N
-        jButton2.setText("Salvar");
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Apply.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addGap(16, 16, 16))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSalvar)
+                .addGap(20, 20, 20))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                .addGap(18, 18, 18)
+                .addComponent(btnSalvar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -346,11 +345,11 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
             },
             new String [] {
-                "CPF", "Nome", "Rua", "Celular"
+                "ID", "Nome", "CPF", "E-mail", "Celular"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -359,18 +358,36 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(tblPessoa);
         if (tblPessoa.getColumnModel().getColumnCount() > 0) {
-            tblPessoa.getColumnModel().getColumn(0).setResizable(false);
-            tblPessoa.getColumnModel().getColumn(0).setPreferredWidth(20);
             tblPessoa.getColumnModel().getColumn(1).setPreferredWidth(50);
-            tblPessoa.getColumnModel().getColumn(2).setResizable(false);
-            tblPessoa.getColumnModel().getColumn(2).setPreferredWidth(100);
-            tblPessoa.getColumnModel().getColumn(3).setResizable(false);
-            tblPessoa.getColumnModel().getColumn(3).setPreferredWidth(20);
+            tblPessoa.getColumnModel().getColumn(2).setPreferredWidth(20);
+            tblPessoa.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tblPessoa.getColumnModel().getColumn(4).setPreferredWidth(20);
         }
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
         ckbCadastroIncompleto.setText("Cadastro Incompleto");
+        ckbCadastroIncompleto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ckbCadastroIncompletoActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Delete.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Modify.png"))); // NOI18N
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -379,13 +396,20 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ckbCadastroIncompleto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnExcluir)
+                .addGap(34, 34, 34)
+                .addComponent(btnAlterar)
+                .addGap(26, 26, 26))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(ckbCadastroIncompleto)
+                .addGap(13, 13, 13)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ckbCadastroIncompleto)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnAlterar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -403,24 +427,136 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        
+        if (verificaCadastroCompleto()) {
+            p.setNome(txtNome.getText());
+            p.setBairro(txtBairro.getText());
+            p.setCep(txtCep.getText());
+            p.setCidade(txtCidade.getText());
+            p.setCompleto(true);
+            p.setCpf(txtCpf.getText());
+            p.setEmail(txtEmail.getText());
+            p.setEstado(txtEstado.getText());
+            p.setNumero(Integer.parseInt(txtNumero.getText()));
+            p.setRg(txtRg.getText());
+            p.setRua(txtRua.getText());
+            p.setTelCelular(txtFoneCelular.getText());
+            p.setTelComercial(txtFoneComercial.getText());
+            p.setTelResidencial(txtFoneResidencial.getText());
+            p.setObservacoes(jTxtObservacoes.getText());
+
+            if (alterar = false) {
+                pDAO.insert(p);
+
+            } else {
+                pDAO.update(p, p.getIdPessoa());
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Cadastro imcompleto, por favor preencha todos os campos!");
+        }
+        atualizaTabelaPessoa();
+        limparCampos();
+
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void ckbCadastroIncompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbCadastroIncompletoActionPerformed
+        atualizaTabelaPessoa();
+    }//GEN-LAST:event_ckbCadastroIncompletoActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tblPessoa.getSelectedRow();
+        int id = (int) tblPessoa.getValueAt(0, linha);
+        p = pDAO.getPessoaById(id);
+        pDAO.delete(id);
+        atualizaTabelaPessoa();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        alterar = true;
+        int linha = tblPessoa.getSelectedRow();
+        int id = (int) tblPessoa.getValueAt(linha, 0);
+        p = pDAO.getPessoaById(id);
+
+        txtNome.setText(p.getNome());
+        txtBairro.setText(p.getBairro());
+        txtCep.setText(p.getCep());
+        txtCidade.setText(p.getCidade());
+        txtCpf.setText(p.getCpf());
+        txtEmail.setText(p.getEmail());
+        txtEstado.setText(p.getEstado());
+        txtFoneCelular.setText(p.getTelCelular());
+        txtFoneComercial.setText(p.getTelComercial());
+        txtFoneResidencial.setText(p.getTelResidencial());
+        txtNumero.setText(p.getNumero() + "");
+        txtRg.setText(p.getRg());
+        txtRua.setText(p.getRua());
+        jTxtObservacoes.setText(p.getObservacoes());
+
+    }//GEN-LAST:event_btnAlterarActionPerformed
+    public boolean verificaCadastroCompleto() {
+        if (txtBairro.equals("")) {
+            return false;
+        } else if (txtCep.equals("")) {
+            return false;
+
+        } else if (txtCidade.equals("")) {
+
+            return false;
+        } else if (txtCpf.equals("")) {
+            return false;
+
+        } else if (txtEmail.equals("")) {
+            return false;
+
+        } else if (txtEstado.equals("")) {
+            return false;
+
+        } else if (txtNome.equals("")) {
+            return false;
+
+        } else if (txtNumero.equals("")) {
+            return false;
+
+        } else if (txtRg.equals("")) {
+            return false;
+
+        } else if (txtRua.equals("")) {
+            return false;
+
+        }
+        return true;
+    }
+
     public void limparCampos() {
         txtEmail.setText("");
         txtCpf.setText("");
         txtRg.setText("");
         txtNome.setText("");
+        txtEstado.setText("");
+        txtBairro.setText("");
+        txtCep.setText("");
+        txtFoneCelular.setText("");
+        txtFoneComercial.setText("");
+        txtFoneResidencial.setText("");
+        txtCidade.setText("");
+        txtNumero.setText("");
+        txtRua.setText("");
+        jTxtObservacoes.setText("");
 
     }
 
@@ -433,8 +569,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             model.setNumRows(0);
             for (int i = 0; i < listaPessoaIncompleto.size(); i++) {
                 model.addRow(new Object[]{});
-                model.setValueAt(listaPessoaIncompleto.get(i).getIdPessoa(), i, 0);
-                model.setValueAt(listaPessoaIncompleto.get(i).getNome(), i, 1);
+                model.setValueAt(listaPessoaIncompleto.get(i).getNome(), i, 0);
             }
         } else {
             CadastroClienteDAO cDAO = new CadastroClienteDAO();
@@ -443,9 +578,13 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             model.setNumRows(0);
             for (int i = 0; i < listaPessoaCompleto.size(); i++) {
                 model.addRow(new Object[]{});
+
                 model.setValueAt(listaPessoaCompleto.get(i).getIdPessoa(), i, 0);
-                model.setValueAt(listaPessoaCompleto.get(i).getNome(), i, 1);               
-                model.setValueAt(listaPessoaCompleto.get(i).getEmail(), i, 2);            }
+                model.setValueAt(listaPessoaCompleto.get(i).getNome(), i, 1);
+                model.setValueAt(listaPessoaCompleto.get(i).getCpf(), i, 2);
+                model.setValueAt(listaPessoaCompleto.get(i).getEmail(), i, 3);
+                model.setValueAt(listaPessoaCompleto.get(i).getTelCelular(), i, 4);
+            }
         }
     }
 
@@ -507,9 +646,10 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JCheckBox ckbCadastroIncompleto;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -529,7 +669,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTxtObservacoes;
     private javax.swing.JTable tblPessoa;
     private javax.swing.JTextField txtBairro;
     private javax.swing.JFormattedTextField txtCep;

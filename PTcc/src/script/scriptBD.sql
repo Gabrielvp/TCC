@@ -14,13 +14,13 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema bd_tcc
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `bd_tcc` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `bd_tcc` ;
+CREATE SCHEMA IF NOT EXISTS `db_tcc` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `db_tcc` ;
 
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Pessoa`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bd_tcc`.`Pessoa` (
+CREATE TABLE IF NOT EXISTS `db_tcc`.`Pessoa` (
   `idPessoa` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
@@ -44,7 +44,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Agendamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bd_tcc`.`Agendamento` (
+CREATE TABLE IF NOT EXISTS `db_tcc`.`Agendamento` (
   `idAgendamento` INT NOT NULL AUTO_INCREMENT,
   `data` DATE NOT NULL,
   `hora` TIME NOT NULL,
@@ -64,7 +64,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Orcamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bd_tcc`.`Orcamento` (
+CREATE TABLE IF NOT EXISTS `db_tcc`.`Orcamento` (
   `idOrcamento` INT NOT NULL AUTO_INCREMENT,
   `fatura` INT NOT NULL,
   `data` DATE NOT NULL,
@@ -80,7 +80,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Fatura`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bd_tcc`.`Fatura` (
+CREATE TABLE IF NOT EXISTS `db_tcc`.`Fatura` (
   `idFatura` INT NOT NULL AUTO_INCREMENT,
   `fatura` VARCHAR(45) NOT NULL,
   `total` DOUBLE NOT NULL,
@@ -94,12 +94,12 @@ CREATE TABLE IF NOT EXISTS `bd_tcc`.`Fatura` (
   INDEX `fk_Fatura_Pessoa` (`idPessoa` ASC),
   CONSTRAINT `fk_Fatura_Orcamento`
     FOREIGN KEY (`Orcamento_idOrcamento`)
-    REFERENCES `bd_tcc`.`Orcamento` (`idOrcamento`)
+    REFERENCES `db_tcc`.`Orcamento` (`idOrcamento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Fatura_Pessoa`
     FOREIGN KEY (`idPessoa`)
-    REFERENCES `bd_tcc`.`Pessoa` (`idPessoa`)
+    REFERENCES `db_tcc`.`Pessoa` (`idPessoa`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -108,17 +108,19 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Produto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bd_tcc`.`Produto` (
-  `idProduto` INT NOT NULL AUTO_INCREMENT,
-  `codigo` VARCHAR(45) NOT NULL,
-  `produto` VARCHAR(45) NOT NULL,
-  `quantidade` INT NOT NULL,
-  `valor_compra` DOUBLE NOT NULL,
+CREATE TABLE IF NOT EXISTS `db_tcc`.`Produto` (
+  `idProduto` INT NOT NULL AUTO_INCREMENT,  
+  `descricao` VARCHAR(100) NOT NULL,
+  `cod_barras` VARCHAR(20) NOT NULL,
+  `quantidade` DOUBLE NOT NULL,
   `valor_venda` DOUBLE NOT NULL,
+  `valor_compra` DOUBLE NOT NULL,  
+  `unidade` INT NOT NULL, 
   `marca` VARCHAR(45) NOT NULL,
   `modelo` VARCHAR(45) NOT NULL,
-  `descricao` VARCHAR(45) NOT NULL,
-  `cod_barras` VARCHAR(45) NOT NULL,
+  `fornecedor` VARCHAR(100) NOT NULL,
+  `referencia` VARCHAR(45) NOT NULL,
+  `ativo` BOOLEAN NOT NULL,
   PRIMARY KEY (`idProduto`))
 ENGINE = InnoDB;
 
@@ -126,7 +128,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Produto_Orcamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bd_tcc`.`Produto_Orcamento` (
+CREATE TABLE IF NOT EXISTS `db_tcc`.`Produto_Orcamento` (
   `idProduto` INT NOT NULL,
   `idOrcamento` INT NOT NULL,
   PRIMARY KEY (`idProduto`, `idOrcamento`),
@@ -134,12 +136,12 @@ CREATE TABLE IF NOT EXISTS `bd_tcc`.`Produto_Orcamento` (
   INDEX `fk_Produto_has_Orcamento_Produto` (`idProduto` ASC),
   CONSTRAINT `fk_Produto_has_Orcamento_Produto`
     FOREIGN KEY (`idProduto`)
-    REFERENCES `bd_tcc`.`Produto` (`idProduto`)
+    REFERENCES `db_tcc`.`Produto` (`idProduto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Produto_has_Orcamento_Orcamento`
     FOREIGN KEY (`idOrcamento`)
-    REFERENCES `bd_tcc`.`Orcamento` (`idOrcamento`)
+    REFERENCES `db_tcc`.`Orcamento` (`idOrcamento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -148,7 +150,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Configuracao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bd_tcc`.`Configuracao` (
+CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracao` (
   `idConfiguracao` INT NOT NULL AUTO_INCREMENT,
   `horaInicial` TIME NOT NULL,
   `horaFinal` TIME NOT NULL,

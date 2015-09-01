@@ -7,63 +7,44 @@ package entity;
 public class Produto {
 
     private int idProduto;
-    private String nome;
-    private double qtd;
-    private double valorCompra;
-    private double valorVenda;
-    private String marca;
-    private String modelo;
     private String descricao;
     private String codBarras;
-    private boolean ativo;
-    private int unidade;
-    private int ncm;
-    private int origem;
-    private String observacao;
-    private int cstIcms;
-
-    public int getUnidade() {
-        return unidade;
-    }
-
-    public void setUnidade(int unidade) {
-        this.unidade = unidade;
-    }
-
-    public int getCstIcms() {
-        return cstIcms;
-    }
-
-    public void setCstIcms(int cstIcms) {
-        this.cstIcms = cstIcms;
-    }
-
-    public int getOrigem() {
-        return origem;
-    }
-
-    public void setOrigem(int origem) {
-        this.origem = origem;
-    }
-
-    public String getObservacao() {
-        return observacao;
-    }
-
-    public void setObservacao(String observacao) {
-        this.observacao = observacao;
-    }
-
-    public int getNcm() {
-        return ncm;
-    }
-
-    public void setNcm(int ncm) {
-        this.ncm = ncm;
-    }
+    private double qtd;
+    private double valorVenda;
+    private double valorCompra;
+    private EnumUnidade unidade;
+    private String marca;
+    private String modelo;
+    private String fornecedor;
+    private String referencia;    
+    private boolean ativo;      
 
     public String getCodBarras() {
         return codBarras;
+    }
+
+    public EnumUnidade getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(EnumUnidade unidade) {
+        this.unidade = unidade;
+    }
+
+    public String getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(String fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 
     public void setCodBarras(String codBarras) {
@@ -85,15 +66,7 @@ public class Produto {
     public void setIdProduto(int idProduto) {
         this.idProduto = idProduto;
     }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
+   
     public double getQtd() {
         return qtd;
     }

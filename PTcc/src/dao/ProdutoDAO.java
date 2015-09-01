@@ -16,22 +16,21 @@ public class ProdutoDAO extends MySQL {
         try {
             PreparedStatement ps
                     = c.prepareStatement("INSERT INTO produto "
-                            + "(produto, qtd, vl_compra, vl_venda, marca, modelo, cod_barras, observacao, ativo, unidade, ncm, origem)  "
-                            + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+                            + "(descricao, cod_barras, quantidade, valor_venda, valor_compra, unidade, marca, modelo, fornecedor, referencia, ativo)  "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
 
             ps.setString(1, produto.getDescricao());
-            ps.setDouble(2, produto.getQtd());
-            ps.setDouble(3, produto.getValorCompra());
+            ps.setString(2, produto.getCodBarras());
+            ps.setDouble(3, produto.getQtd());
             ps.setDouble(4, produto.getValorVenda());
-            ps.setString(5, produto.getMarca());
-            ps.setString(6, produto.getModelo());
-            ps.setString(7, produto.getCodBarras());
-            ps.setString(8, produto.getObservacao());
-            ps.setBoolean(9, produto.isAtivo());
-            ps.setInt(10, produto.getUnidade());
-            ps.setInt(11, produto.getNcm());
-            ps.setInt(12, produto.getOrigem());
-
+            ps.setDouble(5, produto.getValorCompra());
+            ps.setInt(6, produto.getUnidade().getCodigo());
+            ps.setString(7, produto.getMarca());
+            ps.setString(8, produto.getModelo());
+            ps.setString(9, produto.getFornecedor());
+            ps.setString(10, produto.getReferencia());
+            ps.setBoolean(11, produto.isAtivo());
+           
             ps.execute();
             ps.close();
             return true;

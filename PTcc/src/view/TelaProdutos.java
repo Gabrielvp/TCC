@@ -5,6 +5,11 @@
  */
 package view;
 
+import dao.ProdutoDAO;
+import entity.EnumUnidade;
+import entity.Produto;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author Gabriel
@@ -18,6 +23,7 @@ public class TelaProdutos extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        cbUnidade.setModel(new DefaultComboBoxModel<>(EnumUnidade.values()));
         
     }
 
@@ -55,6 +61,8 @@ public class TelaProdutos extends javax.swing.JDialog {
         cbUnidade = new javax.swing.JComboBox();
         ckbAtivo = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -105,6 +113,17 @@ public class TelaProdutos extends javax.swing.JDialog {
         ckbAtivo.setText("Ativo");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Delete.png"))); // NOI18N
+        jButton2.setText("Excluir");
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Apply.png"))); // NOI18N
+        jButton3.setText("Salvar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -168,6 +187,12 @@ public class TelaProdutos extends javax.swing.JDialog {
                                 .addComponent(jLabel6)
                                 .addComponent(txtValorCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(23, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(47, 47, 47))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,7 +250,11 @@ public class TelaProdutos extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ckbAtivo))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -236,11 +265,29 @@ public class TelaProdutos extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Produto p = new Produto();
+        ProdutoDAO pDAO = new ProdutoDAO();
+        
+        p.setDescricao(txtDescricao.getText());
+        p.setCodBarras(txtCdBarras.getText());
+        p.setQtd(Double.parseDouble(txtQtd.getText()));
+        p.setValorVenda(Double.parseDouble(txtValorVenda.getText()));
+        p.setValorCompra(Double.parseDouble(txtValorCompra.getText()));
+        p.setUnidade((EnumUnidade) cbUnidade.getSelectedItem());
+        p.setMarca(txtMarca.getText());
+        p.setModelo(txtModelo.getText());
+        p.setFornecedor(txtFornecedor.getText());
+        p.setReferencia(txtReferencia.getText());
+        
+        pDAO.insert(p);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -291,6 +338,8 @@ public class TelaProdutos extends javax.swing.JDialog {
     private javax.swing.JComboBox cbUnidade;
     private javax.swing.JCheckBox ckbAtivo;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

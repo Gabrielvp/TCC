@@ -10,6 +10,7 @@ import dao.agendamentoDAO;
 import entity.Agenda;
 import entity.Configuracao;
 import entity.DataHora;
+import entity.Produto;
 import java.awt.Color;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +52,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm:ss");
     int cont = 0;
     CDataHora cDt = new CDataHora();
-    
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

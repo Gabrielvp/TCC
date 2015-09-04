@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Agendamento` (
   INDEX `fk_Agendamento_Pessoa` (`idPessoa` ASC),
   CONSTRAINT `fk_Agendamento_Pessoa`
     FOREIGN KEY (`idPessoa`)
-    REFERENCES `bd_tcc`.`Pessoa` (`idPessoa`)
+    REFERENCES `Pessoa` (`idPessoa`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Produto_Orcamento` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Produto_has_Orcamento_Orcamento`
     FOREIGN KEY (`idOrcamento`)
-    REFERENCES `db_tcc`.`Orcamento` (`idOrcamento`)
+    REFERENCES `Orcamento` (`idOrcamento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

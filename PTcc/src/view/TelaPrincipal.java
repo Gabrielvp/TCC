@@ -10,6 +10,7 @@ import dao.agendamentoDAO;
 import entity.Agenda;
 import entity.Configuracao;
 import entity.DataHora;
+import entity.Pessoa;
 import entity.Produto;
 import java.awt.Color;
 import java.text.ParseException;
@@ -375,7 +376,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFinanceiroActionPerformed
 
     private void btnOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrcamentoActionPerformed
-        TelaOrcamento o = new TelaOrcamento(this, rootPaneCheckingEnabled);
+        TelaOrcamento o = new TelaOrcamento(this, rootPaneCheckingEnabled, null);
         o.setVisible(true);
     }//GEN-LAST:event_btnOrcamentoActionPerformed
 

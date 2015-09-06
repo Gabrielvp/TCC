@@ -57,7 +57,7 @@ public class ProdutoDAO extends MySQL {
         try {
             PreparedStatement ps
                     = c.prepareStatement("SELECT produto.idproduto, produto.descricao, produto.cod_barras, produto.quantidade, "
-                            + " produto.valor_venda, produto.valor_compra, produto.unidade, produto.marca, produto.modelo, produto.fornecedor, produto.referencia"
+                            + " produto.valor_venda, produto.valor_compra, produto.unidade, produto.marca, produto.modelo, produto.fornecedor, produto.referencia, produto.ativo"
                             + " FROM produto where idproduto = ?");
             ps.setInt(1, id);
 
@@ -75,7 +75,7 @@ public class ProdutoDAO extends MySQL {
                 produto.setModelo(rs.getString("Modelo"));
                 produto.setFornecedor(rs.getString("Fornecedor"));
                 produto.setReferencia(rs.getString("Referencia"));
-
+                produto.setAtivo(rs.getBoolean("Ativo"));
             }
             rs.close();
             ps.close();
@@ -155,40 +155,42 @@ public class ProdutoDAO extends MySQL {
      }
      }
      }
+    
+    public void update(Produto produto, int id) {
 
+        Connection c = this.getConnection();
 
-     /*public FContratado getFuncionarioById(int id) {
-     Connection c = this.getConnection();
-     FContratado funcionario = null;
-     try {
-     PreparedStatement ps = c.prepareStatement("SELECT id_funcionario, "
-     + "matricula, nome "
-     + "FROM funcionario WHERE id_funcionario = ?");
-     ps.setInt(1, id);
-     ResultSet rs = ps.executeQuery();
-     while (rs.next()) {
+        try {
 
-     funcionario = new FContratado();
-     funcionario.setId_funcionario(rs.getInt("id_funcionario"));
-     funcionario.setMatricula(rs.getInt("matricula"));
-     funcionario.setNome(rs.getString("nome"));
-     funcionario.setRua(rs.getString("rua"));
-     funcionario.setNumero(rs.getInt("numero"));
+            PreparedStatement ps = c.prepareStatement("UPDATE produto "
+                    + "Set descricao = ?, cod_barras = ? , quantidade = ?, valor_venda = ?, valor_compra = ?, unidade = ?, "
+                    + "marca = ?, modelo = ?, fornecedor = ?, referencia = ?, ativo = ?  "
+                    + "WHERE idproduto = ? ");
 
-     }
-     rs.close();
-     ps.close();
-     return funcionario;
-     } catch (SQLException ex) {
-     ex.printStackTrace();
-     } finally {
-     try {
-     c.close();
-     } catch (SQLException ex) {
-     ex.printStackTrace();
-     }
-     }
-     return null;
-     }
-     */
+            ps.setString(1, produto.getDescricao());
+            ps.setString(2, produto.getCodBarras());
+            ps.setDouble(3, produto.getQtd());
+            ps.setDouble(4, produto.getValorVenda());
+            ps.setDouble(5, produto.getValorCompra());
+            ps.setInt(6, produto.getUnidade().getCodigo());
+            ps.setString(7, produto.getMarca());
+            ps.setString(8, produto.getModelo());
+            ps.setString(9, produto.getFornecedor());
+            ps.setString(10, produto.getReferencia());
+            ps.setBoolean(11, produto.isAtivo());
+            ps.setInt(12, id);
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

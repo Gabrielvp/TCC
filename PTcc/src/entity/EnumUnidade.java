@@ -11,10 +11,10 @@ package entity;
  */
 public enum EnumUnidade {
     
-    UNIDADE(1, "un"),
-    QUILO(2, "kg"),
-    LITRO(3, "L"),
-    METRO(4, "m");
+    UNIDADE(0, "un"),
+    QUILO(1, "kg"),
+    LITRO(2, "L"),
+    METRO(3, "m");
         
     final String descricao;
     final int codigo;

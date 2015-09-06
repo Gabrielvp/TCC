@@ -34,6 +34,7 @@ public class TelaProdutos extends javax.swing.JDialog {
         cbUnidade.setModel(new DefaultComboBoxModel<>(EnumUnidade.values()));
     }
 
+    boolean alterar = false;
     ProdutoDAO pDAO = new ProdutoDAO();
     Produto p = new Produto();
 
@@ -69,7 +70,7 @@ public class TelaProdutos extends javax.swing.JDialog {
         jLabel11 = new javax.swing.JLabel();
         txtReferencia = new javax.swing.JTextField();
         cbUnidade = new javax.swing.JComboBox();
-        ckbAtivo = new javax.swing.JCheckBox();
+        ckbInativo = new javax.swing.JCheckBox();
         btnExcluir = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
@@ -92,6 +93,11 @@ public class TelaProdutos extends javax.swing.JDialog {
         });
 
         txtDescricao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDescricaoKeyPressed(evt);
+            }
+        });
 
         jLabel3.setText("Cd. Barras");
 
@@ -127,7 +133,7 @@ public class TelaProdutos extends javax.swing.JDialog {
 
         txtReferencia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
-        ckbAtivo.setText("Ativo");
+        ckbInativo.setText("Inativo");
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Delete.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -163,17 +169,6 @@ public class TelaProdutos extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addGap(150, 150, 150))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(cbUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
-                                    .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(3, 3, 3)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,20 +180,29 @@ public class TelaProdutos extends javax.swing.JDialog {
                                     .addComponent(jLabel8)
                                     .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(ckbAtivo)
+                                        .addComponent(ckbInativo)
                                         .addGap(60, 60, 60))))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel9)
+                                            .addGap(150, 150, 150))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(cbUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel10)
+                                        .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel1)
                                         .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel2)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(0, 0, Short.MAX_VALUE))))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel3)
                                         .addComponent(txtCdBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -209,7 +213,7 @@ public class TelaProdutos extends javax.swing.JDialog {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel5)
-                                        .addComponent(txtValorVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtValorVenda))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel6)
@@ -231,34 +235,34 @@ public class TelaProdutos extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(0, 0, 0)
-                        .addComponent(txtQtd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtQtd, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
                         .addGap(0, 0, 0)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addGap(0, 0, 0)
-                        .addComponent(txtCdBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCdBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(0, 0, 0)
-                        .addComponent(txtValorVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtValorVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(0, 0, 0)
-                        .addComponent(txtValorCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtValorCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(0, 0, 0)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -266,17 +270,17 @@ public class TelaProdutos extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(0, 0, 0)
-                        .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(0, 0, 0)
-                        .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
                 .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ckbAtivo))
+                    .addComponent(txtReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ckbInativo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExcluir)
@@ -343,31 +347,56 @@ public class TelaProdutos extends javax.swing.JDialog {
         p.setModelo(txtModelo.getText());
         p.setFornecedor(txtFornecedor.getText());
         p.setReferencia(txtReferencia.getText());
-
-        pDAO.insert(p);
+        if (ckbInativo.isSelected()) {
+            p.setAtivo(true);
+        } else {
+            p.setAtivo(false);
+        }
+        if (alterar == false) {
+            pDAO.insert(p);
+            JOptionPane.showMessageDialog(rootPane, "Cadastrado com Sucesso!");
+        } else if (alterar == true) {
+            int id = Integer.parseInt(txtCodigo.getText());
+            pDAO.update(p, id);
+            JOptionPane.showMessageDialog(rootPane, "Alterado com Sucesso!");
+            alterar = false;
+        }
         limpar();
-        JOptionPane.showMessageDialog(rootPane, "Cadastrado com Sucesso!");
+        habilitarCampos();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyPressed
         if (evt.getKeyCode() == evt.VK_ENTER) {
             int id = Integer.parseInt(txtCodigo.getText());
             p = pDAO.getProdutoById(id);
-            txtCodigo.setText(p.getIdProduto() + "");
-            txtDescricao.setText(p.getDescricao());
-            txtQtd.setText(p.getQtd() + "");
-            txtCdBarras.setText(p.getCodBarras());
-            txtValorVenda.setText(p.getValorVenda() + "");
-            txtValorCompra.setText(p.getValorCompra() + "");
-            cbUnidade.addItem(p.getUnidade());
-            txtMarca.setText(p.getMarca());
-            txtModelo.setText(p.getModelo());
-            txtFornecedor.setText(p.getFornecedor());
-            txtReferencia.setText(p.getReferencia());
+            if (p.getDescricao() == null) {
+                limpar2();
+            } else if (p.getDescricao() != null) {
+                alterar = true;
+                txtCodigo.setText(p.getIdProduto() + "");
+                txtDescricao.setText(p.getDescricao());
+                txtQtd.setText(p.getQtd() + "");
+                txtCdBarras.setText(p.getCodBarras());
+                txtValorVenda.setText(p.getValorVenda() + "");
+                txtValorCompra.setText(p.getValorCompra() + "");
+                cbUnidade.setSelectedIndex(p.getUnidade().getCodigo());
+                txtMarca.setText(p.getMarca());
+                txtModelo.setText(p.getModelo());
+                txtFornecedor.setText(p.getFornecedor());
+                txtReferencia.setText(p.getReferencia());
+                if (p.isAtivo()) {
+                    ckbInativo.setSelected(true);
+                    desabilitarCampos();
+                    alterar = true;
+                } else {
+                    ckbInativo.setSelected(false);
+                }
+            }
         }
     }//GEN-LAST:event_txtCodigoKeyPressed
 
     private void tblProdutoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProdutoMousePressed
+        alterar = true;
         int linha = tblProduto.getSelectedRow();
         String cd = tblProduto.getValueAt(linha, 0).toString();
         int codigo = Integer.parseInt(cd);
@@ -378,11 +407,17 @@ public class TelaProdutos extends javax.swing.JDialog {
         txtQtd.setText(p.getQtd() + "");
         txtValorVenda.setText(p.getValorVenda() + "");
         txtValorCompra.setText(p.getValorCompra() + "");
-        cbUnidade.addItem(p.getUnidade());
+        cbUnidade.setSelectedIndex(p.getUnidade().getCodigo());
         txtMarca.setText(p.getMarca());
         txtModelo.setText(p.getModelo());
         txtFornecedor.setText(p.getFornecedor());
         txtReferencia.setText(p.getReferencia());
+        if (p.isAtivo()) {
+            ckbInativo.setSelected(true);
+            desabilitarCampos();
+        } else {
+            ckbInativo.setSelected(false);
+        }
 
     }//GEN-LAST:event_tblProdutoMousePressed
 
@@ -392,20 +427,25 @@ public class TelaProdutos extends javax.swing.JDialog {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         String desc = txtDescricao.getText();
-       int m = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir o produto\n"+ desc +"?", "Exclusão!", 0, 0 );
-        if(m == 0){      
-        int id = Integer.parseInt(txtCodigo.getText());
-        pDAO.delete(id);
-        limpar();
-        JOptionPane.showMessageDialog(rootPane, "Produto Excluído!");
-        }else{
-            
+        int m = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir o produto\n" + desc + "?", "Exclusão!", 0, 0);
+        if (m == 0) {
+            int id = Integer.parseInt(txtCodigo.getText());
+            pDAO.delete(id);
+            limpar();
+            JOptionPane.showMessageDialog(rootPane, "Produto Excluído!");
+        } else {
+
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
-    public void buscaNome(String nome) {
+    private void txtDescricaoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescricaoKeyPressed
+        String desc = txtDescricao.getText();
+        buscaProduto(desc);
+    }//GEN-LAST:event_txtDescricaoKeyPressed
+
+    public void buscaProduto(String descricao) {
         ProdutoDAO pDAO = new ProdutoDAO();
-        List<Produto> listaBuscaProduto = pDAO.buscarProduto(nome);
+        List<Produto> listaBuscaProduto = pDAO.buscarProduto(descricao);
         DefaultTableModel model = (DefaultTableModel) this.tblProduto.getModel();
         model.setNumRows(0);
         for (int i = 0; i < listaBuscaProduto.size(); i++) {
@@ -419,8 +459,52 @@ public class TelaProdutos extends javax.swing.JDialog {
         }
     }
 
+    public void desabilitarCampos(){
+        txtCodigo.setEnabled(false);
+        txtDescricao.setEnabled(false);
+        txtCdBarras.setEnabled(false);
+        txtQtd.setEnabled(false);
+        txtValorVenda.setEnabled(false);
+        txtValorCompra.setEnabled(false);
+        cbUnidade.setEnabled(false);
+        txtMarca.setEnabled(false);
+        txtModelo.setEnabled(false);
+        txtFornecedor.setEnabled(false);
+        txtReferencia.setEnabled(false);
+    }
+    
+    public void habilitarCampos(){              
+        txtCodigo.setEnabled(true);
+        txtDescricao.setEnabled(true);
+        txtCdBarras.setEnabled(true);
+        txtQtd.setEnabled(true);
+        txtValorVenda.setEnabled(true);
+        txtValorCompra.setEnabled(true);
+        cbUnidade.setEnabled(true);
+        txtMarca.setEnabled(true);
+        txtModelo.setEnabled(true);
+        txtFornecedor.setEnabled(true);
+        txtReferencia.setEnabled(true);      
+    }
+    
     public void limpar() {
+        DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
         txtCodigo.setText("");
+        txtDescricao.setText("");
+        txtCdBarras.setText("");
+        txtQtd.setText("");
+        txtValorVenda.setText("");
+        txtValorCompra.setText("");
+        cbUnidade.setSelectedIndex(-1);
+        txtMarca.setText("");
+        txtModelo.setText("");
+        txtFornecedor.setText("");
+        txtReferencia.setText("");
+        ckbInativo.setSelected(false);
+        model.setNumRows(0);
+    }
+
+    public void limpar2() {
         txtDescricao.setText("");
         txtCdBarras.setText("");
         txtQtd.setText("");
@@ -490,7 +574,7 @@ public class TelaProdutos extends javax.swing.JDialog {
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox cbUnidade;
-    private javax.swing.JCheckBox ckbAtivo;
+    private javax.swing.JCheckBox ckbInativo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

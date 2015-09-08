@@ -396,7 +396,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             p.setTelResidencial(txtFoneResidencial.getText());
             p.setObservacoes(jTxtObservacoes.getText());
 
-            if (alterar = false) {
+            if (alterar == false) {
                 pDAO.insert(p);
 
             } else {
@@ -416,8 +416,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int linha = tblPessoa.getSelectedRow();
-        int id = (int) tblPessoa.getValueAt(0, linha);
-        p = pDAO.getPessoaById(id);
+        int id = (int) tblPessoa.getValueAt(linha, 0);
         pDAO.delete(id);
         atualizaTabelaPessoa();
     }//GEN-LAST:event_btnExcluirActionPerformed
@@ -505,7 +504,8 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             model.setNumRows(0);
             for (int i = 0; i < listaPessoaIncompleto.size(); i++) {
                 model.addRow(new Object[]{});
-                model.setValueAt(listaPessoaIncompleto.get(i).getNome(), i, 0);
+                model.setValueAt(listaPessoaIncompleto.get(i).getIdPessoa(), i, 0);
+                model.setValueAt(listaPessoaIncompleto.get(i).getNome(), i, 1);
             }
         } else {
             CadastroClienteDAO cDAO = new CadastroClienteDAO();

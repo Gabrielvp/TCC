@@ -63,7 +63,7 @@ public class CadastroClienteDAO extends MySQL {
 
             PreparedStatement ps = c.prepareStatement("UPDATE pessoa "
                     + "Set nome = ?, email = ? , completo = ?, rua = ?, numero = ?, cep = ?, "
-                    + "bairro = ?, cidade = ?, estado = ?, cpf = ?, rg = ?  "
+                    + "bairro = ?, cidade = ?, estado = ?, cpf = ?, rg = ?,  "
                     + "telResidencial = ?, telCelular = ?,telComercial = ?, observacoes = ? "
                     + "WHERE idpessoa = ? ");
 

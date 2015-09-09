@@ -378,7 +378,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
+
         if (verificaCadastroCompleto()) {
             p.setNome(txtNome.getText());
             p.setBairro(txtBairro.getText());
@@ -396,7 +396,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             p.setTelResidencial(txtFoneResidencial.getText());
             p.setObservacoes(jTxtObservacoes.getText());
 
-            if (alterar = false) {
+            if (alterar == false) {
                 pDAO.insert(p);
 
             } else {
@@ -415,12 +415,25 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }//GEN-LAST:event_ckbCadastroIncompletoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        int linha = tblPessoa.getSelectedRow();
-        int id = (int) tblPessoa.getValueAt(0, linha);
-        p = pDAO.getPessoaById(id);
-        pDAO.delete(id);
-        atualizaTabelaPessoa();
+        int sel = tblPessoa.getSelectedRow();
+        if (sel == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione o agendamento a ser excluído");
+        } else {
+            int linha = tblPessoa.getSelectedRow();
+            String tbl = tblPessoa.getValueAt(linha, 1).toString();
+            if ((tbl.equals(""))) {
+                JOptionPane.showMessageDialog(this, "Selecione um Cadastro para Exclusão");
+            } else {
+                int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o Cadastro?", "Exclusão", 0, 0);
+                if (confirmacao == 0) {
+                    int id = (int) tblPessoa.getValueAt(linha, 0);
+                    pDAO.delete(id);
+                    atualizaTabelaPessoa();
+                }
+            }
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         alterar = true;
@@ -505,7 +518,8 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             model.setNumRows(0);
             for (int i = 0; i < listaPessoaIncompleto.size(); i++) {
                 model.addRow(new Object[]{});
-                model.setValueAt(listaPessoaIncompleto.get(i).getNome(), i, 0);
+                model.setValueAt(listaPessoaIncompleto.get(i).getIdPessoa(), i, 0);
+                model.setValueAt(listaPessoaIncompleto.get(i).getNome(), i, 1);
             }
         } else {
             CadastroClienteDAO cDAO = new CadastroClienteDAO();
@@ -554,16 +568,21 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastroPessoa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCadastroPessoa.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastroPessoa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCadastroPessoa.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastroPessoa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCadastroPessoa.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastroPessoa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCadastroPessoa.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         /* Create and display the dialog */

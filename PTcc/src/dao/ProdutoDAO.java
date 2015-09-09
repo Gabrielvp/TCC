@@ -133,6 +133,50 @@ public class ProdutoDAO extends MySQL {
         }
         return listaBuscaProduto;
     }
+    
+    public List<Produto> buscarProdutoId(int id) {
+        List<Produto> listaBuscaProduto = new ArrayList<Produto>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT produto.idproduto, produto.descricao, produto.cod_barras, produto.quantidade, "
+                            + " produto.valor_venda, produto.valor_compra, produto.unidade, produto.marca, produto.modelo, produto.fornecedor, produto.referencia"
+                            + " FROM produto where idProduto = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Produto p = new Produto();
+                p.setIdProduto(rs.getInt("Idproduto"));
+                p.setDescricao(rs.getString("Descricao"));
+                p.setCodBarras(rs.getString("Cod_barras"));
+                p.setQtd(rs.getDouble("Quantidade"));
+                p.setValorVenda(rs.getDouble("Valor_venda"));
+                p.setValorCompra(rs.getDouble("Valor_compra"));
+                p.setUnidade(EnumUnidade.LITRO.getEnumUnidade(rs.getInt("Unidade")));
+                p.setMarca(rs.getString("Marca"));
+                p.setModelo(rs.getString("Modelo"));
+                p.setFornecedor(rs.getString("Fornecedor"));
+                p.setReferencia(rs.getString("Referencia"));
+
+                listaBuscaProduto.add(p);
+
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listaBuscaProduto;
+    }
+
 
     public void delete(int id) {
      Connection c = this.getConnection();

@@ -10,8 +10,6 @@ import dao.agendamentoDAO;
 import entity.Agenda;
 import entity.Configuracao;
 import entity.DataHora;
-import entity.Pessoa;
-import entity.Produto;
 import java.awt.Color;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -382,8 +380,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
     private void btnProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutoActionPerformed
         TelaProdutos p = new TelaProdutos(this, rootPaneCheckingEnabled);
-        p.setVisible(true);
-        setResizable(false);
+        p.setVisible(true);       
     }//GEN-LAST:event_btnProdutoActionPerformed
 
     private void tblPrincipalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPrincipalMousePressed

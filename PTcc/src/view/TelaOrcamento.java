@@ -45,6 +45,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
     Pessoa ps = new Pessoa();
     ProdutoDAO pDAO = new ProdutoDAO();
+    Produto p = new Produto();
+    int contador = 0;
+    double resultado;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -89,6 +92,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
         btnPesquisaProduto = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         txtCodPessoa = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        lblTotalItem = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Orçamento - Agenda Financeira");
@@ -123,10 +128,20 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jLabel6.setText("Qtd");
 
         txtQtdProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtQtdProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtQtdProdutoKeyReleased(evt);
+            }
+        });
 
         jLabel7.setText("Valor R$");
 
         txtValor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtValorKeyReleased(evt);
+            }
+        });
 
         tblProduto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -169,6 +184,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
         });
 
         btnRemoveProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/No-entry.png"))); // NOI18N
+        btnRemoveProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveProdutoActionPerformed(evt);
+            }
+        });
 
         jLabel20.setText("Desconto:");
 
@@ -200,6 +220,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jLabel8.setText("Código");
 
         txtCodPessoa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+
+        jLabel9.setText("Total Item R$");
+
+        lblTotalItem.setText("0,00");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -255,7 +279,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(txtDescontoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(421, 421, 421)
+                        .addGap(32, 32, 32)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTotalItem)
+                        .addGap(269, 269, 269)
                         .addComponent(btnAddProduto)
                         .addGap(18, 18, 18)
                         .addComponent(btnRemoveProduto))
@@ -333,7 +361,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
                             .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel7))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDescontoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtDescontoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9)
+                        .addComponent(lblTotalItem))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,7 +406,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         tela.setVisible(true);
         txtCodProduto.setText(tela.p.getIdProduto() + "");
         txtProduto.setText(tela.p.getDescricao());
-        txtValor.setText(tela.p.getValorVenda()+"");
+        txtValor.setText(tela.p.getValorVenda() + "");
     }//GEN-LAST:event_btnPesquisaProdutoActionPerformed
 
     private void btnPesquisaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaClienteActionPerformed
@@ -387,20 +418,44 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisaClienteActionPerformed
 
     private void btnAddProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProdutoActionPerformed
+        contador++;
         int id = Integer.parseInt(txtCodProduto.getText());
         atualizaTabela(id);
+        limpaProduto();
     }//GEN-LAST:event_btnAddProdutoActionPerformed
 
+    private void btnRemoveProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveProdutoActionPerformed
+        int linha = tblProduto.getSelectedRow();
+        tblProduto.removeRowSelectionInterval(linha, linha);
+    }//GEN-LAST:event_btnRemoveProdutoActionPerformed
+
+    private void txtQtdProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtdProdutoKeyReleased
+        double qtd = Double.parseDouble(txtQtdProduto.getText());
+        double valor = Double.parseDouble(txtValor.getText());
+        resultado = qtd * valor;
+        lblTotalItem.setText(resultado+"");
+    }//GEN-LAST:event_txtQtdProdutoKeyReleased
+
+    private void txtValorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyReleased
+       double qtd = Double.parseDouble(txtQtdProduto.getText());
+        double valor = Double.parseDouble(txtValor.getText());
+        resultado = qtd * valor;
+        lblTotalItem.setText(resultado+"");
+    }//GEN-LAST:event_txtValorKeyReleased
+
     public void atualizaTabela(int id) {
-        DefaultTableModel tbl = (DefaultTableModel) tblProduto.getModel();
-        List<Produto> lista = pDAO.buscarProdutoId(id);
-        for (int i = 0; i < lista.size(); i++) {
-            tbl.addRow(new Object[]{});
-            tbl.setValueAt(lista.get(i).getIdProduto(), i, 0);
-            tbl.setValueAt(lista.get(i).getDescricao(), i, 1);
-            tbl.setValueAt(txtQtdProduto.getText(), i, 2);
-            tbl.setValueAt(lista.get(i).getValorVenda(), i, 3);
-        }
+        DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();
+        p = pDAO.getProdutoById(id);        
+        tbl.addRow(new Object[]{p.getIdProduto(), p.getDescricao(), txtQtdProduto.getText(), txtValor.getText(), resultado});     
+    }
+
+    public void limpaProduto() {
+        txtCodProduto.setText("");
+        txtProduto.setText("");
+        txtQtdProduto.setText("");
+        txtValor.setText("");
+        txtDescontoProduto.setText("");
+        lblTotalItem.setText("0,00");
     }
 
     /**
@@ -468,8 +523,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblTotalItem;
     private javax.swing.JLabel lblTotalOrcamento;
     private javax.swing.JTable tblProduto;
     private javax.swing.JTextField txtCodPessoa;

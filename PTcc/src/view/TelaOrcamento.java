@@ -6,12 +6,10 @@
 package view;
 
 import dao.ProdutoDAO;
-import entity.Orcamento;
 import entity.Pessoa;
 import entity.Produto;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -51,6 +49,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     int contador = 0;
     double resultado;
     double totalOrçamento;
+    double totalDesconto;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -85,9 +84,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
         lblTotalOrcamento = new javax.swing.JLabel();
         btnLimpaDesconto = new javax.swing.JButton();
         btnRemoveProduto = new javax.swing.JButton();
-        jLabel20 = new javax.swing.JLabel();
+        lblDescontoItem = new javax.swing.JLabel();
         txtDescontoProduto = new javax.swing.JTextField();
-        jLabel21 = new javax.swing.JLabel();
+        lblDescontoOrcamento = new javax.swing.JLabel();
         txtDescontoOrcamento = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnPesquisaCliente = new javax.swing.JButton();
@@ -99,21 +98,28 @@ public class TelaOrcamento extends javax.swing.JDialog {
         lblTotalItem = new javax.swing.JLabel();
         btnAddProduto = new javax.swing.JButton();
         btnLimpaProduto = new javax.swing.JButton();
+        btnLimpaDescontoOrcamento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Orçamento - Agenda Financeira");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Nome:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 66, -1, -1));
 
         txtNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel1.add(txtNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 82, 480, -1));
 
         jLabel2.setText("Orçamento");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 10, -1, -1));
 
         txtOrcamento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel1.add(txtOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 30, 80, -1));
 
         jLabel3.setText("Data");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
 
         txtData.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
@@ -121,16 +127,22 @@ public class TelaOrcamento extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 80, -1));
 
         jLabel4.setText("Produto");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 115, -1, -1));
 
         txtProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel1.add(txtProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 131, 480, -1));
 
         jLabel5.setText("Cd. Produto");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 115, -1, -1));
 
         txtCodProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel1.add(txtCodProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 131, 80, -1));
 
         jLabel6.setText("Qtd");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 160, -1, -1));
 
         txtQtdProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtQtdProduto.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -138,8 +150,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtQtdProdutoKeyReleased(evt);
             }
         });
+        jPanel1.add(txtQtdProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 176, 50, -1));
 
         jLabel7.setText("Valor R$");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
 
         txtValor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -147,6 +161,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtValorKeyReleased(evt);
             }
         });
+        jPanel1.add(txtValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 176, 82, -1));
 
         tblProduto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -168,18 +183,34 @@ public class TelaOrcamento extends javax.swing.JDialog {
             tblProduto.getColumnModel().getColumn(4).setPreferredWidth(60);
         }
 
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 208, 616, 326));
+
         btnAprovado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Good mark.png"))); // NOI18N
         btnAprovado.setText("Aprovado");
+        jPanel1.add(btnAprovado, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 581, -1, -1));
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Modify.png"))); // NOI18N
         btnAlterar.setText("Alterar");
+        jPanel1.add(btnAlterar, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 581, -1, -1));
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Delete.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(507, 581, -1, -1));
 
+        jLabel17.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(204, 0, 0));
         jLabel17.setText("Total Orçamento R$");
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 550, -1, -1));
 
+        lblTotalOrcamento.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
+        lblTotalOrcamento.setForeground(new java.awt.Color(204, 0, 0));
         lblTotalOrcamento.setText("0,00");
+        jPanel1.add(lblTotalOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 550, -1, -1));
 
         btnLimpaDesconto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Refresh.png"))); // NOI18N
         btnLimpaDesconto.addActionListener(new java.awt.event.ActionListener() {
@@ -187,6 +218,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnLimpaDescontoActionPerformed(evt);
             }
         });
+        jPanel1.add(btnLimpaDesconto, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 170, -1, -1));
 
         btnRemoveProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/No-entry.png"))); // NOI18N
         btnRemoveProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -194,24 +226,39 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnRemoveProdutoActionPerformed(evt);
             }
         });
+        jPanel1.add(btnRemoveProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 174, -1, -1));
 
-        jLabel20.setText("Desconto:");
-
-        txtDescontoProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
-        txtDescontoProduto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescontoProdutoActionPerformed(evt);
+        lblDescontoItem.setText("Desconto %");
+        lblDescontoItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblDescontoItemMousePressed(evt);
             }
         });
+        jPanel1.add(lblDescontoItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, -1, -1));
+
+        txtDescontoProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtDescontoProduto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtDescontoProdutoKeyReleased(evt);
             }
         });
+        jPanel1.add(txtDescontoProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 176, 80, -1));
 
-        jLabel21.setText("Desconto:");
+        lblDescontoOrcamento.setText("Desconto %");
+        lblDescontoOrcamento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblDescontoOrcamentoMousePressed(evt);
+            }
+        });
+        jPanel1.add(lblDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 530, -1, 20));
 
         txtDescontoOrcamento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtDescontoOrcamento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDescontoOrcamentoKeyReleased(evt);
+            }
+        });
+        jPanel1.add(txtDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 550, 77, -1));
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Apply.png"))); // NOI18N
         btnSalvar.setText("Salvar");
@@ -220,6 +267,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnSalvarActionPerformed(evt);
             }
         });
+        jPanel1.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(311, 581, -1, -1));
 
         btnPesquisaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
         btnPesquisaCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -227,8 +275,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnPesquisaClienteActionPerformed(evt);
             }
         });
+        jPanel1.add(btnPesquisaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 70, -1, 37));
 
         txtPesquisaOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
+        jPanel1.add(txtPesquisaOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(202, 16, -1, 37));
 
         btnPesquisaProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
         btnPesquisaProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -236,14 +286,21 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnPesquisaProdutoActionPerformed(evt);
             }
         });
+        jPanel1.add(btnPesquisaProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 119, -1, 37));
 
         jLabel8.setText("Código");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 66, -1, -1));
 
         txtCodPessoa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel1.add(txtCodPessoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 82, 80, -1));
 
+        jLabel9.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel9.setText("Total Item R$");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 170, -1, -1));
 
+        lblTotalItem.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         lblTotalItem.setText("0,00");
+        jPanel1.add(lblTotalItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 170, -1, -1));
 
         btnAddProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Create.png"))); // NOI18N
         btnAddProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -251,6 +308,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnAddProdutoActionPerformed(evt);
             }
         });
+        jPanel1.add(btnAddProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(518, 174, -1, -1));
 
         btnLimpaProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
         btnLimpaProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -258,180 +316,15 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnLimpaProdutoActionPerformed(evt);
             }
         });
+        jPanel1.add(btnLimpaProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 174, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(txtOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addComponent(txtPesquisaOrcamento))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(txtCodPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addComponent(btnPesquisaCliente))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addComponent(btnPesquisaProduto))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(txtQtdProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel20)
-                    .addComponent(txtDescontoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addComponent(btnLimpaDesconto)
-                .addGap(16, 16, 16)
-                .addComponent(jLabel9)
-                .addGap(7, 7, 7)
-                .addComponent(lblTotalItem)
-                .addGap(39, 39, 39)
-                .addComponent(btnLimpaProduto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAddProduto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRemoveProduto))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(253, 253, 253)
-                .addComponent(jLabel21)
-                .addGap(4, 4, 4)
-                .addComponent(txtDescontoOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel17)
-                .addGap(0, 0, 0)
-                .addComponent(lblTotalOrcamento))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(btnAprovado)
-                .addGap(189, 189, 189)
-                .addComponent(btnSalvar)
-                .addGap(16, 16, 16)
-                .addComponent(btnAlterar)
-                .addGap(15, 15, 15)
-                .addComponent(btnExcluir))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(4, 4, 4)
-                        .addComponent(txtOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(4, 4, 4)
-                        .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(txtPesquisaOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtCodPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(btnPesquisaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(8, 8, 8)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(btnPesquisaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(4, 4, 4)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtQtdProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel20)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtDescontoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(btnLimpaDesconto))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel9))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(lblTotalItem))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(btnAddProduto))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(btnRemoveProduto))))
-                    .addComponent(btnLimpaProduto))
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21)
-                    .addComponent(txtDescontoOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17)
-                    .addComponent(lblTotalOrcamento))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAprovado)
-                    .addComponent(btnSalvar)
-                    .addComponent(btnAlterar)
-                    .addComponent(btnExcluir)))
-        );
+        btnLimpaDescontoOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Refresh.png"))); // NOI18N
+        btnLimpaDescontoOrcamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpaDescontoOrcamentoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnLimpaDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 540, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -485,7 +378,15 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private void btnRemoveProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveProdutoActionPerformed
         DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();
         int linha = tblProduto.getSelectedRow();
-        tbl.removeRow(linha);
+        if (tblProduto.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(rootPane, "Selecione um produto para excluir");
+        } else {
+            Double valor = Double.parseDouble(tbl.getValueAt(linha, 4).toString());
+            System.out.println(valor);
+            totalOrçamento -= valor;
+            tbl.removeRow(linha);
+            lblTotalOrcamento.setText(totalOrçamento + "");
+        }
     }//GEN-LAST:event_btnRemoveProdutoActionPerformed
 
     private void txtQtdProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtdProdutoKeyReleased
@@ -504,26 +405,39 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
     private void txtDescontoProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescontoProdutoKeyReleased
         if (evt.getKeyCode() == evt.VK_ENTER) {
+            String teste = lblDescontoItem.getText();
             double desconto = Double.parseDouble(txtDescontoProduto.getText());
             double valor = Double.parseDouble(lblTotalItem.getText());
-            resultado -= (desconto / 100) * valor;
+            if (teste.equals("Desconto %")) {
+                resultado -= (desconto / 100) * valor;
+            } else if (teste.equals("Desconto R$")) {
+                resultado -= desconto;
+            }
             lblTotalItem.setText(resultado + "");
             txtDescontoProduto.setEnabled(false);
         }
     }//GEN-LAST:event_txtDescontoProdutoKeyReleased
 
-    private void txtDescontoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescontoProdutoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescontoProdutoActionPerformed
-
     private void btnAddProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProdutoActionPerformed
-        contador++;
-        int id = Integer.parseInt(txtCodProduto.getText());
-        
-        atualizaTabela(id);
-        limpaProduto();
-        totalOrçamento += resultado;
-        lblTotalOrcamento.setText(totalOrçamento+"");
+        String testeQuantidade = txtQtdProduto.getText();
+        String testeProduto = txtProduto.getText();
+        if (testeProduto.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira um Produto");
+        } else {
+            if (testeQuantidade.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Insira a Quantidade");
+            } else {
+                contador++;
+                int id = Integer.parseInt(txtCodProduto.getText());
+                atualizaTabela(id);
+                limpaProduto();
+                totalOrçamento += resultado;
+                lblTotalOrcamento.setText(totalOrçamento + "");
+                txtDescontoOrcamento.setEnabled(true);
+                txtDescontoOrcamento.setText("");
+                lblTotalOrcamento.setText(totalOrçamento + "");
+            }
+        }
     }//GEN-LAST:event_btnAddProdutoActionPerformed
 
     private void btnLimpaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpaProdutoActionPerformed
@@ -531,8 +445,51 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLimpaProdutoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
+
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void lblDescontoItemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDescontoItemMousePressed
+        String texto = lblDescontoItem.getText();
+        if (texto.equals("Desconto %")) {
+            lblDescontoItem.setText("Desconto R$");
+        } else if (texto.equals("Desconto R$")) {
+            lblDescontoItem.setText("Desconto %");
+        }
+    }//GEN-LAST:event_lblDescontoItemMousePressed
+
+    private void txtDescontoOrcamentoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescontoOrcamentoKeyReleased
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            String teste = lblDescontoOrcamento.getText();
+            double desconto = Double.parseDouble(txtDescontoOrcamento.getText());
+            double valor = Double.parseDouble(lblTotalOrcamento.getText());
+            if (teste.equals("Desconto %")) {
+                totalDesconto = totalOrçamento - (desconto / 100) * valor;
+            } else if (teste.equals("Desconto R$")) {
+                totalDesconto = totalOrçamento - desconto;
+            }
+            lblTotalOrcamento.setText(totalDesconto + "");
+            txtDescontoOrcamento.setEnabled(false);
+        }
+    }//GEN-LAST:event_txtDescontoOrcamentoKeyReleased
+
+    private void lblDescontoOrcamentoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDescontoOrcamentoMousePressed
+        String texto = lblDescontoOrcamento.getText();
+        if (texto.equals("Desconto %")) {
+            lblDescontoOrcamento.setText("Desconto R$");
+        } else if (texto.equals("Desconto R$")) {
+            lblDescontoOrcamento.setText("Desconto %");
+        }
+    }//GEN-LAST:event_lblDescontoOrcamentoMousePressed
+
+    private void btnLimpaDescontoOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpaDescontoOrcamentoActionPerformed
+        txtDescontoOrcamento.setEnabled(true);
+        txtDescontoOrcamento.setText("");
+        lblTotalOrcamento.setText(totalOrçamento + "");
+    }//GEN-LAST:event_btnLimpaDescontoOrcamentoActionPerformed
 
     public void atualizaTabela(int id) {
         DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();
@@ -547,6 +504,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         txtValor.setText("");
         txtDescontoProduto.setText("");
         lblTotalItem.setText("0,00");
+        txtDescontoProduto.setEnabled(true);
     }
 
     /**
@@ -600,6 +558,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private javax.swing.JButton btnAprovado;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpaDesconto;
+    private javax.swing.JButton btnLimpaDescontoOrcamento;
     private javax.swing.JButton btnLimpaProduto;
     private javax.swing.JButton btnPesquisaCliente;
     private javax.swing.JButton btnPesquisaProduto;
@@ -608,8 +567,6 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -619,6 +576,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblDescontoItem;
+    private javax.swing.JLabel lblDescontoOrcamento;
     private javax.swing.JLabel lblTotalItem;
     private javax.swing.JLabel lblTotalOrcamento;
     private javax.swing.JTable tblProduto;

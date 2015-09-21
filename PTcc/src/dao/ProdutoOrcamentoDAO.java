@@ -2,6 +2,7 @@ package dao;
 
 import entity.Orcamento;
 import entity.Pessoa;
+import entity.ProdutoOrcamento;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,33 +15,27 @@ import java.util.List;
  *
  * @author ricardonene
  */
-public class OrcamentoDAO extends MySQL {
+public class ProdutoOrcamentoDAO extends MySQL {
 
     SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
 
-    public boolean insert(Orcamento orcamento) {
+    public boolean insert(ProdutoOrcamento produtoOrcamento) {
 
         Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO orcamento (data, cliente, total, desconto, idPessoa, aprovado)"
-                            + "VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, sdfD.format(orcamento.getData()));
-            ps.setString(2, orcamento.getNome());
-            ps.setDouble(3, orcamento.getTotal());
-            ps.setDouble(4, orcamento.getDesconto());
-            ps.setInt(5, orcamento.getIdPessoa());
-            ps.setBoolean(6, orcamento.isAprovado());
+                    = c.prepareStatement("INSERT INTO produto_orcamento (idProduto, idOrcamento, produto, qtd, valor, desconto, total)"
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+            ps.setInt(1, produtoOrcamento.getIdProduto());
+            ps.setInt(2, produtoOrcamento.getIdOrcamento());
+            ps.setString(3, produtoOrcamento.getProduto());
+            ps.setDouble(4, produtoOrcamento.getQuantidade());
+            ps.setDouble(5, produtoOrcamento.getValor());
+            ps.setDouble(6, produtoOrcamento.getDesconto());
+            ps.setDouble(7, produtoOrcamento.getTotal());
 
             ps.execute();
-            
-            ResultSet rs = ps.getGeneratedKeys();
-            rs.next();
-            int resultado = rs.getInt(1);
-            orcamento.setIdOrcamento(resultado);
-            rs.close();
-            
             ps.close();
             return true;
 

@@ -5,11 +5,18 @@
  */
 package view;
 
+import dao.OrcamentoDAO;
 import dao.ProdutoDAO;
+import dao.ProdutoOrcamentoDAO;
+import entity.Orcamento;
 import entity.Pessoa;
 import entity.Produto;
+import entity.ProdutoOrcamento;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -50,6 +57,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
     double resultado;
     double totalOrçamento;
     double totalDesconto;
+    SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,6 +119,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 66, -1, -1));
 
         txtNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNomeKeyReleased(evt);
+            }
+        });
         jPanel1.add(txtNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 82, 480, -1));
 
         jLabel2.setText("Orçamento");
@@ -133,6 +147,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 115, -1, -1));
 
         txtProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtProdutoKeyReleased(evt);
+            }
+        });
         jPanel1.add(txtProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 131, 480, -1));
 
         jLabel5.setText("Cd. Produto");
@@ -445,7 +464,34 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLimpaProdutoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-
+        Orcamento orcamento = new Orcamento();
+        OrcamentoDAO oDAO = new OrcamentoDAO();
+        ProdutoOrcamento po = new ProdutoOrcamento();
+        ProdutoOrcamentoDAO poDAO = new ProdutoOrcamentoDAO();
+        int linhas = tblProduto.getRowCount();
+        
+        try {
+            orcamento.setData(sdfD.parse(txtData.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        orcamento.setIdPessoa(Integer.parseInt(txtCodPessoa.getText()));
+        orcamento.setNome(txtNome.getText());
+        orcamento.setTotal(Double.parseDouble(lblTotalOrcamento.getText()));
+        orcamento.setAprovado(false);
+        oDAO.insert(orcamento);
+        for (int i = 0; i < linhas; i++) {
+            po.setIdProduto(Integer.parseInt(tblProduto.getValueAt(i, 0).toString()));
+            po.setIdOrcamento(orcamento.getIdOrcamento());
+            po.setProduto(tblProduto.getValueAt(i, 1).toString());
+            po.setQuantidade(Double.parseDouble(tblProduto.getValueAt(i, 2).toString()));
+            po.setValor(Double.parseDouble(tblProduto.getValueAt(i, 3).toString()));
+            po.setTotal(Double.parseDouble(tblProduto.getValueAt(i, 4).toString()));
+            poDAO.insert(po);
+        }
+        limparTela();
+        JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!\n"
+                + "Orçamento: " + orcamento.getIdOrcamento());
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -491,6 +537,36 @@ public class TelaOrcamento extends javax.swing.JDialog {
         lblTotalOrcamento.setText(totalOrçamento + "");
     }//GEN-LAST:event_btnLimpaDescontoOrcamentoActionPerformed
 
+    private void txtNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyReleased
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            String nome = txtNome.getText();
+            if (nome.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+            } else {
+                TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome);
+                tela.setVisible(true);
+                txtCodPessoa.setText(tela.p.getIdPessoa() + "");
+                txtNome.setText(tela.p.getNome());
+            }
+        }
+    }//GEN-LAST:event_txtNomeKeyReleased
+
+    private void txtProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProdutoKeyReleased
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            String nome = txtProduto.getText();
+            if (nome.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+                txtCodPessoa.setText("");
+            } else {
+                TelaPesquisaProduto tela = new TelaPesquisaProduto(null, rootPaneCheckingEnabled, nome);
+                tela.setVisible(true);
+                txtCodProduto.setText(tela.p.getIdProduto() + "");
+                txtProduto.setText(tela.p.getDescricao());
+                txtValor.setText(tela.p.getValorVenda() + "");
+            }
+        }
+    }//GEN-LAST:event_txtProdutoKeyReleased
+
     public void atualizaTabela(int id) {
         DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();
         p = pDAO.getProdutoById(id);
@@ -505,6 +581,20 @@ public class TelaOrcamento extends javax.swing.JDialog {
         txtDescontoProduto.setText("");
         lblTotalItem.setText("0,00");
         txtDescontoProduto.setEnabled(true);
+    }
+    
+    public void limparTela(){
+        DefaultTableModel model = (DefaultTableModel)tblProduto.getModel();
+        txtCodPessoa.setText("");
+        txtNome.setText("");
+        txtCodProduto.setText("");
+        txtProduto.setText("");
+        txtQtdProduto.setText("");
+        txtValor.setText("");
+        txtDescontoProduto.setText("");
+        lblTotalItem.setText("0,00");
+        txtDescontoProduto.setEnabled(true);
+        model.setNumRows(0);
     }
 
     /**

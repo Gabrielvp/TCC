@@ -13,16 +13,37 @@ import java.util.Date;
  */
 public class Orcamento {
     
-    private int id;
+    private int idOrcamento;
     private Date data;
-    private Date hora;
-    private Pessoa pessoa;
-    private Produto produto;
-    private double QtdProduto;
-    private double descontoProduto;
-    private double descontoOrcamento;
+    private String nome;
     private double total;
+    private double desconto;
+    private int idPessoa;
     private boolean aprovado;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getIdOrcamento() {
+        return idOrcamento;
+    }
+
+    public void setIdOrcamento(int idOrcamento) {
+        this.idOrcamento = idOrcamento;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }    
 
     public double getTotal() {
         return total;
@@ -32,68 +53,20 @@ public class Orcamento {
         this.total = total;
     }
 
-    public int getId() {
-        return id;
+    public double getDesconto() {
+        return desconto;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDesconto(double desconto) {
+        this.desconto = desconto;
     }
 
-    public Date getData() {
-        return data;
+    public int getIdPessoa() {
+        return idPessoa;
     }
 
-    public void setData(Date data) {
-        this.data = data;
-    }
-
-    public Date getHora() {
-        return hora;
-    }
-
-    public void setHora(Date hora) {
-        this.hora = hora;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
-    public double getQtdProduto() {
-        return QtdProduto;
-    }
-
-    public void setQtdProduto(double QtdProduto) {
-        this.QtdProduto = QtdProduto;
-    }
-
-    public double getDescontoProduto() {
-        return descontoProduto;
-    }
-
-    public void setDescontoProduto(double descontoProduto) {
-        this.descontoProduto = descontoProduto;
-    }
-
-    public double getDescontoOrcamento() {
-        return descontoOrcamento;
-    }
-
-    public void setDescontoOrcamento(double descontoOrcamento) {
-        this.descontoOrcamento = descontoOrcamento;
+    public void setIdPessoa(int idPessoa) {
+        this.idPessoa = idPessoa;
     }
 
     public boolean isAprovado() {
@@ -102,5 +75,6 @@ public class Orcamento {
 
     public void setAprovado(boolean aprovado) {
         this.aprovado = aprovado;
-    }    
-}
+    }
+
+   }

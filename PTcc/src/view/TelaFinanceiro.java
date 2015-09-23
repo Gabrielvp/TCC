@@ -5,6 +5,10 @@
  */
 package view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gabriel1
@@ -20,6 +24,7 @@ public class TelaFinanceiro extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         setResizable(false);
     }
+    SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -159,6 +164,11 @@ public class TelaFinanceiro extends javax.swing.JDialog {
         txtOrcamento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
         btnPesquisaOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
+        btnPesquisaOrcamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisaOrcamentoActionPerformed(evt);
+            }
+        });
 
         txtFatura.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
@@ -187,6 +197,11 @@ public class TelaFinanceiro extends javax.swing.JDialog {
         jLabel3.setText("Fatura:");
 
         btnPesquisaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
+        btnPesquisaCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisaClienteActionPerformed(evt);
+            }
+        });
 
         jLabel12.setText("Forma Pagamento");
 
@@ -287,6 +302,28 @@ public class TelaFinanceiro extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnPesquisaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaClienteActionPerformed
+        String nome = txtNome.getText();
+        if (nome.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+        } else {
+            TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome);
+            tela.setVisible(true);
+            txtNome.setText(tela.p.getNome());
+        }
+    }//GEN-LAST:event_btnPesquisaClienteActionPerformed
+
+    private void btnPesquisaOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaOrcamentoActionPerformed
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        TelaPesquisaOrcamento tela = new TelaPesquisaOrcamento(null, rootPaneCheckingEnabled);
+        tela.setVisible(true);
+        txtOrcamento.setText(tela.o.getIdOrcamento() + "");
+        txtData.setText(formatter.format(tela.o.getData()));
+        txtTotal.setText(tela.o.getTotal() + "");
+
+
+    }//GEN-LAST:event_btnPesquisaOrcamentoActionPerformed
 
     /**
      * @param args the command line arguments

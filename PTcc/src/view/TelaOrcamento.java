@@ -12,6 +12,7 @@ import entity.Orcamento;
 import entity.Pessoa;
 import entity.Produto;
 import entity.ProdutoOrcamento;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -59,6 +60,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     double totalDesconto;
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
+    DecimalFormat df = new DecimalFormat("#,###.00");
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -129,6 +131,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jLabel2.setText("Orçamento");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 10, -1, -1));
 
+        txtOrcamento.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtOrcamento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         jPanel1.add(txtOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 30, 80, -1));
 
@@ -163,6 +166,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jLabel6.setText("Qtd");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 160, -1, -1));
 
+        txtQtdProduto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtQtdProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtQtdProduto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -174,6 +178,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jLabel7.setText("Valor R$");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
 
+        txtValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtValor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -255,6 +260,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         });
         jPanel1.add(lblDescontoItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, -1, -1));
 
+        txtDescontoProduto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtDescontoProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtDescontoProduto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -271,6 +277,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         });
         jPanel1.add(lblDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 530, -1, 20));
 
+        txtDescontoOrcamento.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtDescontoOrcamento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtDescontoOrcamento.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -343,7 +350,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnLimpaDescontoOrcamentoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpaDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 540, -1, -1));
+        jPanel1.add(btnLimpaDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 540, -1, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -369,7 +376,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
             tela.setVisible(true);
             txtCodProduto.setText(tela.p.getIdProduto() + "");
             txtProduto.setText(tela.p.getDescricao());
-            txtValor.setText(tela.p.getValorVenda() + "");
+            txtValor.setText(df.format(tela.p.getValorVenda()) + "");
         }
     }//GEN-LAST:event_btnPesquisaProdutoActionPerformed
 
@@ -386,12 +393,15 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisaClienteActionPerformed
 
     private void btnLimpaDescontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpaDescontoActionPerformed
-        txtDescontoProduto.setEnabled(true);
-        txtDescontoProduto.setText("");
-        double qtd = Double.parseDouble(txtQtdProduto.getText());
-        double valor = Double.parseDouble(txtValor.getText());
-        resultado = qtd * valor;
-        lblTotalItem.setText(resultado + "");
+        try {
+            txtDescontoProduto.setEnabled(true);
+            txtDescontoProduto.setText("");
+            double qtd = Double.parseDouble(txtQtdProduto.getText());
+            double valor = Double.parseDouble(txtValor.getText());
+            resultado = qtd * valor;
+            lblTotalItem.setText(df.format(resultado) + "");
+        } catch (NumberFormatException e) {
+        }
     }//GEN-LAST:event_btnLimpaDescontoActionPerformed
 
     private void btnRemoveProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveProdutoActionPerformed
@@ -404,7 +414,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
             System.out.println(valor);
             totalOrçamento -= valor;
             tbl.removeRow(linha);
-            lblTotalOrcamento.setText(totalOrçamento + "");
+            lblTotalOrcamento.setText(df.format(totalOrçamento) + "");
         }
     }//GEN-LAST:event_btnRemoveProdutoActionPerformed
 
@@ -412,14 +422,14 @@ public class TelaOrcamento extends javax.swing.JDialog {
         double qtd = Double.parseDouble(txtQtdProduto.getText());
         double valor = Double.parseDouble(txtValor.getText());
         resultado = qtd * valor;
-        lblTotalItem.setText(resultado + "");
+        lblTotalItem.setText(df.format(resultado) + "");
     }//GEN-LAST:event_txtQtdProdutoKeyReleased
 
     private void txtValorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyReleased
         double qtd = Double.parseDouble(txtQtdProduto.getText());
         double valor = Double.parseDouble(txtValor.getText());
         resultado = qtd * valor;
-        lblTotalItem.setText(resultado + "");
+        lblTotalItem.setText(df.format(resultado) + "");
     }//GEN-LAST:event_txtValorKeyReleased
 
     private void txtDescontoProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescontoProdutoKeyReleased
@@ -432,7 +442,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
             } else if (teste.equals("Desconto R$")) {
                 resultado -= desconto;
             }
-            lblTotalItem.setText(resultado + "");
+            lblTotalItem.setText(df.format(resultado) + "");
             txtDescontoProduto.setEnabled(false);
         }
     }//GEN-LAST:event_txtDescontoProdutoKeyReleased
@@ -454,7 +464,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 lblTotalOrcamento.setText(totalOrçamento + "");
                 txtDescontoOrcamento.setEnabled(true);
                 txtDescontoOrcamento.setText("");
-                lblTotalOrcamento.setText(totalOrçamento + "");
+                lblTotalOrcamento.setText(df.format(totalOrçamento) + "");
             }
         }
     }//GEN-LAST:event_btnAddProdutoActionPerformed
@@ -469,7 +479,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         ProdutoOrcamento po = new ProdutoOrcamento();
         ProdutoOrcamentoDAO poDAO = new ProdutoOrcamentoDAO();
         int linhas = tblProduto.getRowCount();
-        
+
         try {
             orcamento.setData(sdfD.parse(txtData.getText()));
         } catch (ParseException ex) {
@@ -517,7 +527,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
             } else if (teste.equals("Desconto R$")) {
                 totalDesconto = totalOrçamento - desconto;
             }
-            lblTotalOrcamento.setText(totalDesconto + "");
+            lblTotalOrcamento.setText(df.format(totalDesconto) + "");
             txtDescontoOrcamento.setEnabled(false);
         }
     }//GEN-LAST:event_txtDescontoOrcamentoKeyReleased
@@ -532,9 +542,12 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_lblDescontoOrcamentoMousePressed
 
     private void btnLimpaDescontoOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpaDescontoOrcamentoActionPerformed
-        txtDescontoOrcamento.setEnabled(true);
-        txtDescontoOrcamento.setText("");
-        lblTotalOrcamento.setText(totalOrçamento + "");
+        try {
+            txtDescontoOrcamento.setEnabled(true);
+            txtDescontoOrcamento.setText("");
+            lblTotalOrcamento.setText(df.format(totalOrçamento) + "");
+        } catch (NumberFormatException e) {
+        }
     }//GEN-LAST:event_btnLimpaDescontoOrcamentoActionPerformed
 
     private void txtNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyReleased
@@ -562,7 +575,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 tela.setVisible(true);
                 txtCodProduto.setText(tela.p.getIdProduto() + "");
                 txtProduto.setText(tela.p.getDescricao());
-                txtValor.setText(tela.p.getValorVenda() + "");
+                txtValor.setText(df.format(tela.p.getValorVenda()) + "");
             }
         }
     }//GEN-LAST:event_txtProdutoKeyReleased
@@ -582,9 +595,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
         lblTotalItem.setText("0,00");
         txtDescontoProduto.setEnabled(true);
     }
-    
-    public void limparTela(){
-        DefaultTableModel model = (DefaultTableModel)tblProduto.getModel();
+
+    public void limparTela() {
+        DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
         txtCodPessoa.setText("");
         txtNome.setText("");
         txtCodProduto.setText("");

@@ -55,7 +55,7 @@ public class CadastroClienteDAO extends MySQL {
         return false;
     }
 
-    public void update(Pessoa pessoa, int id) {
+    public void update(Pessoa pessoa) {
 
         Connection c = this.getConnection();
 
@@ -82,7 +82,7 @@ public class CadastroClienteDAO extends MySQL {
             ps.setString(13, pessoa.getTelCelular());
             ps.setString(14, pessoa.getTelComercial());
             ps.setString(15, pessoa.getObservacoes());
-            ps.setInt(16, id);
+            ps.setInt(16, pessoa.getIdPessoa());
 
             ps.execute();
             ps.close();

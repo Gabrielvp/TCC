@@ -395,6 +395,9 @@
                   <Image iconType="3" name="/images/Find.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPesquisaOrcamentoActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtFatura">
               <Properties>
@@ -472,6 +475,9 @@
                   <Image iconType="3" name="/images/Find.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPesquisaClienteActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
               <Properties>

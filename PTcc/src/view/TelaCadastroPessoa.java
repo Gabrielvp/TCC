@@ -6,6 +6,7 @@
 package view;
 
 import dao.CadastroClienteDAO;
+import dao.agendamentoDAO;
 import entity.Pessoa;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -400,7 +401,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 pDAO.insert(p);
 
             } else {
-                pDAO.update(p, p.getIdPessoa());
+                pDAO.update(p);
             }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Cadastro imcompleto, por favor preencha todos os campos!");
@@ -415,18 +416,20 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }//GEN-LAST:event_ckbCadastroIncompletoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        agendamentoDAO aDAO = new agendamentoDAO();
         int sel = tblPessoa.getSelectedRow();
+        int linha = tblPessoa.getSelectedRow();
         if (sel == -1) {
-            JOptionPane.showMessageDialog(this, "Selecione o agendamento a ser excluído");
+            JOptionPane.showMessageDialog(this, "Selecione um cadastro a ser excluído");
         } else {
-            int linha = tblPessoa.getSelectedRow();
             String tbl = tblPessoa.getValueAt(linha, 1).toString();
             if ((tbl.equals(""))) {
-                JOptionPane.showMessageDialog(this, "Selecione um Cadastro para Exclusão");
+                JOptionPane.showMessageDialog(this, "Selecione um cadastro para exclusão");
             } else {
                 int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o Cadastro?", "Exclusão", 0, 0);
                 if (confirmacao == 0) {
                     int id = (int) tblPessoa.getValueAt(linha, 0);
+                    aDAO.deletePessoa(id);
                     pDAO.delete(id);
                     atualizaTabelaPessoa();
                 }

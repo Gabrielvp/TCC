@@ -415,6 +415,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
             totalOrçamento -= valor;
             tbl.removeRow(linha);
             lblTotalOrcamento.setText(df.format(totalOrçamento) + "");
+            if(lblTotalOrcamento.getText().equals(",00")){
+                lblTotalOrcamento.setText("0,00");
+            }
         }
     }//GEN-LAST:event_btnRemoveProdutoActionPerformed
 

@@ -9,6 +9,7 @@ import dao.CadastroClienteDAO;
 import dao.ProdutoDAO;
 import entity.Pessoa;
 import entity.Produto;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -110,9 +111,10 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
             modelo.addRow(new Object[]{});
             modelo.setValueAt(listaProduto.get(i).getIdProduto(), i, 0);
             modelo.setValueAt(listaProduto.get(i).getDescricao(), i, 1);
-            modelo.setValueAt(listaProduto.get(i).getValorVenda(), i, 2);
+            modelo.setValueAt(df.format(listaProduto.get(i).getValorVenda()), i, 2);
         }
     }
+    DecimalFormat df = new DecimalFormat("#,###.00");
 
     /**
      * @param args the command line arguments

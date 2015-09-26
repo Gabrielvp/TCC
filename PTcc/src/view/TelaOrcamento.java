@@ -415,44 +415,53 @@ public class TelaOrcamento extends javax.swing.JDialog {
             totalOrçamento -= valor;
             tbl.removeRow(linha);
             lblTotalOrcamento.setText(df.format(totalOrçamento) + "");
-            if(lblTotalOrcamento.getText().equals(",00")){
+            if (lblTotalOrcamento.getText().equals(",00")) {
                 lblTotalOrcamento.setText("0,00");
             }
         }
     }//GEN-LAST:event_btnRemoveProdutoActionPerformed
 
     private void txtQtdProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtdProdutoKeyReleased
-        String quantidade = txtQtdProduto.getText().replaceAll(",", ".");
-        String vl = txtValor.getText().replaceAll(",", ".");
-        double qtd = Double.parseDouble(quantidade);
-        double valor = Double.parseDouble(vl);
-        resultado = qtd * valor;
-        lblTotalItem.setText(df.format(resultado) + "");
+        try {
+            String quantidade = txtQtdProduto.getText().replaceAll(",", ".");
+            String vl = txtValor.getText().replaceAll(",", ".");
+            double qtd = Double.parseDouble(quantidade);
+            double valor = Double.parseDouble(vl);
+            resultado = qtd * valor;
+            lblTotalItem.setText(df.format(resultado) + "");
+        } catch (NumberFormatException e) {
+        }
     }//GEN-LAST:event_txtQtdProdutoKeyReleased
 
     private void txtValorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyReleased
-        String quantidade = txtQtdProduto.getText().replaceAll(",", ".");
-        String vl = txtValor.getText().replaceAll(",", ".");
-        double qtd = Double.parseDouble(quantidade);
-        double valor = Double.parseDouble(vl);
-        resultado = qtd * valor;
-        lblTotalItem.setText(df.format(resultado) + "");
+        try {
+            String quantidade = txtQtdProduto.getText().replaceAll(",", ".");
+            String vl = txtValor.getText().replaceAll(",", ".");
+            double qtd = Double.parseDouble(quantidade);
+            double valor = Double.parseDouble(vl);
+            resultado = qtd * valor;
+            lblTotalItem.setText(df.format(resultado) + "");
+        } catch (NumberFormatException e) {
+        }
     }//GEN-LAST:event_txtValorKeyReleased
 
     private void txtDescontoProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescontoProdutoKeyReleased
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            String desc = txtDescontoProduto.getText().replaceAll(",", ".");
-            String vl = txtValor.getText().replaceAll(",", ".");
-            String teste = lblDescontoItem.getText();
-            double desconto = Double.parseDouble(desc);
-            double valor = Double.parseDouble(vl);
-            if (teste.equals("Desconto %")) {
-                resultado -= (desconto / 100) * valor;
-            } else if (teste.equals("Desconto R$")) {
-                resultado -= desconto;
+            try {
+                String desc = txtDescontoProduto.getText().replaceAll(",", ".");
+                String vl = txtValor.getText().replaceAll(",", ".");
+                String teste = lblDescontoItem.getText();
+                double desconto = Double.parseDouble(desc);
+                double valor = Double.parseDouble(vl);
+                if (teste.equals("Desconto %")) {
+                    resultado -= (desconto / 100) * valor;
+                } else if (teste.equals("Desconto R$")) {
+                    resultado -= desconto;
+                }
+                lblTotalItem.setText(df.format(resultado) + "");
+                txtDescontoProduto.setEnabled(false);
+            } catch (NumberFormatException e) {
             }
-            lblTotalItem.setText(df.format(resultado) + "");
-            txtDescontoProduto.setEnabled(false);
         }
     }//GEN-LAST:event_txtDescontoProdutoKeyReleased
 
@@ -532,16 +541,19 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
     private void txtDescontoOrcamentoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescontoOrcamentoKeyReleased
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            String teste = lblDescontoOrcamento.getText();
-            double desconto = Double.parseDouble(txtDescontoOrcamento.getText());
-            double valor = Double.parseDouble(lblTotalOrcamento.getText());
-            if (teste.equals("Desconto %")) {
-                totalDesconto = totalOrçamento - (desconto / 100) * valor;
-            } else if (teste.equals("Desconto R$")) {
-                totalDesconto = totalOrçamento - desconto;
+            try {
+                String teste = lblDescontoOrcamento.getText();
+                double desconto = Double.parseDouble(txtDescontoOrcamento.getText());
+                double valor = Double.parseDouble(lblTotalOrcamento.getText());
+                if (teste.equals("Desconto %")) {
+                    totalDesconto = totalOrçamento - (desconto / 100) * valor;
+                } else if (teste.equals("Desconto R$")) {
+                    totalDesconto = totalOrçamento - desconto;
+                }
+                lblTotalOrcamento.setText(df.format(totalDesconto) + "");
+                txtDescontoOrcamento.setEnabled(false);
+            } catch (Exception e) {
             }
-            lblTotalOrcamento.setText(df.format(totalDesconto) + "");
-            txtDescontoOrcamento.setEnabled(false);
         }
     }//GEN-LAST:event_txtDescontoOrcamentoKeyReleased
 

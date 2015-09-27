@@ -20,6 +20,33 @@ public class Orcamento {
     private double desconto;
     private int idPessoa;
     private boolean aprovado;
+    private Pessoa pessoa;
+    private Produto produto;
+    private ProdutoOrcamento pOrcamento;
+
+    public ProdutoOrcamento getpOrcamento() {
+        return pOrcamento;
+    }
+
+    public void setpOrcamento(ProdutoOrcamento pOrcamento) {
+        this.pOrcamento = pOrcamento;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
 
     public String getNome() {
         return nome;

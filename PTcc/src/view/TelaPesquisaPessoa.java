@@ -67,6 +67,11 @@ public class TelaPesquisaPessoa extends javax.swing.JDialog {
                 tblPessoaMousePressed(evt);
             }
         });
+        tblPessoa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblPessoaKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblPessoa);
         if (tblPessoa.getColumnModel().getColumnCount() > 0) {
             tblPessoa.getColumnModel().getColumn(0).setResizable(false);
@@ -100,6 +105,16 @@ public class TelaPesquisaPessoa extends javax.swing.JDialog {
             this.dispose();
         }
     }//GEN-LAST:event_tblPessoaMousePressed
+
+    private void tblPessoaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblPessoaKeyReleased
+         if (evt.getKeyCode()== evt.VK_ENTER) {
+            int linha = tblPessoa.getSelectedRow();
+            String coluna = tblPessoa.getValueAt(linha, 0).toString();
+            int id = Integer.parseInt(coluna);
+            p = cDAO.getPessoaById(id);     
+            this.dispose();
+        }
+    }//GEN-LAST:event_tblPessoaKeyReleased
 
     public void buscaPessoa(String nome) {
         List<Pessoa> listaPessoa = cDAO.buscarNome(nome);

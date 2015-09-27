@@ -158,7 +158,7 @@ public class CadastroClienteDAO extends MySQL {
         List<Pessoa> listaBuscaNome = new ArrayList<Pessoa>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome FROM pessoa WHERE nome like ?");
+            PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome FROM pessoa WHERE completo = 1 and nome like ?");
             ps.setString(1, nome + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

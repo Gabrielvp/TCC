@@ -26,8 +26,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
-        atualizaTabelaPessoa();
-
     }
 
     CadastroClienteDAO pDAO = new CadastroClienteDAO();
@@ -94,6 +92,11 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 16, -1, -1));
 
         txtNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNomeKeyReleased(evt);
+            }
+        });
         jPanel1.add(txtNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 35, 554, 20));
 
         jLabel2.setText("Rua");
@@ -265,15 +268,15 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSalvar)
@@ -406,13 +409,15 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(rootPane, "Cadastro imcompleto, por favor preencha todos os campos!");
         }
-        atualizaTabelaPessoa();
+        //atualizaTabelaPessoa();
         limparCampos();
 
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void ckbCadastroIncompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbCadastroIncompletoActionPerformed
-        atualizaTabelaPessoa();
+       txtNome.setText("");
+        DefaultTableModel tbl = (DefaultTableModel) this.tblPessoa.getModel();
+        tbl.setNumRows(0);
     }//GEN-LAST:event_ckbCadastroIncompletoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -431,7 +436,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                     int id = (int) tblPessoa.getValueAt(linha, 0);
                     aDAO.deletePessoa(id);
                     pDAO.delete(id);
-                    atualizaTabelaPessoa();
+                    //atualizaTabelaPessoa();
                 }
             }
         }
@@ -460,6 +465,11 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jTxtObservacoes.setText(p.getObservacoes());
 
     }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void txtNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyReleased
+        String nome = txtNome.getText();
+        atualizaTabelaPessoa(nome);
+    }//GEN-LAST:event_txtNomeKeyReleased
     public boolean verificaCadastroCompleto() {
         if (txtBairro.equals("")) {
             return false;
@@ -512,7 +522,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
     }
 
-    public void atualizaTabelaPessoa() {
+    public void atualizaTabelaPessoa(String nome) {
         if (ckbCadastroIncompleto.isSelected()) {
             CadastroClienteDAO cDAO = new CadastroClienteDAO();
             List<Pessoa> listaPessoaIncompleto = cDAO.listarPessoasIncompletos(0);
@@ -520,23 +530,30 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             DefaultTableModel model = (DefaultTableModel) this.tblPessoa.getModel();
             model.setNumRows(0);
             for (int i = 0; i < listaPessoaIncompleto.size(); i++) {
-                model.addRow(new Object[]{});
-                model.setValueAt(listaPessoaIncompleto.get(i).getIdPessoa(), i, 0);
-                model.setValueAt(listaPessoaIncompleto.get(i).getNome(), i, 1);
+                if (txtNome.getText().isEmpty()) {
+                    model.setNumRows(0);
+                } else {
+                    model.addRow(new Object[]{});
+                    model.setValueAt(listaPessoaIncompleto.get(i).getIdPessoa(), i, 0);
+                    model.setValueAt(listaPessoaIncompleto.get(i).getNome(), i, 1);
+                }
             }
         } else {
             CadastroClienteDAO cDAO = new CadastroClienteDAO();
-            List<Pessoa> listaPessoaCompleto = cDAO.listarPessoasCompleto();
+            List<Pessoa> listaPessoaCompleto = cDAO.buscarNome(nome);
             DefaultTableModel model = (DefaultTableModel) this.tblPessoa.getModel();
             model.setNumRows(0);
             for (int i = 0; i < listaPessoaCompleto.size(); i++) {
                 model.addRow(new Object[]{});
-
-                model.setValueAt(listaPessoaCompleto.get(i).getIdPessoa(), i, 0);
-                model.setValueAt(listaPessoaCompleto.get(i).getNome(), i, 1);
-                model.setValueAt(listaPessoaCompleto.get(i).getCpf(), i, 2);
-                model.setValueAt(listaPessoaCompleto.get(i).getEmail(), i, 3);
-                model.setValueAt(listaPessoaCompleto.get(i).getTelCelular(), i, 4);
+                if (txtNome.getText().isEmpty()) {
+                    model.setNumRows(0);
+                } else {
+                    model.setValueAt(listaPessoaCompleto.get(i).getIdPessoa(), i, 0);
+                    model.setValueAt(listaPessoaCompleto.get(i).getNome(), i, 1);
+                    model.setValueAt(listaPessoaCompleto.get(i).getCpf(), i, 2);
+                    model.setValueAt(listaPessoaCompleto.get(i).getEmail(), i, 3);
+                    model.setValueAt(listaPessoaCompleto.get(i).getTelCelular(), i, 4);
+                }
             }
         }
     }

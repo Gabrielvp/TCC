@@ -65,15 +65,16 @@ ENGINE = InnoDB;
 -- Table `bd_tcc`.`Orcamento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_tcc`.`Orcamento` (
-  `idOrcamento` INT NOT NULL AUTO_INCREMENT,
-  `fatura` INT NOT NULL,
-  `data` DATE NOT NULL,
-  `cliente` VARCHAR(45) NOT NULL,
-  `total` DOUBLE NOT NULL,
-  `desconto` DOUBLE NOT NULL,
-  `aprovado` TINYINT(1) NOT NULL,
-  `idPessoa` INT NOT NULL,
-  PRIMARY KEY (`idOrcamento`))
+  `idOrcamento` int(11) NOT NULL AUTO_INCREMENT,
+  `data` date NOT NULL,
+  `cliente` varchar(150) NOT NULL,
+  `total` double NOT NULL,
+  `desconto` double DEFAULT NULL,
+  `idPessoa` int(11) NOT NULL,
+  `aprovado` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`idOrcamento`),
+  KEY `fk_orcamento_pessoa` (`idPessoa`),
+  CONSTRAINT `fk_orcamento_pessoa` FOREIGN KEY (`idPessoa`) REFERENCES `pessoa` (`idPessoa`)
 ENGINE = InnoDB;
 
 
@@ -109,20 +110,36 @@ ENGINE = InnoDB;
 -- Table `bd_tcc`.`Produto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_tcc`.`Produto` (
-  `idProduto` INT NOT NULL AUTO_INCREMENT,  
-  `descricao` VARCHAR(100) NOT NULL,
-  `cod_barras` VARCHAR(20) NOT NULL,
-  `quantidade` DOUBLE NOT NULL,
-  `valor_venda` DOUBLE NOT NULL,
-  `valor_compra` DOUBLE NOT NULL,  
-  `unidade` INT NOT NULL, 
-  `marca` VARCHAR(45) NOT NULL,
-  `modelo` VARCHAR(45) NOT NULL,
-  `fornecedor` VARCHAR(100) NOT NULL,
-  `referencia` VARCHAR(45) NOT NULL,
-  `ativo` BOOLEAN NOT NULL,
-  PRIMARY KEY (`idProduto`))
+  `idProduto` int(11) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(100) NOT NULL,
+  `cod_barras` varchar(20) NOT NULL,
+  `quantidade` double NOT NULL,
+  `valor_venda` double NOT NULL,
+  `valor_compra` double NOT NULL,
+  `unidade` int(11) NOT NULL,
+  `marca` varchar(45) NOT NULL,
+  `modelo` varchar(45) NOT NULL,
+  `fornecedor` varchar(100) NOT NULL,
+  `referencia` varchar(45) NOT NULL,
+  `ativo` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idProduto`)
 ENGINE = InnoDB;
+
+CREATE TABLE `produto_orcamento` (
+  `idProduto_orcamento` int(11) NOT NULL AUTO_INCREMENT,
+  `idProduto` int(11) NOT NULL,
+  `idOrcamento` int(11) NOT NULL,
+  `produto` varchar(150) NOT NULL,
+  `qtd` double NOT NULL,
+  `valor` double NOT NULL,
+  `desconto` double DEFAULT NULL,
+  `total` double NOT NULL,
+  PRIMARY KEY (`idProduto_orcamento`),
+  KEY `fk_produto_orcamento_produto` (`idProduto`),
+  KEY `fk_produto_orcamento_orcamento` (`idOrcamento`),
+  CONSTRAINT `fk_produto_orcamento_orcamento` FOREIGN KEY (`idOrcamento`) REFERENCES `orcamento` (`idOrcamento`),
+  CONSTRAINT `fk_produto_orcamento_produto` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`)
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 
 -- -----------------------------------------------------

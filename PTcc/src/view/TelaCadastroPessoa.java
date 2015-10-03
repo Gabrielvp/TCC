@@ -74,7 +74,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jTxtObservacoes = new javax.swing.JTextArea();
         btnSalvar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblPessoa = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -93,8 +92,8 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
         txtNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNomeKeyReleased(evt);
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeKeyPressed(evt);
             }
         });
         jPanel1.add(txtNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 35, 554, 20));
@@ -252,14 +251,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             }
         });
 
-        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Modify.png"))); // NOI18N
-        btnAlterar.setText("Alterar");
-        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -282,9 +273,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addComponent(btnSalvar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnExcluir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAlterar)
-                .addGap(14, 14, 14))
+                .addGap(23, 23, 23))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,8 +287,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
-                    .addComponent(btnExcluir)
-                    .addComponent(btnAlterar))
+                    .addComponent(btnExcluir))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -318,6 +306,16 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblPessoa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblPessoaMousePressed(evt);
+            }
+        });
+        tblPessoa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblPessoaKeyReleased(evt);
             }
         });
         jScrollPane2.setViewportView(tblPessoa);
@@ -415,9 +413,10 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void ckbCadastroIncompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbCadastroIncompletoActionPerformed
-       txtNome.setText("");
+        txtNome.setText("");
         DefaultTableModel tbl = (DefaultTableModel) this.tblPessoa.getModel();
         tbl.setNumRows(0);
+        txtNome.requestFocus();
     }//GEN-LAST:event_ckbCadastroIncompletoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -443,33 +442,22 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
 
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        alterar = true;
-        int linha = tblPessoa.getSelectedRow();
-        int id = (int) tblPessoa.getValueAt(linha, 0);
-        p = pDAO.getPessoaById(id);
+    private void tblPessoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPessoaMousePressed
+        alterar();
+    }//GEN-LAST:event_tblPessoaMousePressed
 
-        txtNome.setText(p.getNome());
-        txtBairro.setText(p.getBairro());
-        txtCep.setText(p.getCep());
-        txtCidade.setText(p.getCidade());
-        txtCpf.setText(p.getCpf());
-        txtEmail.setText(p.getEmail());
-        txtEstado.setText(p.getEstado());
-        txtFoneCelular.setText(p.getTelCelular());
-        txtFoneComercial.setText(p.getTelComercial());
-        txtFoneResidencial.setText(p.getTelResidencial());
-        txtNumero.setText(p.getNumero() + "");
-        txtRg.setText(p.getRg());
-        txtRua.setText(p.getRua());
-        jTxtObservacoes.setText(p.getObservacoes());
+    private void tblPessoaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblPessoaKeyReleased
+        if (evt.getKeyCode() == evt.VK_UP) {
+            alterar();
+        } else if (evt.getKeyCode() == evt.VK_DOWN) {
+            alterar();
+        }
+    }//GEN-LAST:event_tblPessoaKeyReleased
 
-    }//GEN-LAST:event_btnAlterarActionPerformed
-
-    private void txtNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyReleased
+    private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
         String nome = txtNome.getText();
         atualizaTabelaPessoa(nome);
-    }//GEN-LAST:event_txtNomeKeyReleased
+    }//GEN-LAST:event_txtNomeKeyPressed
     public boolean verificaCadastroCompleto() {
         if (txtBairro.equals("")) {
             return false;
@@ -523,11 +511,10 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }
 
     public void atualizaTabelaPessoa(String nome) {
+        CadastroClienteDAO cDAO = new CadastroClienteDAO();
         if (ckbCadastroIncompleto.isSelected()) {
-            CadastroClienteDAO cDAO = new CadastroClienteDAO();
-            List<Pessoa> listaPessoaIncompleto = cDAO.listarPessoasIncompletos(0);
-
             DefaultTableModel model = (DefaultTableModel) this.tblPessoa.getModel();
+            List<Pessoa> listaPessoaIncompleto = cDAO.listarPessoasIncompletos(nome);
             model.setNumRows(0);
             for (int i = 0; i < listaPessoaIncompleto.size(); i++) {
                 if (txtNome.getText().isEmpty()) {
@@ -539,7 +526,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 }
             }
         } else {
-            CadastroClienteDAO cDAO = new CadastroClienteDAO();
             List<Pessoa> listaPessoaCompleto = cDAO.buscarNomeCompleto(nome);
             DefaultTableModel model = (DefaultTableModel) this.tblPessoa.getModel();
             model.setNumRows(0);
@@ -553,27 +539,49 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                     model.setValueAt(listaPessoaCompleto.get(i).getCpf(), i, 2);
                     model.setValueAt(listaPessoaCompleto.get(i).getEmail(), i, 3);
                     model.setValueAt(listaPessoaCompleto.get(i).getTelCelular(), i, 4);
+
                 }
             }
         }
     }
 
-    public void buscaNome(String nome) {
-        CadastroClienteDAO cDAO = new CadastroClienteDAO();
-        List<Pessoa> listaBuscaNome = cDAO.buscarNome(nome);
-        DefaultTableModel model = (DefaultTableModel) this.tblPessoa.getModel();
-        model.setNumRows(0);
-        for (int i = 0; i < listaBuscaNome.size(); i++) {
-            if (txtNome.getText().isEmpty()) {
-                model.setNumRows(0);
-            } else {
-                model.addRow(new Object[]{});
-                model.setValueAt(listaBuscaNome.get(i).getIdPessoa(), i, 0);
-                model.setValueAt(listaBuscaNome.get(i).getNome(), i, 1);
-            }
-        }
+    public void alterar() {
+        alterar = true;
+        int linha = tblPessoa.getSelectedRow();
+        int id = (int) tblPessoa.getValueAt(linha, 0);
+        p = pDAO.getPessoaById(id);
+
+        txtNome.setText(p.getNome());
+        txtBairro.setText(p.getBairro());
+        txtCep.setText(p.getCep());
+        txtCidade.setText(p.getCidade());
+        txtCpf.setText(p.getCpf());
+        txtEmail.setText(p.getEmail());
+        txtEstado.setText(p.getEstado());
+        txtFoneCelular.setText(p.getTelCelular());
+        txtFoneComercial.setText(p.getTelComercial());
+        txtFoneResidencial.setText(p.getTelResidencial());
+        txtNumero.setText(p.getNumero() + "");
+        txtRg.setText(p.getRg());
+        txtRua.setText(p.getRua());
+        jTxtObservacoes.setText(p.getObservacoes());
     }
 
+    /* public void buscaNome(String nome) {
+     CadastroClienteDAO cDAO = new CadastroClienteDAO();
+     List<Pessoa> listaBuscaNome = cDAO.buscarNome(nome);
+     DefaultTableModel model = (DefaultTableModel) this.tblPessoa.getModel();
+     model.setNumRows(0);
+     for (int i = 0; i < listaBuscaNome.size(); i++) {
+     if (txtNome.getText().isEmpty()) {
+     model.setNumRows(0);
+     } else {
+     model.addRow(new Object[]{});
+     model.setValueAt(listaBuscaNome.get(i).getIdPessoa(), i, 0);
+     model.setValueAt(listaBuscaNome.get(i).getNome(), i, 1);
+     }
+     }
+     }*/
     /**
      * @param args the command line arguments
      */
@@ -621,7 +629,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JCheckBox ckbCadastroIncompleto;

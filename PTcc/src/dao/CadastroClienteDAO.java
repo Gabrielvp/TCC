@@ -121,12 +121,12 @@ public class CadastroClienteDAO extends MySQL {
         }
     }
 
-    public List<Pessoa> listarPessoasIncompletos(int completo) {
+    public List<Pessoa> listarPessoasIncompletos(String nome) {
         List<Pessoa> listaPessoasIncompleto = new ArrayList<Pessoa>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome, pessoa.email FROM pessoa WHERE completo = ?");
-            ps.setInt(1, completo);
+            PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome, pessoa.email FROM pessoa WHERE nome like ? and completo = 0");
+            ps.setString(1, nome+"%");
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

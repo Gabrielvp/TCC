@@ -540,7 +540,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             }
         } else {
             CadastroClienteDAO cDAO = new CadastroClienteDAO();
-            List<Pessoa> listaPessoaCompleto = cDAO.buscarNome(nome);
+            List<Pessoa> listaPessoaCompleto = cDAO.buscarNomeCompleto(nome);
             DefaultTableModel model = (DefaultTableModel) this.tblPessoa.getModel();
             model.setNumRows(0);
             for (int i = 0; i < listaPessoaCompleto.size(); i++) {

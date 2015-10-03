@@ -154,11 +154,43 @@ public class CadastroClienteDAO extends MySQL {
         return listaPessoasIncompleto;
     }
 
-    public List<Pessoa> buscarNome(String nome) {
+    public List<Pessoa> buscarNomeCompleto(String nome) {
         List<Pessoa> listaBuscaNome = new ArrayList<Pessoa>();
         Connection c = this.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome FROM pessoa WHERE completo = 1 and nome like ?");
+            ps.setString(1, nome + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Pessoa pessoa = new Pessoa();
+                pessoa.setIdPessoa(rs.getInt("idPessoa"));
+                pessoa.setNome(rs.getString("Nome"));
+
+                listaBuscaNome.add(pessoa);
+
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listaBuscaNome;
+    }
+    
+    public List<Pessoa> buscarNome(String nome) {
+        List<Pessoa> listaBuscaNome = new ArrayList<Pessoa>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome FROM pessoa WHERE nome like ?");
             ps.setString(1, nome + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

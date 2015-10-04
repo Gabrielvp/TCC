@@ -397,7 +397,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadClienteActionPerformed
 
     private void btnFinanceiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinanceiroActionPerformed
-        TelaFinanceiro f = new TelaFinanceiro(this, rootPaneCheckingEnabled);
+        TelaContasAReceber f = new TelaContasAReceber(this, rootPaneCheckingEnabled);
         f.setVisible(true);
     }//GEN-LAST:event_btnFinanceiroActionPerformed
 
@@ -581,7 +581,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       TelaFinanceiro tela = new TelaFinanceiro(this, rootPaneCheckingEnabled);
+       TelaContasAReceber tela = new TelaContasAReceber(this, rootPaneCheckingEnabled);
        tela.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

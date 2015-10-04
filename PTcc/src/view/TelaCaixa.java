@@ -294,7 +294,7 @@ public class TelaCaixa extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
-       TelaFinanceiro tela = new TelaFinanceiro(null, rootPaneCheckingEnabled);
+       TelaContasAReceber tela = new TelaContasAReceber(null, rootPaneCheckingEnabled);
        tela.setVisible(true);
     }//GEN-LAST:event_btnEntradaActionPerformed
 

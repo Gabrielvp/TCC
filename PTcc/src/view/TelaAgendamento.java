@@ -287,7 +287,7 @@ public class TelaAgendamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnFinanceiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinanceiroActionPerformed
-        TelaFinanceiro f = new TelaFinanceiro(null, rootPaneCheckingEnabled);
+        TelaContasAReceber f = new TelaContasAReceber(null, rootPaneCheckingEnabled);
         f.setVisible(true);
     }//GEN-LAST:event_btnFinanceiroActionPerformed
 

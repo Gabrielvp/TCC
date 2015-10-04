@@ -114,6 +114,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         btnAddProduto = new javax.swing.JButton();
         btnLimpaProduto = new javax.swing.JButton();
         btnLimpaDescontoOrcamento = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Orçamento - Agenda Financeira");
@@ -261,7 +262,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
         });
         jPanel1.add(btnRemoveProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 174, -1, -1));
 
-        lblDescontoItem.setText("Desconto %");
+        lblDescontoItem.setForeground(new java.awt.Color(204, 0, 0));
+        lblDescontoItem.setText("*Desconto %");
         lblDescontoItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lblDescontoItemMousePressed(evt);
@@ -278,7 +280,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
         });
         jPanel1.add(txtDescontoProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 176, 80, -1));
 
-        lblDescontoOrcamento.setText("Desconto %");
+        lblDescontoOrcamento.setForeground(new java.awt.Color(204, 0, 0));
+        lblDescontoOrcamento.setText("*Desconto %");
         lblDescontoOrcamento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lblDescontoOrcamentoMousePressed(evt);
@@ -365,6 +368,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
             }
         });
         jPanel1.add(btnLimpaDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 540, -1, 30));
+
+        jLabel10.setForeground(new java.awt.Color(204, 0, 0));
+        jLabel10.setText("* Clique para alternar entre % e R$");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -469,9 +476,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 String teste = lblDescontoItem.getText();
                 double desconto = Double.parseDouble(desc);
                 double valor = Double.parseDouble(vl);
-                if (teste.equals("Desconto %")) {
+                if (teste.equals("*Desconto %")) {
                     resultado -= (desconto / 100) * valor;
-                } else if (teste.equals("Desconto R$")) {
+                } else if (teste.equals("*Desconto R$")) {
                     resultado -= desconto;
                 }
                 lblTotalItem.setText(df.format(resultado) + "");
@@ -559,10 +566,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
     private void lblDescontoItemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDescontoItemMousePressed
         String texto = lblDescontoItem.getText();
-        if (texto.equals("Desconto %")) {
-            lblDescontoItem.setText("Desconto R$");
-        } else if (texto.equals("Desconto R$")) {
-            lblDescontoItem.setText("Desconto %");
+        if (texto.equals("*Desconto %")) {
+            lblDescontoItem.setText("*Desconto R$");
+        } else if (texto.equals("*Desconto R$")) {
+            lblDescontoItem.setText("*Desconto %");
         }
     }//GEN-LAST:event_lblDescontoItemMousePressed
 
@@ -574,9 +581,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 String vl = lblTotalOrcamento.getText().replaceAll(",", ".");
                 double desconto = Double.parseDouble(desc);
                 double valor = Double.parseDouble(vl);
-                if (teste.equals("Desconto %")) {
+                if (teste.equals("*Desconto %")) {
                     totalDesconto = totalOrçamento - (desconto / 100) * valor;
-                } else if (teste.equals("Desconto R$")) {
+                } else if (teste.equals("*Desconto R$")) {
                     totalDesconto = totalOrçamento - desconto;
                 }
                 lblTotalOrcamento.setText(df.format(totalDesconto) + "");
@@ -588,10 +595,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
     private void lblDescontoOrcamentoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDescontoOrcamentoMousePressed
         String texto = lblDescontoOrcamento.getText();
-        if (texto.equals("Desconto %")) {
-            lblDescontoOrcamento.setText("Desconto R$");
-        } else if (texto.equals("Desconto R$")) {
-            lblDescontoOrcamento.setText("Desconto %");
+        if (texto.equals("*Desconto %")) {
+            lblDescontoOrcamento.setText("*Desconto R$");
+        } else if (texto.equals("*Desconto R$")) {
+            lblDescontoOrcamento.setText("*Desconto %");
         }
     }//GEN-LAST:event_lblDescontoOrcamentoMousePressed
 
@@ -744,6 +751,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private javax.swing.JButton btnRemoveProduto;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

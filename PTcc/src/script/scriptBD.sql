@@ -40,6 +40,31 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Pessoa` (
   PRIMARY KEY (`idPessoa`))
 ENGINE = InnoDB;
 
+create table cPagar(
+	idCPagar integer not null auto_increment primary key,
+    formPagamento int not null,
+    fatura varchar(20) not null,
+    total double not null,
+    data date not null,
+    vencimento date not null,
+    parcelas int not null,
+    idPessoa int not null,
+    
+	constraint FK_pessoa foreign key (idPessoa) references pessoa (idPessoa)
+)
+ENGINE = InnoDB;
+
+create table parcelas_cPagar(
+	idParcelas_CPagar integer not null auto_increment primary key,      
+    valor double not null,
+    emissao date not null,
+    vencimento date not null,    
+    idPessoa int not null,
+    idCPagar int not null,
+	constraint FK_CPagar foreign key (idCPagar) references cPagar (idCPagar)
+    
+)
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Agendamento`

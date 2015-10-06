@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -51,6 +52,7 @@ public class CadastroClienteDAO extends MySQL {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+        JOptionPane.showMessageDialog(null, "Salvo com Sucesso!");
         }
         return false;
     }
@@ -95,6 +97,7 @@ public class CadastroClienteDAO extends MySQL {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+            JOptionPane.showMessageDialog(null, "Alterado com Sucesso!");
         }
     }
 
@@ -118,6 +121,7 @@ public class CadastroClienteDAO extends MySQL {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+            JOptionPane.showMessageDialog(null, "Excluído com Sucesso!");
         }
     }
 
@@ -126,7 +130,7 @@ public class CadastroClienteDAO extends MySQL {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome, pessoa.email FROM pessoa WHERE nome like ? and completo = 0");
-            ps.setString(1, nome+"%");
+            ps.setString(1, nome + "%");
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -185,7 +189,7 @@ public class CadastroClienteDAO extends MySQL {
         }
         return listaBuscaNome;
     }
-    
+
     public List<Pessoa> buscarNome(String nome) {
         List<Pessoa> listaBuscaNome = new ArrayList<Pessoa>();
         Connection c = this.getConnection();

@@ -439,6 +439,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 }
             }
         }
+        limparCampos();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
 

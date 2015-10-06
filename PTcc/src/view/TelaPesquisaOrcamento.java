@@ -53,6 +53,7 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
         tblOrcamento = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pesquisa Orçamento - Agenda Financeira");
 
         tblOrcamento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -45,6 +45,7 @@ public class TelaPesquisaPessoa extends javax.swing.JDialog {
         tblPessoa = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pesquisa Pessoa - Agenda Financeira");
 
         tblPessoa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

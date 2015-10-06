@@ -128,28 +128,7 @@ public class OrcamentoDAO extends MySQL {
         List<Orcamento> listarOrcamentos = new ArrayList<Orcamento>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("select\n"
-                    + "	produto.idProduto,\n"
-                    + "    produto.descricao,\n"
-                    + "    produto_orcamento.qtd,\n"
-                    + "    produto_orcamento.valor,\n"
-                    + "    produto_orcamento.total,\n"
-                    + "    orcamento.idOrcamento,\n"
-                    + "    orcamento.data,\n"
-                    + "    orcamento.total,\n"
-                    + "    pessoa.idPessoa,\n"
-                    + "    pessoa.nome\n"
-                    + "from \n"
-                    + "	produto\n"
-                    + "inner join \n"
-                    + "	produto_orcamento on\n"
-                    + "    produto.idProduto = produto_orcamento.idProduto\n"
-                    + "inner join\n"
-                    + "	orcamento on\n"
-                    + "    orcamento.idOrcamento = produto_orcamento.idOrcamento\n"
-                    + "inner join\n"
-                    + "	pessoa on\n"
-                    + "	pessoa.idPessoa = orcamento.idPessoa");
+            PreparedStatement ps = c.prepareStatement("select orcamento.data, orcamento.idOrcamento, orcamento.cliente, orcamento.total from orcamento");
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -159,16 +138,8 @@ public class OrcamentoDAO extends MySQL {
 
                 orcamento.setData(rs.getDate("Data"));
                 orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
-                orcamento.setNome(rs.getString("Nome"));
-                orcamento.setTotal(rs.getDouble("Total"));
-                orcamento.setIdPessoa(rs.getInt("idPessoa"));
-                produto.setIdProduto(rs.getInt("idProduto"));
-                produto.setDescricao(rs.getString("Descricao"));
-                pOrcamento.setQuantidade(rs.getDouble("qtd"));
-                pOrcamento.setValor(rs.getDouble("Valor"));
-                pOrcamento.setTotal(rs.getDouble("Total"));
-                orcamento.setProduto(produto);
-                orcamento.setpOrcamento(pOrcamento);
+                orcamento.setNome(rs.getString("Cliente"));
+                orcamento.setTotal(rs.getDouble("Total"));   
                 listarOrcamentos.add(orcamento);
             }
 

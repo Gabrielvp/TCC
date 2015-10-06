@@ -46,6 +46,7 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
         tblProduto = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pesquisa Produto - Agenda Financeira");
 
         tblProduto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

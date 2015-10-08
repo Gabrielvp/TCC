@@ -37,8 +37,9 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Pessoa` (
   `telCelular` VARCHAR(45) NULL,
   `telComercial` VARCHAR(45) NULL,
   `observacoes` VARCHAR(300) NULL,
-  PRIMARY KEY (`idPessoa`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`idPessoa`)
+  );
+
 
 create table cPagar(
 	idCPagar integer not null auto_increment primary key,
@@ -51,8 +52,8 @@ create table cPagar(
     idPessoa int not null,
     
 	constraint FK_pessoa foreign key (idPessoa) references pessoa (idPessoa)
-)
-ENGINE = InnoDB;
+);
+
 
 create table parcelas_cPagar(
 	idParcelas_CPagar integer not null auto_increment primary key,      
@@ -63,8 +64,8 @@ create table parcelas_cPagar(
     idCPagar int not null,
 	constraint FK_CPagar foreign key (idCPagar) references cPagar (idCPagar)
     
-)
-ENGINE = InnoDB;
+);
+
 
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Agendamento`
@@ -82,8 +83,8 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Agendamento` (
     FOREIGN KEY (`idPessoa`)
     REFERENCES `Pessoa` (`idPessoa`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION);
+
 
 
 -- -----------------------------------------------------
@@ -100,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Orcamento` (
   PRIMARY KEY (`idOrcamento`),
   KEY `fk_orcamento_pessoa` (`idPessoa`),
   CONSTRAINT `fk_orcamento_pessoa` FOREIGN KEY (`idPessoa`) REFERENCES `pessoa` (`idPessoa`)
-ENGINE = InnoDB;
+);
 
 
 -- -----------------------------------------------------
@@ -127,9 +128,8 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Fatura` (
     FOREIGN KEY (`idPessoa`)
     REFERENCES `db_tcc`.`Pessoa` (`idPessoa`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+    ON UPDATE NO ACTION
+    );
 
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Produto`
@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Produto` (
   `referencia` varchar(45) NOT NULL,
   `ativo` tinyint(1) NOT NULL,
   PRIMARY KEY (`idProduto`)
-ENGINE = InnoDB;
+);
 
 CREATE TABLE `produto_orcamento` (
   `idProduto_orcamento` int(11) NOT NULL AUTO_INCREMENT,
@@ -164,29 +164,7 @@ CREATE TABLE `produto_orcamento` (
   KEY `fk_produto_orcamento_orcamento` (`idOrcamento`),
   CONSTRAINT `fk_produto_orcamento_orcamento` FOREIGN KEY (`idOrcamento`) REFERENCES `orcamento` (`idOrcamento`),
   CONSTRAINT `fk_produto_orcamento_produto` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
-
-
--- -----------------------------------------------------
--- Table `bd_tcc`.`Produto_Orcamento`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_tcc`.`Produto_Orcamento` (
-  `idProduto` INT NOT NULL,
-  `idOrcamento` INT NOT NULL,
-  PRIMARY KEY (`idProduto`, `idOrcamento`),
-  INDEX `fk_Produto_has_Orcamento_Orcamento` (`idOrcamento` ASC),
-  INDEX `fk_Produto_has_Orcamento_Produto` (`idProduto` ASC),
-  CONSTRAINT `fk_Produto_has_Orcamento_Produto`
-    FOREIGN KEY (`idProduto`)
-    REFERENCES `db_tcc`.`Produto` (`idProduto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Produto_has_Orcamento_Orcamento`
-    FOREIGN KEY (`idOrcamento`)
-    REFERENCES `Orcamento` (`idOrcamento`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+);
 
 
 -- -----------------------------------------------------
@@ -200,8 +178,9 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracao` (
   `almocoInicio` TIME NOT NULL,
   `almocoFim` TIME NOT NULL,
   `dia` INT NOT NULL,
-  PRIMARY KEY (`idConfiguracao`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`idConfiguracao`)
+  );
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
@@ -209,3 +188,4 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
+;

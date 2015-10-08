@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -56,7 +57,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
     Pessoa ps = new Pessoa();
     ProdutoDAO pDAO = new ProdutoDAO();
     OrcamentoDAO oDAO = new OrcamentoDAO();
+    ProdutoOrcamentoDAO pdDAO = new ProdutoOrcamentoDAO();
     Produto p = new Produto();
+    List<ProdutoOrcamento> lista;
     int contador = 0;
     double resultado;
     double totalOrçamento;
@@ -543,7 +546,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 oDAO.insert(orcamento);
                 for (int i = 0; i < linhas; i++) {
                     String vlTotal = tblProduto.getValueAt(i, 4).toString().replaceAll(",", ".");
-                    String vlUnit = tblProduto.getValueAt(i, 3).toString().replaceAll(",", "");
+                    String vlUnit = tblProduto.getValueAt(i, 3).toString().replaceAll(",", ".");
                     String quantidade = tblProduto.getValueAt(i, 2).toString().replaceAll(",", ".");
                     po.setIdProduto(Integer.parseInt(tblProduto.getValueAt(i, 0).toString()));
                     po.setIdOrcamento(orcamento.getIdOrcamento());
@@ -642,8 +645,22 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_txtProdutoKeyReleased
 
     private void txtPesquisaOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisaOrcamentoActionPerformed
+        DefaultTableModel model = (DefaultTableModel)tblProduto.getModel();
         TelaPesquisaOrcamento tela = new TelaPesquisaOrcamento(null, rootPaneCheckingEnabled, 0);
-        tela.setVisible(true);        
+        tela.setVisible(true);
+        txtOrcamento.setText(tela.o.getIdOrcamento()+"");
+        txtCodPessoa.setText(tela.o.getIdPessoa()+"");
+        txtNome.setText(tela.o.getNome());
+        lblTotalOrcamento.setText(df.format(tela.o.getTotal())+"");  
+        model.setNumRows(0);
+        for (int i = 0; i < tela.listaPOrcamento.size(); i++) {
+            model.addRow(new Object[]{});
+            model.setValueAt(tela.listaPOrcamento.get(i).getIdProduto(), i, 0);
+            model.setValueAt(tela.listaPOrcamento.get(i).getProduto(), i, 1);
+            model.setValueAt(tela.listaPOrcamento.get(i).getQuantidade(), i, 2);
+            model.setValueAt(df.format(tela.listaPOrcamento.get(i).getValor()), i, 3);
+            model.setValueAt(df.format(tela.listaPOrcamento.get(i).getTotal()), i, 4);
+        }       
     }//GEN-LAST:event_txtPesquisaOrcamentoActionPerformed
 
     private void txtOrcamentoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOrcamentoKeyReleased

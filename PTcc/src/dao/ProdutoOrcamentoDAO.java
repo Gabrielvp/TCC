@@ -2,6 +2,7 @@ package dao;
 
 import entity.Orcamento;
 import entity.Pessoa;
+import entity.Produto;
 import entity.ProdutoOrcamento;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,6 +50,41 @@ public class ProdutoOrcamentoDAO extends MySQL {
             }
         }
         return false;
+    }
+
+    public List<ProdutoOrcamento> getProdutoOrcamentoId(int id) {
+        Connection c = this.getConnection();
+        List<ProdutoOrcamento> lista = new ArrayList<>();        
+        ProdutoOrcamento pOrcamento = new ProdutoOrcamento();
+        Orcamento o = new Orcamento();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT idproduto, produto, qtd, valor, desconto, total from produto_orcamento where idorcamento = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                pOrcamento.setIdProduto(rs.getInt("idProduto"));
+                pOrcamento.setProduto(rs.getString("Produto"));
+                pOrcamento.setQuantidade(rs.getDouble("Qtd"));
+                pOrcamento.setValor(rs.getDouble("valor"));
+                pOrcamento.setDesconto(rs.getDouble("desconto"));
+                pOrcamento.setTotal(rs.getDouble("total"));
+                
+                lista.add(pOrcamento);
+                o.setProduto(lista);
+            }
+            rs.close();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return lista;
     }
 
     public void update(Pessoa pessoa, int id) {

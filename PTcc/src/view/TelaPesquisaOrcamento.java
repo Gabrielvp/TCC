@@ -6,7 +6,10 @@
 package view;
 
 import dao.OrcamentoDAO;
+import dao.ProdutoOrcamentoDAO;
 import entity.Orcamento;
+import entity.ProdutoOrcamento;
+import static java.awt.image.ImageObserver.WIDTH;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,10 +39,12 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
     int codigo;
     OrcamentoDAO oDAO = new OrcamentoDAO();
     Orcamento o = new Orcamento();
+    ProdutoOrcamentoDAO pdDAO = new ProdutoOrcamentoDAO();
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat df = new DecimalFormat("#,###.00");
     DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
     List<Orcamento> lista;
+    List<ProdutoOrcamento> listaPOrcamento;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -105,11 +110,13 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblOrcamentoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOrcamentoMousePressed
-        if (evt.MOUSE_CLICKED == 2) {
+        if (evt.getClickCount() == 2) {
             int linha = tblOrcamento.getSelectedRow();
             String coluna = tblOrcamento.getValueAt(linha, 1).toString();
             int id = Integer.parseInt(coluna);
-            lista = oDAO.listaId(id);
+            o = oDAO.getOrcamentoId(id);
+            listaPOrcamento = pdDAO.getProdutoOrcamentoId(id);
+            this.dispose();
         }
     }//GEN-LAST:event_tblOrcamentoMousePressed
 

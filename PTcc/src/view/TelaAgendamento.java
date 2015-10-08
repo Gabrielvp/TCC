@@ -280,8 +280,7 @@ public class TelaAgendamento extends javax.swing.JDialog {
         }
         pADAO.insert(p);
         a.setIdPessoa(p.getIdPessoa());
-        aDAO.insert(a);
-        JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+        aDAO.insert(a);        
 
         this.dispose();
     }//GEN-LAST:event_btnSalvarActionPerformed

@@ -702,6 +702,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     public void limparTela() {
         txtNome.setText("");
         txtHorario.setText("");
+        ckbConsultasRealizadas.setSelected(false);
     }
 
     public void limparTabela() {

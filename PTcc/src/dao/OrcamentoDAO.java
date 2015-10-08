@@ -139,7 +139,7 @@ public class OrcamentoDAO extends MySQL {
                 orcamento.setData(rs.getDate("Data"));
                 orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
                 orcamento.setNome(rs.getString("Cliente"));
-                orcamento.setTotal(rs.getDouble("Total"));   
+                orcamento.setTotal(rs.getDouble("Total"));
                 listarOrcamentos.add(orcamento);
             }
 
@@ -164,14 +164,17 @@ public class OrcamentoDAO extends MySQL {
         Orcamento orcamento = new Orcamento();
 
         try {
-            PreparedStatement ps = c.prepareStatement("SELECT data, idOrcamento, cliente, total FROM orcamento WHERE idOrcamento = ?");
+            PreparedStatement ps = c.prepareStatement("select orcamento.idorcamento, orcamento.data, orcamento.cliente, orcamento.idpessoa, orcamento.total, produto_orcamento.idproduto,\n"
+                    + "produto_orcamento.produto, produto_orcamento.valor, produto_orcamento.qtd, produto_orcamento.total from\n"
+                    + "orcamento inner join produto_orcamento on orcamento.idorcamento = produto_orcamento.idOrcamento");
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                orcamento.setData(rs.getDate("Data"));
                 orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
+                orcamento.setData(rs.getDate("Data"));
                 orcamento.setNome(rs.getString("Cliente"));
+                orcamento.setIdPessoa(rs.getInt("idPessoa"));
                 orcamento.setTotal(rs.getDouble("Total"));
 
                 listaOrcamentoId.add(orcamento);
@@ -191,53 +194,21 @@ public class OrcamentoDAO extends MySQL {
         return listaOrcamentoId;
     }
 
-    public List<Orcamento> listaId(int id) {
-        List<Orcamento> listaId = new ArrayList<>();
+    public Orcamento getOrcamentoId(int id) {
         Connection c = this.getConnection();
 
+        Orcamento orcamento = new Orcamento();
         try {
-            PreparedStatement ps = c.prepareStatement("select\n"
-                    + "	produto.idProduto,\n"
-                    + "    produto.descricao,\n"
-                    + "    produto_orcamento.qtd,\n"
-                    + "    produto_orcamento.valor,\n"
-                    + "    produto_orcamento.total,\n"
-                    + "    orcamento.idOrcamento,\n"
-                    + "    orcamento.data,\n"
-                    + "    orcamento.total,\n"
-                    + "    pessoa.idPessoa,\n"
-                    + "    pessoa.nome\n"
-                    + "from \n"
-                    + "	produto\n"
-                    + "inner join \n"
-                    + "	produto_orcamento on\n"
-                    + "    produto.idProduto = produto_orcamento.idProduto\n"
-                    + "inner join\n"
-                    + "	orcamento on\n"
-                    + "    orcamento.idOrcamento = produto_orcamento.idOrcamento\n"
-                    + "inner join\n"
-                    + "	pessoa on\n"
-                    + "	pessoa.idPessoa = orcamento.idPessoa");
-
+            PreparedStatement ps = c.prepareStatement("SELECT orcamento.idOrcamento, orcamento.data, orcamento.idPessoa, orcamento.cliente,"
+                    + "orcamento.total FROM orcamento WHERE idOrcamento = ?");
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Orcamento orcamento = new Orcamento();
-                Produto produto = new Produto();
-                ProdutoOrcamento pOrcamento = new ProdutoOrcamento();
-
-                orcamento.setData(rs.getDate("Data"));
                 orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
-                orcamento.setNome(rs.getString("Nome"));
-                orcamento.setTotal(rs.getDouble("Total"));
+                orcamento.setData(rs.getDate("Data"));
+                orcamento.setNome(rs.getString("Cliente"));
                 orcamento.setIdPessoa(rs.getInt("idPessoa"));
-                produto.setIdProduto(rs.getInt("idProduto"));
-                produto.setDescricao(rs.getString("Descricao"));
-                pOrcamento.setQuantidade(rs.getDouble("qtd"));
-                pOrcamento.setValor(rs.getDouble("Valor"));
-                pOrcamento.setTotal(rs.getDouble("Total"));
-                orcamento.setProduto(produto);
-                orcamento.setpOrcamento(pOrcamento);
-                listaId.add(orcamento);
+                orcamento.setTotal(rs.getDouble("Total"));
             }
             rs.close();
             ps.close();
@@ -251,7 +222,6 @@ public class OrcamentoDAO extends MySQL {
                 ex.printStackTrace();
             }
         }
-        return listaId;
+        return orcamento;
     }
-
 }

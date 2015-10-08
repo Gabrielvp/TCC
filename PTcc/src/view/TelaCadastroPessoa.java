@@ -110,7 +110,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         txtNumero.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         jPanel1.add(txtNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 125, 109, 20));
 
-        jLabel6.setText("Estado");
+        jLabel6.setText("UF");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(511, 151, -1, -1));
 
         txtEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
@@ -400,16 +400,15 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
             if (alterar == false) {
                 pDAO.insert(p);
+                limparCampos();
 
             } else {
                 pDAO.update(p);
+                limparCampos();
             }
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Cadastro imcompleto, por favor preencha todos os campos!");
+            JOptionPane.showMessageDialog(rootPane, "Cadastro incompleto, por favor preencha todos os dados");
         }
-        //atualizaTabelaPessoa();
-        limparCampos();
-
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void ckbCadastroIncompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbCadastroIncompletoActionPerformed
@@ -435,7 +434,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                     int id = (int) tblPessoa.getValueAt(linha, 0);
                     aDAO.deletePessoa(id);
                     pDAO.delete(id);
-                    //atualizaTabelaPessoa();
                 }
             }
         }
@@ -460,35 +458,26 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         atualizaTabelaPessoa(nome);
     }//GEN-LAST:event_txtNomeKeyPressed
     public boolean verificaCadastroCompleto() {
-        if (txtBairro.equals("")) {
+        if (txtNome.getText().equals("")) {           
             return false;
-        } else if (txtCep.equals("")) {
+        } else if (txtCpf.getText().equals("")) {           
             return false;
-
-        } else if (txtCidade.equals("")) {
-
+        } else if (txtRg.getText().equals("")) {           
             return false;
-        } else if (txtCpf.equals("")) {
+        } else if (txtEmail.getText().equals("")) {           
             return false;
-
-        } else if (txtEmail.equals("")) {
+        } else if (txtRua.getText().equals("")) {          
             return false;
-
-        } else if (txtEstado.equals("")) {
+        } else if (txtNumero.getText().equals("")) {           
             return false;
-
-        } else if (txtNome.equals("")) {
+        } else if (txtCep.getText().equals("")) {           
             return false;
-
-        } else if (txtNumero.equals("")) {
+        } else if (txtBairro.getText().equals("")) {           
             return false;
-
-        } else if (txtRg.equals("")) {
+        } else if (txtCidade.getText().equals("")) {           
             return false;
-
-        } else if (txtRua.equals("")) {
+        } else if (txtEstado.getText().equals("")) {          
             return false;
-
         }
         return true;
     }
@@ -568,21 +557,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jTxtObservacoes.setText(p.getObservacoes());
     }
 
-    /* public void buscaNome(String nome) {
-     CadastroClienteDAO cDAO = new CadastroClienteDAO();
-     List<Pessoa> listaBuscaNome = cDAO.buscarNome(nome);
-     DefaultTableModel model = (DefaultTableModel) this.tblPessoa.getModel();
-     model.setNumRows(0);
-     for (int i = 0; i < listaBuscaNome.size(); i++) {
-     if (txtNome.getText().isEmpty()) {
-     model.setNumRows(0);
-     } else {
-     model.addRow(new Object[]{});
-     model.setValueAt(listaBuscaNome.get(i).getIdPessoa(), i, 0);
-     model.setValueAt(listaBuscaNome.get(i).getNome(), i, 1);
-     }
-     }
-     }*/
     /**
      * @param args the command line arguments
      */

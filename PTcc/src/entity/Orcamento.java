@@ -6,22 +6,31 @@
 package entity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author Gabriel
  */
 public class Orcamento {
-    
+
     private int idOrcamento;
     private Date data;
     private String nome;
     private double total;
     private double desconto;
     private int idPessoa;
+    private List<ProdutoOrcamento> produto;
     private boolean aprovado;
-    private Pessoa pessoa;
-    private Produto produto;
+
+    public List<ProdutoOrcamento> getProduto() {
+        return produto;
+    }
+
+    public void setProduto(List<ProdutoOrcamento> produto) {
+        this.produto = produto;
+    }
+
     private ProdutoOrcamento pOrcamento;
 
     public ProdutoOrcamento getpOrcamento() {
@@ -30,22 +39,6 @@ public class Orcamento {
 
     public void setpOrcamento(ProdutoOrcamento pOrcamento) {
         this.pOrcamento = pOrcamento;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
     }
 
     public String getNome() {
@@ -70,7 +63,7 @@ public class Orcamento {
 
     public void setData(Date data) {
         this.data = data;
-    }    
+    }
 
     public double getTotal() {
         return total;
@@ -104,4 +97,4 @@ public class Orcamento {
         this.aprovado = aprovado;
     }
 
-   }
+}

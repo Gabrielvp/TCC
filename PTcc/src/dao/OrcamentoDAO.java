@@ -58,35 +58,13 @@ public class OrcamentoDAO extends MySQL {
         return false;
     }
 
-    public void update(Pessoa pessoa) {
-
+    public void update(int id) {
         Connection c = this.getConnection();
-
         try {
-
-            PreparedStatement ps = c.prepareStatement("UPDATE pessoa "
-                    + "Set nome = ?, email = ? , completo = ?, rua = ?, numero = ?, cep = ?, "
-                    + "bairro = ?, cidade = ?, estado = ?, cpf = ?, rg = ?,  "
-                    + "telResidencial = ?, telCelular = ?,telComercial = ?, observacoes = ? "
-                    + "WHERE idpessoa = ? ");
-
-            ps.setString(1, pessoa.getNome());
-            ps.setString(2, pessoa.getEmail());
-            ps.setBoolean(3, pessoa.isCompleto());
-            ps.setString(4, pessoa.getRua());
-            ps.setInt(5, pessoa.getNumero());
-            ps.setString(6, pessoa.getCep());
-            ps.setString(7, pessoa.getBairro());
-            ps.setString(8, pessoa.getCidade());
-            ps.setString(9, pessoa.getEstado());
-            ps.setString(10, pessoa.getCpf());
-            ps.setString(11, pessoa.getRg());
-            ps.setString(12, pessoa.getTelResidencial());
-            ps.setString(13, pessoa.getTelCelular());
-            ps.setString(14, pessoa.getTelComercial());
-            ps.setString(15, pessoa.getObservacoes());
-            ps.setInt(16, pessoa.getIdPessoa());
-
+            PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET aprovado = true WHERE idOrcamento = ? ");
+            Orcamento orcamento = new Orcamento();
+            ps.setInt(1, id);
+            
             ps.execute();
             ps.close();
 
@@ -104,8 +82,8 @@ public class OrcamentoDAO extends MySQL {
     public void delete(int id) {
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("DELETE FROM pessoa "
-                    + "WHERE idPessoa = ?");
+            PreparedStatement ps = c.prepareStatement("DELETE FROM orcamento "
+                    + "WHERE idOrcamento = ?");
 
             ps.setInt(1, id);
 

@@ -115,7 +115,7 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
             String coluna = tblOrcamento.getValueAt(linha, 1).toString();
             int id = Integer.parseInt(coluna);
             o = oDAO.getOrcamentoId(id);
-            listaPOrcamento = pdDAO.getProdutoOrcamentoId(id);
+            listaPOrcamento = pdDAO.getProdutoOrcamentoId(id);            
             this.dispose();
         }
     }//GEN-LAST:event_tblOrcamentoMousePressed

@@ -1,8 +1,6 @@
 package dao;
 
-import entity.Orcamento;
 import entity.Pessoa;
-import entity.Produto;
 import entity.ProdutoOrcamento;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,24 +52,24 @@ public class ProdutoOrcamentoDAO extends MySQL {
 
     public List<ProdutoOrcamento> getProdutoOrcamentoId(int id) {
         Connection c = this.getConnection();
-        List<ProdutoOrcamento> lista = new ArrayList<>();        
-        ProdutoOrcamento pOrcamento = new ProdutoOrcamento();
-        Orcamento o = new Orcamento();
+        List<ProdutoOrcamento> lista = new ArrayList<>();
+
         try {
             PreparedStatement ps = c.prepareStatement("SELECT idproduto, produto, qtd, valor, desconto, total from produto_orcamento where idorcamento = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                ProdutoOrcamento pOrcamento = new ProdutoOrcamento();
                 pOrcamento.setIdProduto(rs.getInt("idProduto"));
                 pOrcamento.setProduto(rs.getString("Produto"));
                 pOrcamento.setQuantidade(rs.getDouble("Qtd"));
                 pOrcamento.setValor(rs.getDouble("valor"));
                 pOrcamento.setDesconto(rs.getDouble("desconto"));
                 pOrcamento.setTotal(rs.getDouble("total"));
-                
+
                 lista.add(pOrcamento);
-                o.setProduto(lista);
             }
+
             rs.close();
             ps.close();
 
@@ -133,8 +131,8 @@ public class ProdutoOrcamentoDAO extends MySQL {
     public void delete(int id) {
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("DELETE FROM pessoa "
-                    + "WHERE idPessoa = ?");
+            PreparedStatement ps = c.prepareStatement("DELETE FROM produto_orcamento "
+                    + "WHERE idOrcamento = ?");
 
             ps.setInt(1, id);
 

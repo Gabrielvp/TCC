@@ -38,6 +38,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
+        lblAprovado.setVisible(false);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             String data = formatter.format(new Date());
@@ -115,9 +116,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jLabel9 = new javax.swing.JLabel();
         lblTotalItem = new javax.swing.JLabel();
         btnAddProduto = new javax.swing.JButton();
-        btnLimpaProduto = new javax.swing.JButton();
+        btnLimparTela = new javax.swing.JButton();
         btnLimpaDescontoOrcamento = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
+        btnLimpaProduto = new javax.swing.JButton();
+        lblAprovado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Orçamento - Agenda Financeira");
@@ -224,6 +227,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
         btnAprovado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Good mark.png"))); // NOI18N
         btnAprovado.setText("Aprovado");
+        btnAprovado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAprovadoActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAprovado, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 581, -1, -1));
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Modify.png"))); // NOI18N
@@ -356,13 +364,13 @@ public class TelaOrcamento extends javax.swing.JDialog {
         });
         jPanel1.add(btnAddProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(518, 174, -1, -1));
 
-        btnLimpaProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
-        btnLimpaProduto.addActionListener(new java.awt.event.ActionListener() {
+        btnLimparTela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
+        btnLimparTela.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpaProdutoActionPerformed(evt);
+                btnLimparTelaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpaProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 174, -1, -1));
+        jPanel1.add(btnLimparTela, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 540, -1, 30));
 
         btnLimpaDescontoOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Refresh.png"))); // NOI18N
         btnLimpaDescontoOrcamento.addActionListener(new java.awt.event.ActionListener() {
@@ -376,6 +384,19 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jLabel10.setText("* Clique para alternar entre % e R$");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
 
+        btnLimpaProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
+        btnLimpaProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpaProdutoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnLimpaProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 174, -1, -1));
+
+        lblAprovado.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
+        lblAprovado.setForeground(new java.awt.Color(51, 153, 0));
+        lblAprovado.setText("ORÇAMENTO APROVADO");
+        jPanel1.add(lblAprovado, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 30, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -384,7 +405,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
         );
 
         pack();
@@ -513,9 +534,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnAddProdutoActionPerformed
 
-    private void btnLimpaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpaProdutoActionPerformed
-        limpaProduto();
-    }//GEN-LAST:event_btnLimpaProdutoActionPerformed
+    private void btnLimparTelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparTelaActionPerformed
+        limparTela();
+    }//GEN-LAST:event_btnLimparTelaActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         String cdCliente = txtCodPessoa.getText();
@@ -564,7 +585,15 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
+        int confirmacao = JOptionPane.showConfirmDialog(this, "Excluir Orcamento N° " + txtOrcamento.getText() + "\n"
+                + "Cliente: " + txtNome.getText() + "", "Exclusão", 0, 0);
+        if (confirmacao == 0) {
+            int id = Integer.parseInt(txtOrcamento.getText());
+            pdDAO.delete(id);
+            oDAO.delete(id);
+            limparTela();
+            JOptionPane.showMessageDialog(rootPane, "Orçamento Excluído!");
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void lblDescontoItemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDescontoItemMousePressed
@@ -645,22 +674,36 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_txtProdutoKeyReleased
 
     private void txtPesquisaOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisaOrcamentoActionPerformed
-        DefaultTableModel model = (DefaultTableModel)tblProduto.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
+        esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
+        tblProduto.getColumnModel().getColumn(2).setCellRenderer(esquerda);
+        tblProduto.getColumnModel().getColumn(3).setCellRenderer(esquerda);
+        tblProduto.getColumnModel().getColumn(4).setCellRenderer(esquerda);
         TelaPesquisaOrcamento tela = new TelaPesquisaOrcamento(null, rootPaneCheckingEnabled, 0);
         tela.setVisible(true);
-        txtOrcamento.setText(tela.o.getIdOrcamento()+"");
-        txtCodPessoa.setText(tela.o.getIdPessoa()+"");
-        txtNome.setText(tela.o.getNome());
-        lblTotalOrcamento.setText(df.format(tela.o.getTotal())+"");  
-        model.setNumRows(0);
-        for (int i = 0; i < tela.listaPOrcamento.size(); i++) {
-            model.addRow(new Object[]{});
-            model.setValueAt(tela.listaPOrcamento.get(i).getIdProduto(), i, 0);
-            model.setValueAt(tela.listaPOrcamento.get(i).getProduto(), i, 1);
-            model.setValueAt(tela.listaPOrcamento.get(i).getQuantidade(), i, 2);
-            model.setValueAt(df.format(tela.listaPOrcamento.get(i).getValor()), i, 3);
-            model.setValueAt(df.format(tela.listaPOrcamento.get(i).getTotal()), i, 4);
-        }       
+        boolean aprovado = tela.o.isAprovado();
+        if (tela.o.getIdOrcamento() == 0 || tela.o.getIdPessoa() == 0) {
+            limparTela();
+        } else {
+            if(aprovado){
+                botao();
+            }else if(!aprovado){
+                botaoVisible();
+            }
+            txtOrcamento.setText(tela.o.getIdOrcamento() + "");
+            txtCodPessoa.setText(tela.o.getIdPessoa() + "");
+            txtNome.setText(tela.o.getNome());
+            lblTotalOrcamento.setText(df.format(tela.o.getTotal()) + "");
+            model.setNumRows(0);
+            for (int i = 0; i < tela.listaPOrcamento.size(); i++) {
+                model.addRow(new Object[]{});
+                model.setValueAt(tela.listaPOrcamento.get(i).getIdProduto(), i, 0);
+                model.setValueAt(tela.listaPOrcamento.get(i).getProduto(), i, 1);
+                model.setValueAt(tela.listaPOrcamento.get(i).getQuantidade(), i, 2);
+                model.setValueAt(df.format(tela.listaPOrcamento.get(i).getValor()), i, 3);
+                model.setValueAt(df.format(tela.listaPOrcamento.get(i).getTotal()), i, 4);
+            }
+        }
     }//GEN-LAST:event_txtPesquisaOrcamentoActionPerformed
 
     private void txtOrcamentoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOrcamentoKeyReleased
@@ -673,6 +716,15 @@ public class TelaOrcamento extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_txtOrcamentoKeyReleased
+
+    private void btnLimpaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpaProdutoActionPerformed
+        limpaProduto();
+    }//GEN-LAST:event_btnLimpaProdutoActionPerformed
+
+    private void btnAprovadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprovadoActionPerformed
+        int id = Integer.parseInt(txtOrcamento.getText());
+        oDAO.update(id);
+    }//GEN-LAST:event_btnAprovadoActionPerformed
 
     public void atualizaTabela(int id) {
         DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();
@@ -693,9 +745,38 @@ public class TelaOrcamento extends javax.swing.JDialog {
         lblTotalItem.setText("0,00");
         txtDescontoProduto.setEnabled(true);
     }
+    
+    public void botao(){
+        btnAddProduto.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnAprovado.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnLimpaDesconto.setEnabled(false);
+        btnLimpaDescontoOrcamento.setEnabled(false);
+        btnPesquisaCliente.setEnabled(false);
+        btnPesquisaProduto.setEnabled(false);
+        btnRemoveProduto.setEnabled(false);
+        btnSalvar.setEnabled(false);
+        lblAprovado.setVisible(true);
+    }
+    
+    public void botaoVisible(){
+        btnAddProduto.setEnabled(true);
+        btnAlterar.setEnabled(true);
+        btnAprovado.setEnabled(true);
+        btnExcluir.setEnabled(true);
+        btnLimpaDesconto.setEnabled(true);
+        btnLimpaDescontoOrcamento.setEnabled(true);
+        btnPesquisaCliente.setEnabled(true);
+        btnPesquisaProduto.setEnabled(true);
+        btnRemoveProduto.setEnabled(true);
+        btnSalvar.setEnabled(true);
+        lblAprovado.setVisible(false);
+    }
 
     public void limparTela() {
         DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
+        txtOrcamento.setText("");
         txtCodPessoa.setText("");
         txtNome.setText("");
         txtCodProduto.setText("");
@@ -707,6 +788,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
         lblTotalOrcamento.setText("0,00");
         txtDescontoProduto.setEnabled(true);
         txtDescontoOrcamento.setEnabled(true);
+        txtDescontoOrcamento.setEnabled(true);
+        txtDescontoOrcamento.setText("");
         model.setNumRows(0);
     }
 
@@ -763,6 +846,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private javax.swing.JButton btnLimpaDesconto;
     private javax.swing.JButton btnLimpaDescontoOrcamento;
     private javax.swing.JButton btnLimpaProduto;
+    private javax.swing.JButton btnLimparTela;
     private javax.swing.JButton btnPesquisaCliente;
     private javax.swing.JButton btnPesquisaProduto;
     private javax.swing.JButton btnRemoveProduto;
@@ -780,6 +864,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblAprovado;
     private javax.swing.JLabel lblDescontoItem;
     private javax.swing.JLabel lblDescontoOrcamento;
     private javax.swing.JLabel lblTotalItem;

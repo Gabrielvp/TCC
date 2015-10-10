@@ -574,15 +574,18 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAnteriorMousePressed
 
     private void btnConfiguracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracaoActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tblPrincipal.getModel();
         TelaConfiguracoes c = new TelaConfiguracoes(this, rootPaneCheckingEnabled);
         c.setVisible(true);
-        if (tblPrincipal.getRowCount() > 0) {
-
-        } else {
-            configuracao();
+        configuracao();
+        model.setNumRows(0);
+        Calendar cl = Calendar.getInstance();
+        int dia = cl.get(Calendar.DAY_OF_WEEK);
+        List<Configuracao> lista = cDAO.listarConfiguracaoDia(dia);
+        if (!lista.isEmpty()) {
             tabelaPrincipal();
             atualizaTabela();
-        }        
+        }
     }//GEN-LAST:event_btnConfiguracaoActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -611,7 +614,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         int dia = c.get(Calendar.DAY_OF_WEEK);
         List<Configuracao> lista = cDAO.listarConfiguracaoDia(dia);
         if (lista.isEmpty()) {
-            JOptionPane.showMessageDialog(rootPane, "             DIA NÃO CONFIGURADO!\n\n Acesse o menu configurções para configurar\n o dia de trabalho");
+            JOptionPane.showMessageDialog(rootPane, "             DIA NÃO CONFIGURADO!\n\n Acesse o menu configurações para configurar\n o dia de trabalho");
         }
         for (int i = 0; i < lista.size(); i++) {
             inicio = sdfH.format(lista.get(i).getHoraInicial());

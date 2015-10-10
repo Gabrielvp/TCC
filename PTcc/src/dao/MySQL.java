@@ -26,7 +26,7 @@ public class MySQL {
             e.printStackTrace();
             return null;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Não foi possível conectar com o banco de dados"); 
+            JOptionPane.showMessageDialog(null, "Não foi possível conectar com o banco de dados");
             e.printStackTrace();
             return null;
         }

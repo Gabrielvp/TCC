@@ -582,11 +582,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             configuracao();
             tabelaPrincipal();
             atualizaTabela();
-        }
-        if (c.excluir > 0) {
-            configuracao();
-            apagarTabela();
-        }
+        }        
     }//GEN-LAST:event_btnConfiguracaoActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -615,7 +611,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         int dia = c.get(Calendar.DAY_OF_WEEK);
         List<Configuracao> lista = cDAO.listarConfiguracaoDia(dia);
         if (lista.isEmpty()) {
-            JOptionPane.showMessageDialog(rootPane, "Dia não Configurado!\n Acesse o menu configurções para configurar\n o dia de trabalho");
+            JOptionPane.showMessageDialog(rootPane, "             DIA NÃO CONFIGURADO!\n\n Acesse o menu configurções para configurar\n o dia de trabalho");
         }
         for (int i = 0; i < lista.size(); i++) {
             inicio = sdfH.format(lista.get(i).getHoraInicial());

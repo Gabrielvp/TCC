@@ -37,7 +37,7 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
 
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
     int dia;
-    int excluir = 0;
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -291,8 +291,7 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
                 int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir a configuração?", "Exclusão", 0, 0);
                 if (confirmacao == 0) {
                     cDAO.delete(dia);
-                    this.limparTabela();
-                    excluir = 1;
+                    this.limparTabela();                    
                 }
             }
         }

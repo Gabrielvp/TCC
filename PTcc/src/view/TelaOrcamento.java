@@ -790,6 +790,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
         txtDescontoOrcamento.setEnabled(true);
         txtDescontoOrcamento.setEnabled(true);
         txtDescontoOrcamento.setText("");
+        lblAprovado.setVisible(false);
+        botaoVisible();
         model.setNumRows(0);
     }
 

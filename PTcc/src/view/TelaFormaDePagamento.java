@@ -5,6 +5,12 @@
  */
 package view;
 
+import dao.FormaPagamentoDAO;
+import entity.FormaPagamento;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Gabriel
@@ -19,8 +25,9 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
+        atualizaTabela();
     }
-
+    FormaPagamentoDAO fDAO = new FormaPagamentoDAO();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,10 +48,8 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         btnAddFormaPagamento = new javax.swing.JButton();
         btnExcluiFormaPagamento = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        txtCodigoFormaPagamento = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblFormaPagamento = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Forma de Pagamento - Agenda Financeira");
@@ -81,17 +86,13 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
             }
         });
 
-        jLabel5.setText("Código");
-
-        txtCodigoFormaPagamento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -102,33 +103,21 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
                             .addComponent(txtIntervalo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(98, 98, 98)
                         .addComponent(btnAddFormaPagamento)
                         .addGap(18, 18, 18)
                         .addComponent(btnExcluiFormaPagamento))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(txtCodigoFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel1)
+                    .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, 0)
-                        .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(0, 0, 0)
-                        .addComponent(txtCodigoFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jLabel1)
+                .addGap(0, 0, 0)
+                .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,7 +138,7 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblFormaPagamento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -165,14 +154,14 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(230);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(10);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(10);
+        jScrollPane1.setViewportView(tblFormaPagamento);
+        if (tblFormaPagamento.getColumnModel().getColumnCount() > 0) {
+            tblFormaPagamento.getColumnModel().getColumn(0).setResizable(false);
+            tblFormaPagamento.getColumnModel().getColumn(0).setPreferredWidth(230);
+            tblFormaPagamento.getColumnModel().getColumn(1).setResizable(false);
+            tblFormaPagamento.getColumnModel().getColumn(1).setPreferredWidth(10);
+            tblFormaPagamento.getColumnModel().getColumn(2).setResizable(false);
+            tblFormaPagamento.getColumnModel().getColumn(2).setPreferredWidth(10);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -211,13 +200,37 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFormaPagamentoActionPerformed
+        FormaPagamento fp = new FormaPagamento();
+        fp.setDescricao(txtDescricao.getText());
+        fp.setParcela(Integer.parseInt(txtParcela.getText()));
+        fp.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
         
+        fDAO.insert(fp);
+        atualizaTabela();
     }//GEN-LAST:event_btnAddFormaPagamentoActionPerformed
 
     private void btnExcluiFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluiFormaPagamentoActionPerformed
- 
+        int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja excluir forma de pagamento?", "Exclusão", 0, 0);
+        if (confirmacao == 0) {
+        int linha = tblFormaPagamento.getSelectedRow();
+        String desc = tblFormaPagamento.getValueAt(linha, 0).toString();
+        fDAO.delete(desc);
+        atualizaTabela();
+        }
     }//GEN-LAST:event_btnExcluiFormaPagamentoActionPerformed
 
+    public void atualizaTabela(){
+        DefaultTableModel model = (DefaultTableModel)tblFormaPagamento.getModel();
+        List<FormaPagamento> lista = fDAO.lista();
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            model.setValueAt(lista.get(i).getDescricao(), i, 0);
+            model.setValueAt(lista.get(i).getParcela(), i, 1);
+            model.setValueAt(lista.get(i).getIntervalo(), i, 2);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -267,12 +280,10 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField txtCodigoFormaPagamento;
+    private javax.swing.JTable tblFormaPagamento;
     private javax.swing.JTextField txtDescricao;
     private javax.swing.JTextField txtIntervalo;
     private javax.swing.JTextField txtParcela;

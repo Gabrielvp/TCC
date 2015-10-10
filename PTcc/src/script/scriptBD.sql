@@ -170,7 +170,7 @@ CREATE TABLE `produto_orcamento` (
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Configuracao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracao` (
+CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracoes` (
   `idConfiguracao` INT NOT NULL AUTO_INCREMENT,
   `horaInicial` TIME NOT NULL,
   `horaFinal` TIME NOT NULL,
@@ -181,6 +181,12 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracao` (
   PRIMARY KEY (`idConfiguracao`)
   );
 
+create table forma_pagamento(
+	idForma_pagamento int not null primary key auto_increment,
+    descricao varchar(50) not null,
+    parcela int not null,
+    intervalo int not null
+);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

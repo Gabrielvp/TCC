@@ -60,6 +60,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     OrcamentoDAO oDAO = new OrcamentoDAO();
     ProdutoOrcamentoDAO pdDAO = new ProdutoOrcamentoDAO();
     Produto p = new Produto();
+    Orcamento o = new Orcamento();
     List<ProdutoOrcamento> lista;
     int contador = 0;
     double resultado;
@@ -724,6 +725,20 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private void btnAprovadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprovadoActionPerformed
         int id = Integer.parseInt(txtOrcamento.getText());
         oDAO.update(id);
+        botao();     
+        String vl = lblTotalOrcamento.getText().replaceAll(",", ".");               
+        o.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+        o.setIdPessoa(Integer.parseInt(txtCodPessoa.getText()));
+        o.setNome(txtNome.getText());
+        o.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+        try {
+            o.setData(sdfD.parse(txtData.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        o.setTotal(Double.parseDouble(vl));
+        TelaContasAReceber tela = new TelaContasAReceber(null, rootPaneCheckingEnabled, o);
+        tela.setVisible(true);
     }//GEN-LAST:event_btnAprovadoActionPerformed
 
     public void atualizaTabela(int id) {

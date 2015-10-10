@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,10 +23,11 @@ public class MySQL {
 
             return DriverManager.getConnection(url, username, password);
         } catch (ClassNotFoundException e) {
-            System.out.println("O driver expecificado nao foi encontrado.");
+            e.printStackTrace();
             return null;
         } catch (SQLException e) {
-            System.out.println("Nao foi possivel conectar ao Banco de Dados.");
+            JOptionPane.showMessageDialog(null, "Não foi possível conectar com o banco de dados"); 
+            e.printStackTrace();
             return null;
         }
     }

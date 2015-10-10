@@ -174,9 +174,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracoes` (
   `idConfiguracao` INT NOT NULL AUTO_INCREMENT,
   `horaInicial` TIME NOT NULL,
   `horaFinal` TIME NOT NULL,
-  `intervalo` INT NOT NULL,
-  `almocoInicio` TIME NOT NULL,
-  `almocoFim` TIME NOT NULL,
+  `intervalo` INT NOT NULL,  
   `dia` INT NOT NULL,
   PRIMARY KEY (`idConfiguracao`)
   );

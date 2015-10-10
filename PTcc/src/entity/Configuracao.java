@@ -17,8 +17,6 @@ public class Configuracao {
     private Date HoraInicial;
     private Date HoraFinal;
     private int intervalo;
-    private Date almocoInicio;
-    private Date almocoFim;
 
     public EnumDiaSemana getDia() {
         return dia;
@@ -51,21 +49,4 @@ public class Configuracao {
     public void setIntervalo(int intervalo) {
         this.intervalo = intervalo;
     }
-
-    public Date getAlmocoInicio() {
-        return almocoInicio;
-    }
-
-    public void setAlmocoInicio(Date almocoInicio) {
-        this.almocoInicio = almocoInicio;
-    }
-
-    public Date getAlmocoFim() {
-        return almocoFim;
-    }
-
-    public void setAlmocoFim(Date almocoFim) {
-        this.almocoFim = almocoFim;
-    }
-
 }

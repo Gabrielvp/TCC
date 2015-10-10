@@ -7,6 +7,7 @@ package view;
 
 import dao.FormaPagamentoDAO;
 import entity.FormaPagamento;
+import entity.Orcamento;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,13 +30,25 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     /**
      * Creates new form Financeiro
      */
-    public TelaContasAReceber(java.awt.Frame parent, boolean modal) {
+    public TelaContasAReceber(java.awt.Frame parent, boolean modal, Orcamento o) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
+        this.orc = o;       
+        if(orc == null){
+            limparOrc();
+        }else{
+        txtCodigoPessoa.setText(o.getIdPessoa()+"");
+        txtNome.setText(o.getNome());
+        txtData.setText(sdfD.format(o.getData()));
+        txtFatura.setText(o.getIdOrcamento()+"");
+        txtTotal.setText(df.format(o.getTotal())+"");
+        txtOrcamento.setText(o.getIdOrcamento()+"");
+        }
         combo();
     }
+    Orcamento orc;
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat df = new DecimalFormat("####.00");
     DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
@@ -494,7 +507,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaContasAReceber dialog = new TelaContasAReceber(new javax.swing.JFrame(), true);
+                TelaContasAReceber dialog = new TelaContasAReceber(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

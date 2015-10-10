@@ -6,6 +6,7 @@
 package view;
 
 import controller.CDataHora;
+import dao.ConfiguracaoDAO;
 import dao.agendamentoDAO;
 import entity.Agenda;
 import entity.Configuracao;
@@ -36,7 +37,8 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     public TelaPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
-        dataTela();        
+        dataTela();
+        configuracao();
         tabelaPrincipal();
         atualizaTabela();
         atualizaDiaSemanaTela();
@@ -51,7 +53,8 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm:ss");
     int cont = 0;
     CDataHora cDt = new CDataHora();
-        
+    ConfiguracaoDAO cDAO = new ConfiguracaoDAO();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -397,7 +400,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadClienteActionPerformed
 
     private void btnFinanceiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinanceiroActionPerformed
-        TelaContasAReceber f = new TelaContasAReceber(this, rootPaneCheckingEnabled);
+        TelaContasAReceber f = new TelaContasAReceber(this, rootPaneCheckingEnabled, null);
         f.setVisible(true);
     }//GEN-LAST:event_btnFinanceiroActionPerformed
 
@@ -408,7 +411,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
     private void btnProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutoActionPerformed
         TelaProdutos p = new TelaProdutos(this, rootPaneCheckingEnabled);
-        p.setVisible(true);       
+        p.setVisible(true);
     }//GEN-LAST:event_btnProdutoActionPerformed
 
     private void tblPrincipalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPrincipalMousePressed
@@ -573,24 +576,55 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     private void btnConfiguracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracaoActionPerformed
         TelaConfiguracoes c = new TelaConfiguracoes(this, rootPaneCheckingEnabled);
         c.setVisible(true);
+        if (tblPrincipal.getRowCount() > 0) {
+
+        } else {
+            configuracao();
+            tabelaPrincipal();
+            atualizaTabela();
+        }
+        if (c.excluir > 0) {
+            configuracao();
+            apagarTabela();
+        }
     }//GEN-LAST:event_btnConfiguracaoActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-       TelaContasAPagar tela = new TelaContasAPagar(this, rootPaneCheckingEnabled);
-       tela.setVisible(true);
+        TelaContasAPagar tela = new TelaContasAPagar(this, rootPaneCheckingEnabled);
+        tela.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       TelaContasAReceber tela = new TelaContasAReceber(this, rootPaneCheckingEnabled);
-       tela.setVisible(true);
+        TelaContasAReceber tela = new TelaContasAReceber(this, rootPaneCheckingEnabled, null);
+        tela.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-       TelaFormaDePagamento tela = new TelaFormaDePagamento(this, novo);
-       tela.setVisible(true);
+        TelaFormaDePagamento tela = new TelaFormaDePagamento(this, novo);
+        tela.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    
+    String inicio;
+    String fim;
+    int intervalo;
+    int in;
+    int f;
+
+    public void configuracao() {
+        Calendar c = Calendar.getInstance();
+        int dia = c.get(Calendar.DAY_OF_WEEK);
+        List<Configuracao> lista = cDAO.listarConfiguracaoDia(dia);
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Dia não Configurado!\n Acesse o menu configurções para configurar\n o dia de trabalho");
+        }
+        for (int i = 0; i < lista.size(); i++) {
+            inicio = sdfH.format(lista.get(i).getHoraInicial());
+            fim = sdfH.format(lista.get(i).getHoraFinal().getTime());
+            intervalo = lista.get(i).getIntervalo();
+            in = Integer.parseInt(inicio.substring(0, 2));
+            f = Integer.parseInt(fim.substring(0, 2));
+        }
+    }
 
     public void dataTela() {
         try {
@@ -604,7 +638,6 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         Calendar c = Calendar.getInstance();
         int dia = c.get(Calendar.DAY_OF_WEEK);
         diaDaSemana(dia);
-
     }
 
     public void diaDaSemana(int dia) {
@@ -614,21 +647,19 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void tabelaPrincipal() {
-
         ArrayList<String> listaPeriodo = new ArrayList<>();
-
         //Seta a hora inicial  
         Calendar inicial = Calendar.getInstance();
-        inicial.set(Calendar.HOUR_OF_DAY, 8);
+        inicial.set(Calendar.HOUR_OF_DAY, in);
         inicial.set(Calendar.MINUTE, 0);
 
         //Seta hora final
         Calendar Final = Calendar.getInstance();
-        Final.set(Calendar.HOUR_OF_DAY, 18);
+        Final.set(Calendar.HOUR_OF_DAY, f);
         Final.set(Calendar.MINUTE, 0);
 
         //Periodo a ser somado  
-        int minute = 30;
+        int minute = intervalo;
 
         //Guarda o dia inicial  e final
         int diaInicial = inicial.get(Calendar.DAY_OF_MONTH);
@@ -657,7 +688,6 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }
 
     public void atualizaTabela() {
-
         DefaultTableModel model
                 = (DefaultTableModel) this.tblPrincipal.getModel();
 
@@ -713,6 +743,11 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             model.setValueAt(text, i, 2);
             model.setValueAt(text, i, 1);
         }
+    }
+
+    public void apagarTabela() {
+        DefaultTableModel model = (DefaultTableModel) tblPrincipal.getModel();
+        model.setNumRows(0);
     }
 
     /**

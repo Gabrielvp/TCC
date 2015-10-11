@@ -37,7 +37,7 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
 
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
     int dia;
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -260,14 +260,14 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
             Logger.getLogger(TelaConfiguracoes.class.getName()).log(Level.SEVERE, null, ex);
         }
         c.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
-        c.setDia((EnumDiaSemana) cbDia.getSelectedItem());      
-        
+        c.setDia((EnumDiaSemana) cbDia.getSelectedItem());
+
         String dia = cbDia.getSelectedItem().toString();
         cDAO.insert(c);
         limparTela();
         atualizaTabelaConfiguracao();
         limparTela();
-        JOptionPane.showMessageDialog(this, "Configuração salva com sucesso!");             
+        JOptionPane.showMessageDialog(this, "Configuração salva com sucesso!");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void cbDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDiaActionPerformed
@@ -291,7 +291,7 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
                 int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir a configuração?", "Exclusão", 0, 0);
                 if (confirmacao == 0) {
                     cDAO.delete(dia);
-                    this.limparTabela();                    
+                    this.limparTabela();
                 }
             }
         }
@@ -323,14 +323,13 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
             model.setValueAt(text, i, 1);
             model.setValueAt(text, i, 2);
             model.setValueAt(text, i, 3);
-
         }
     }
 
     public void limparTela() {
         txtHoraInicio.setText("");
         txtHoraFim.setText("");
-        txtIntervalo.setText("");       
+        txtIntervalo.setText("");
     }
 
     public void atualizaTabelaConfiguracao() {

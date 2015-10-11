@@ -43,6 +43,7 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
     DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
     List<Orcamento> lista;
     List<ProdutoOrcamento> listaPOrcamento;
+    boolean alterar;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -113,7 +114,8 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
             String coluna = tblOrcamento.getValueAt(linha, 1).toString();
             int id = Integer.parseInt(coluna);
             o = oDAO.getOrcamentoId(id);
-            listaPOrcamento = pdDAO.getProdutoOrcamentoId(id);            
+            listaPOrcamento = pdDAO.getProdutoOrcamentoId(id); 
+            alterar = true;
             this.dispose();
         }
     }//GEN-LAST:event_tblOrcamentoMousePressed

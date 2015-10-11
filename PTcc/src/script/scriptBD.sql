@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Pessoa` (
 
 
 create table cPagar(
-	idCPagar integer not null auto_increment primary key,
+    idCPagar integer not null auto_increment primary key,
     formPagamento int not null,
     fatura varchar(20) not null,
     total double not null,
@@ -51,21 +51,22 @@ create table cPagar(
     parcelas int not null,
     idPessoa int not null,
     
-	constraint FK_pessoa foreign key (idPessoa) references pessoa (idPessoa)
+    constraint FK_pessoa_pagar foreign key (idPessoa) references pessoa (idPessoa)
 );
 
-
-create table parcelas_cPagar(
-	idParcelas_CPagar integer not null auto_increment primary key,      
-    valor double not null,
-    emissao date not null,
-    vencimento date not null,    
+create table cReceber(
+    idCReceber integer not null auto_increment primary key,
+    formPagamento varchar(50) not null,
+    fatura varchar(20) not null,
+    total double not null,
+    data date not null,
+    vencimento date not null,
+    parcelas int,
     idPessoa int not null,
-    idCPagar int not null,
-	constraint FK_CPagar foreign key (idCPagar) references cPagar (idCPagar)
-    
-);
+    pessoa varchar(150) not null
 
+    constraint FK_pessoa_receber foreign key (idPessoa) references pessoa (idPessoa)
+);
 
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Agendamento`
@@ -180,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracoes` (
   );
 
 create table forma_pagamento(
-	idForma_pagamento int not null primary key auto_increment,
+    idForma_pagamento int not null primary key auto_increment,
     descricao varchar(50) not null,
     parcela int not null,
     intervalo int not null
@@ -190,6 +191,4 @@ create table forma_pagamento(
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-
 ;

@@ -5,7 +5,9 @@
  */
 package view;
 
+import dao.CReceberDAO;
 import dao.FormaPagamentoDAO;
+import entity.CReceber;
 import entity.FormaPagamento;
 import entity.Orcamento;
 import java.text.DecimalFormat;
@@ -417,7 +419,25 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisaOrcamentoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
+        CReceber cr = new CReceber();
+        CReceberDAO crDAO = new CReceberDAO();
+        String vl = txtTotal.getText().replaceAll(",", ".");
+        cr.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
+        cr.setPessoa(txtNome.getText());
+        cr.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
+        cr.setFatura(txtFatura.getText());
+        cr.setTotal(Double.parseDouble(vl));
+        try {
+            cr.setData(sdfD.parse(txtData.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            cr.setVencimento(sdfD.parse(txtVencimento.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        crDAO.insert(cr);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed

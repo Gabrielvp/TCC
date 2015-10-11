@@ -1,5 +1,6 @@
 package dao;
 
+import entity.CReceber;
 import entity.Orcamento;
 import entity.Produto;
 import entity.ProdutoOrcamento;
@@ -16,31 +17,33 @@ import javax.swing.JOptionPane;
  *
  * @author ricardonene
  */
-public class OrcamentoDAO extends MySQL {
+public class CReceberDAO extends MySQL {
 
     SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
 
-    public boolean insert(Orcamento orcamento) {
+    public boolean insert(CReceber creceber) {
 
         Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO orcamento (data, cliente, total, desconto, idPessoa, aprovado)"
-                            + "VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, sdfD.format(orcamento.getData()));
-            ps.setString(2, orcamento.getNome());
-            ps.setDouble(3, orcamento.getTotal());
-            ps.setDouble(4, orcamento.getDesconto());
-            ps.setInt(5, orcamento.getIdPessoa());
-            ps.setBoolean(6, orcamento.isAprovado());
+                    = c.prepareStatement("INSERT INTO creceber (formPagamento, fatura, total, data, vencimento, parcelas, idPessoa, pessoa)"
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, creceber.getFormPagamento());
+            ps.setString(2, creceber.getFatura());
+            ps.setDouble(3, creceber.getTotal());
+            ps.setString(4, sdfD.format(creceber.getData()));
+            ps.setString(5, sdfD.format(creceber.getVencimento()));
+            ps.setInt(6, creceber.getParcelas());
+            ps.setInt(7, creceber.getIdPessoa());
+            ps.setString(8, creceber.getPessoa());
 
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
             int resultado = rs.getInt(1);
-            orcamento.setIdOrcamento(resultado);
+            creceber.setIdCPagar(resultado);
             rs.close();
 
             ps.close();
@@ -54,6 +57,7 @@ public class OrcamentoDAO extends MySQL {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+            JOptionPane.showMessageDialog(null, "Salvo com Sucesso!");
         }
         return false;
     }

@@ -1,5 +1,6 @@
 package dao;
 
+import entity.CPagar;
 import entity.Orcamento;
 import entity.Produto;
 import entity.ProdutoOrcamento;
@@ -16,31 +17,32 @@ import javax.swing.JOptionPane;
  *
  * @author ricardonene
  */
-public class OrcamentoDAO extends MySQL {
+public class CPagarDAO extends MySQL {
 
     SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
 
-    public boolean insert(Orcamento orcamento) {
+    public boolean insert(CPagar cpagar) {
 
         Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO orcamento (data, cliente, total, desconto, idPessoa, aprovado)"
+                    = c.prepareStatement("INSERT INTO cpagar (fatura, total, data, vencimento, parcelas, idPessoa, formPagamento)"
                             + "VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, sdfD.format(orcamento.getData()));
-            ps.setString(2, orcamento.getNome());
-            ps.setDouble(3, orcamento.getTotal());
-            ps.setDouble(4, orcamento.getDesconto());
-            ps.setInt(5, orcamento.getIdPessoa());
-            ps.setBoolean(6, orcamento.isAprovado());
+            ps.setString(1, cpagar.getFatura());
+            ps.setDouble(2, cpagar.getTotal());
+            ps.setString(3, sdfD.format(cpagar.getData()));
+            ps.setString(4, sdfD.format(cpagar.getVencimento()));
+            ps.setInt(5, cpagar.getParcelas());
+            ps.setInt(6, cpagar.getIdPessoa());
+            ps.setString(7, cpagar.getFormPagamento());
 
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
             int resultado = rs.getInt(1);
-            orcamento.setIdOrcamento(resultado);
+            cpagar.setIdCPagar(resultado);
             rs.close();
 
             ps.close();

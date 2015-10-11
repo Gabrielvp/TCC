@@ -62,6 +62,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     Produto p = new Produto();
     Orcamento o = new Orcamento();
     List<ProdutoOrcamento> lista;
+    boolean alterar = false;
     int contador = 0;
     double resultado;
     double totalOrçamento;
@@ -98,7 +99,6 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProduto = new javax.swing.JTable();
         btnAprovado = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         lblTotalOrcamento = new javax.swing.JLabel();
@@ -235,10 +235,6 @@ public class TelaOrcamento extends javax.swing.JDialog {
         });
         jPanel1.add(btnAprovado, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 581, -1, -1));
 
-        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Modify.png"))); // NOI18N
-        btnAlterar.setText("Alterar");
-        jPanel1.add(btnAlterar, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 581, -1, -1));
-
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Delete.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -317,7 +313,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnSalvarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(311, 581, -1, -1));
+        jPanel1.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 580, -1, -1));
 
         btnPesquisaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
         btnPesquisaCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -542,7 +538,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         String cdCliente = txtCodPessoa.getText();
         String nome = txtNome.getText();
-
+        
         if (cdCliente.equals("") || nome.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Insira um Cliente");
         } else {
@@ -565,7 +561,12 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 String vl = lblTotalOrcamento.getText().replaceAll(",", ".");
                 orcamento.setTotal(Double.parseDouble(vl));
                 orcamento.setAprovado(false);
-                oDAO.insert(orcamento);
+                if (alterar == false) {
+                    oDAO.insert(orcamento);
+                }else if(alterar){
+                    orcamento.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+                    oDAO.updateOrcameto(orcamento);
+                }
                 for (int i = 0; i < linhas; i++) {
                     String vlTotal = tblProduto.getValueAt(i, 4).toString().replaceAll(",", ".");
                     String vlUnit = tblProduto.getValueAt(i, 3).toString().replaceAll(",", ".");
@@ -576,11 +577,14 @@ public class TelaOrcamento extends javax.swing.JDialog {
                     po.setQuantidade(Double.parseDouble(quantidade));
                     po.setValor(Double.parseDouble(vlUnit));
                     po.setTotal(Double.parseDouble(vlTotal));
-                    poDAO.insert(po);
-                }
-                limparTela();
+                    if (alterar == false) {
+                        poDAO.insert(po);
                 JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!\n"
                         + "Orçamento: " + orcamento.getIdOrcamento());
+                    }
+                }
+                limparTela();
+                alterar = false;
             }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -682,13 +686,14 @@ public class TelaOrcamento extends javax.swing.JDialog {
         tblProduto.getColumnModel().getColumn(4).setCellRenderer(esquerda);
         TelaPesquisaOrcamento tela = new TelaPesquisaOrcamento(null, rootPaneCheckingEnabled, 0);
         tela.setVisible(true);
+        alterar = tela.alterar;
         boolean aprovado = tela.o.isAprovado();
         if (tela.o.getIdOrcamento() == 0 || tela.o.getIdPessoa() == 0) {
             limparTela();
         } else {
-            if(aprovado){
+            if (aprovado) {
                 botao();
-            }else if(!aprovado){
+            } else if (!aprovado) {
                 botaoVisible();
             }
             txtOrcamento.setText(tela.o.getIdOrcamento() + "");
@@ -725,8 +730,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private void btnAprovadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprovadoActionPerformed
         int id = Integer.parseInt(txtOrcamento.getText());
         oDAO.update(id);
-        botao();     
-        String vl = lblTotalOrcamento.getText().replaceAll(",", ".");               
+        botao();
+        String vl = lblTotalOrcamento.getText().replaceAll(",", ".");
         o.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
         o.setIdPessoa(Integer.parseInt(txtCodPessoa.getText()));
         o.setNome(txtNome.getText());
@@ -760,10 +765,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
         lblTotalItem.setText("0,00");
         txtDescontoProduto.setEnabled(true);
     }
-    
-    public void botao(){
+
+    public void botao() {
         btnAddProduto.setEnabled(false);
-        btnAlterar.setEnabled(false);
         btnAprovado.setEnabled(false);
         btnExcluir.setEnabled(false);
         btnLimpaDesconto.setEnabled(false);
@@ -774,10 +778,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
         btnSalvar.setEnabled(false);
         lblAprovado.setVisible(true);
     }
-    
-    public void botaoVisible(){
+
+    public void botaoVisible() {
         btnAddProduto.setEnabled(true);
-        btnAlterar.setEnabled(true);
         btnAprovado.setEnabled(true);
         btnExcluir.setEnabled(true);
         btnLimpaDesconto.setEnabled(true);
@@ -857,7 +860,6 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduto;
-    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnAprovado;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpaDesconto;

@@ -68,6 +68,21 @@ create table cReceber(
     constraint FK_pessoa_receber foreign key (idPessoa) references pessoa (idPessoa)
 );
 
+create table parcelas_cReceber(
+	idParcelas_cReceber int not null auto_increment primary key,
+    fatura varchar(50) not null,
+    parcelas varchar(50) not null,
+    valor double not null,
+    entrada Date not null,
+    vencimento Date not null,
+    intervalo int,
+    idOrcamento int not null,
+    idCReceber int not null,
+    
+    constraint FK_orcamento foreign key (idOrcamento) references orcamento(idOrcamento),
+    constraint fk_cReceber foreign key (idCReceber) references cReceber (idCReceber)
+);
+
 -- -----------------------------------------------------
 -- Table `bd_tcc`.`Agendamento`
 -- -----------------------------------------------------

@@ -7,9 +7,11 @@ package view;
 
 import dao.CReceberDAO;
 import dao.FormaPagamentoDAO;
+import dao.Parcelas_CReceberDAO;
 import entity.CReceber;
 import entity.FormaPagamento;
 import entity.Orcamento;
+import entity.Parcelas_CReceber;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,16 +39,16 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
-        this.orc = o;       
-        if(orc == null){
+        this.orc = o;
+        if (orc == null) {
             limparOrc();
-        }else{
-        txtCodigoPessoa.setText(o.getIdPessoa()+"");
-        txtNome.setText(o.getNome());
-        txtData.setText(sdfD.format(o.getData()));
-        txtFatura.setText(o.getIdOrcamento()+"");
-        txtTotal.setText(df.format(o.getTotal())+"");
-        txtOrcamento.setText(o.getIdOrcamento()+"");
+        } else {
+            txtCodigoPessoa.setText(o.getIdPessoa() + "");
+            txtNome.setText(o.getNome());
+            txtData.setText(sdfD.format(o.getData()));
+            txtFatura.setText(o.getIdOrcamento() + "");
+            txtTotal.setText(df.format(o.getTotal()) + "");
+            txtOrcamento.setText(o.getIdOrcamento() + "");
         }
         combo();
     }
@@ -162,7 +164,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -170,6 +172,11 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             }
         });
         jScrollPane1.setViewportView(tblParcelas);
+        if (tblParcelas.getColumnModel().getColumnCount() > 0) {
+            tblParcelas.getColumnModel().getColumn(0).setResizable(false);
+            tblParcelas.getColumnModel().getColumn(1).setResizable(false);
+            tblParcelas.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -416,11 +423,17 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             txtTotal.setText(df.format(tela.o.getTotal()) + "");
             txtFatura.setText(tela.o.getIdOrcamento() + "");
         }
+
+        String data = formatter.format(new Date());
+        txtVencimento.setText(data);
     }//GEN-LAST:event_btnPesquisaOrcamentoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         CReceber cr = new CReceber();
         CReceberDAO crDAO = new CReceberDAO();
+        Parcelas_CReceber pCR = new Parcelas_CReceber();
+        Parcelas_CReceberDAO pCRDAO = new Parcelas_CReceberDAO();
+
         String vl = txtTotal.getText().replaceAll(",", ".");
         cr.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
         cr.setPessoa(txtNome.getText());
@@ -438,6 +451,31 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
         }
         crDAO.insert(cr);
+        if (!txtParcelas.getText().equals(null)) {
+            int linhas = tblParcelas.getRowCount();
+            for (int i = 0; i < linhas; i++) {
+                String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
+                pCR.setFatura(txtFatura.getText());
+                pCR.setParcelas(tblParcelas.getValueAt(i, 0).toString());
+                pCR.setValor(Double.parseDouble(valor));
+                try {
+                    pCR.setEntrada(sdfD.parse(txtEntrada.getText()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    pCR.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                pCR.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
+                pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+                pCR.setIdCReceber(cr.getIdCReceber());
+                pCRDAO.insert(pCR);
+            }
+        } else {
+        }
+            JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed
@@ -478,7 +516,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     public void limparOrc() {
         txtOrcamento.setText("");
     }
-    
+
     public void combo() {
         cbFormaPagamento.removeAll();
         cbFormaPagamento.removeAllItems();

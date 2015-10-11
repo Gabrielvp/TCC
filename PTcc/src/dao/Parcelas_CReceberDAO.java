@@ -1,7 +1,7 @@
 package dao;
 
-import entity.CReceber;
 import entity.Orcamento;
+import entity.Parcelas_CReceber;
 import entity.Produto;
 import entity.ProdutoOrcamento;
 import java.sql.Connection;
@@ -17,35 +17,28 @@ import javax.swing.JOptionPane;
  *
  * @author ricardonene
  */
-public class CReceberDAO extends MySQL {
+public class Parcelas_CReceberDAO extends MySQL {
 
     SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
 
-    public boolean insert(CReceber creceber) {
+    public boolean insert(Parcelas_CReceber pCReceber) {
 
         Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO creceber (formPagamento, fatura, total, data, vencimento, parcelas, idPessoa, pessoa)"
-                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, creceber.getFormPagamento());
-            ps.setString(2, creceber.getFatura());
-            ps.setDouble(3, creceber.getTotal());
-            ps.setString(4, sdfD.format(creceber.getData()));
-            ps.setString(5, sdfD.format(creceber.getVencimento()));
-            ps.setInt(6, creceber.getParcelas());
-            ps.setInt(7, creceber.getIdPessoa());
-            ps.setString(8, creceber.getPessoa());
+                    = c.prepareStatement("INSERT INTO parcelas_creceber (fatura, parcelas, valor, entrada, vencimento, intervalo, idOrcamento, idCReceber)"
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, pCReceber.getFatura());
+            ps.setString(2, pCReceber.getParcelas());
+            ps.setDouble(3, pCReceber.getValor());
+            ps.setString(4, sdfD.format(pCReceber.getEntrada()));
+            ps.setString(5, sdfD.format(pCReceber.getVencimento()));
+            ps.setInt(6, pCReceber.getIntervalo());
+            ps.setInt(7, pCReceber.getIdOrcamento());
+            ps.setInt(8, pCReceber.getIdCReceber());
 
-            ps.execute();
-
-            ResultSet rs = ps.getGeneratedKeys();
-            rs.next();
-            int resultado = rs.getInt(1);
-            creceber.setIdCReceber(resultado);
-            rs.close();
-
+            ps.execute();           
             ps.close();
             return true;
 

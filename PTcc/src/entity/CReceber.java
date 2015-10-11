@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class CReceber {
     
-    private int idCPagar;
+    private int idCReceber;
     private String fatura;
     private double total;
     private Date data;
@@ -31,12 +31,12 @@ public class CReceber {
         this.pessoa = pessoa;
     }
 
-    public int getIdCPagar() {
-        return idCPagar;
+    public int getIdCReceber() {
+        return idCReceber;
     }
 
-    public void setIdCPagar(int idCPagar) {
-        this.idCPagar = idCPagar;
+    public void setIdCReceber(int idCPagar) {
+        this.idCReceber = idCPagar;
     }
 
     public String getFatura() {

@@ -450,12 +450,21 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
     private void btnRemoveProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveProdutoActionPerformed
         DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();
+        ProdutoOrcamentoDAO poDAO = new ProdutoOrcamentoDAO();
         int linha = tblProduto.getSelectedRow();
         if (tblProduto.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(rootPane, "Selecione um produto para excluir");
         } else {
+            if (alterar == true) {
+                int idOrcamento = Integer.parseInt(txtOrcamento.getText());
+                int line = tblProduto.getSelectedRow();
+                String idProduto = tblProduto.getValueAt(line, 0).toString();
+                int idProdut = Integer.parseInt(idProduto);
+                poDAO.deleteProduto(idOrcamento, idProdut);
+            }
             String vl = tbl.getValueAt(linha, 4).toString().replaceAll(",", ".");
             Double valor = Double.parseDouble(vl);
+            totalOrçamento = Double.parseDouble(lblTotalOrcamento.getText().replaceAll(",", "."));
             totalOrçamento -= valor;
             tbl.removeRow(linha);
             lblTotalOrcamento.setText(df.format(totalOrçamento) + "");
@@ -510,6 +519,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_txtDescontoProdutoKeyReleased
 
     private void btnAddProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProdutoActionPerformed
+        ProdutoOrcamentoDAO poDAO = new ProdutoOrcamentoDAO();
+        ProdutoOrcamento po = new ProdutoOrcamento();
         String testeQuantidade = txtQtdProduto.getText();
         String testeProduto = txtProduto.getText();
         if (testeProduto.equals("")) {
@@ -518,15 +529,39 @@ public class TelaOrcamento extends javax.swing.JDialog {
             if (testeQuantidade.equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Insira a Quantidade");
             } else {
-                contador++;
-                int id = Integer.parseInt(txtCodProduto.getText());
-                atualizaTabela(id);
-                limpaProduto();
-                totalOrçamento += resultado;
-                lblTotalOrcamento.setText(totalOrçamento + "");
-                txtDescontoOrcamento.setEnabled(true);
-                txtDescontoOrcamento.setText("");
-                lblTotalOrcamento.setText(df.format(totalOrçamento) + "");
+                if (alterar == true) {
+                    int id = Integer.parseInt(txtCodProduto.getText());
+                    atualizaTabela(id);
+                    totalOrçamento = Double.parseDouble(lblTotalOrcamento.getText().replace(",", "."));
+                    totalOrçamento += Double.parseDouble(lblTotalItem.getText().replace(",", "."));
+                    lblTotalOrcamento.setText(totalOrçamento + "");
+                    txtDescontoOrcamento.setEnabled(true);
+                    txtDescontoOrcamento.setText("");
+                    lblTotalOrcamento.setText(df.format(totalOrçamento) + "");
+                    po.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+                    po.setIdProduto(Integer.parseInt(txtCodProduto.getText()));
+                    po.setProduto(txtProduto.getText());
+                    po.setQuantidade(Double.parseDouble(txtQtdProduto.getText()));
+                    po.setValor(Double.parseDouble(txtValor.getText().replace(",", ".")));
+                    if (txtDescontoProduto.getText().equals("")) {
+
+                    } else {
+                        po.setDesconto(Double.parseDouble(txtDescontoProduto.getText()));
+                    }
+                    po.setTotal(Double.parseDouble(lblTotalItem.getText().replace(",", ".")));
+                    limpaProduto();
+                    poDAO.insert(po);
+                } else {
+                    contador++;
+                    int id = Integer.parseInt(txtCodProduto.getText());
+                    atualizaTabela(id);
+                    limpaProduto();
+                    totalOrçamento += resultado;
+                    lblTotalOrcamento.setText(totalOrçamento + "");
+                    txtDescontoOrcamento.setEnabled(true);
+                    txtDescontoOrcamento.setText("");
+                    lblTotalOrcamento.setText(df.format(totalOrçamento) + "");
+                }
             }
         }
     }//GEN-LAST:event_btnAddProdutoActionPerformed
@@ -538,7 +573,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         String cdCliente = txtCodPessoa.getText();
         String nome = txtNome.getText();
-        
+
         if (cdCliente.equals("") || nome.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Insira um Cliente");
         } else {
@@ -563,7 +598,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 orcamento.setAprovado(false);
                 if (alterar == false) {
                     oDAO.insert(orcamento);
-                }else if(alterar){
+                } else if (alterar) {
                     orcamento.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
                     oDAO.updateOrcameto(orcamento);
                 }
@@ -579,9 +614,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
                     po.setTotal(Double.parseDouble(vlTotal));
                     if (alterar == false) {
                         poDAO.insert(po);
-                JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!\n"
-                        + "Orçamento: " + orcamento.getIdOrcamento());
                     }
+                }
+                if (alterar == false) {
+                    JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!\n"
+                            + "Orçamento: " + orcamento.getIdOrcamento());
                 }
                 limparTela();
                 alterar = false;
@@ -690,12 +727,15 @@ public class TelaOrcamento extends javax.swing.JDialog {
         boolean aprovado = tela.o.isAprovado();
         if (tela.o.getIdOrcamento() == 0 || tela.o.getIdPessoa() == 0) {
             limparTela();
+            String data = sdfD.format(new Date());
+            txtData.setText(data);
         } else {
             if (aprovado) {
                 botao();
             } else if (!aprovado) {
                 botaoVisible();
             }
+            txtData.setText(sdfD.format(tela.o.getData()));
             txtOrcamento.setText(tela.o.getIdOrcamento() + "");
             txtCodPessoa.setText(tela.o.getIdPessoa() + "");
             txtNome.setText(tela.o.getNome());

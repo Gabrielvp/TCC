@@ -49,6 +49,8 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             txtFatura.setText(o.getIdOrcamento() + "");
             txtTotal.setText(df.format(o.getTotal()) + "");
             txtOrcamento.setText(o.getIdOrcamento() + "");
+            String data = sdfD.format(new Date());
+            txtVencimento.setText(data);
         }
         combo();
     }
@@ -471,11 +473,12 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                 pCR.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
                 pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
                 pCR.setIdCReceber(cr.getIdCReceber());
+                
                 pCRDAO.insert(pCR);
             }
         } else {
         }
-            JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+        JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed

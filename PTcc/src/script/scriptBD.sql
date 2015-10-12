@@ -62,6 +62,7 @@ create table cReceber(
     data date not null,
     vencimento date not null,
     parcelas int,
+    quitado boolean not null,
     idPessoa int not null,
     pessoa varchar(150) not null
 

@@ -456,6 +456,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "Selecione um produto para excluir");
         } else {
             if (alterar == true) {
+                setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
                 int idOrcamento = Integer.parseInt(txtOrcamento.getText());
                 int line = tblProduto.getSelectedRow();
                 String idProduto = tblProduto.getValueAt(line, 0).toString();
@@ -530,6 +531,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(rootPane, "Insira a Quantidade");
             } else {
                 if (alterar == true) {
+                    setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
                     int id = Integer.parseInt(txtCodProduto.getText());
                     atualizaTabela(id);
                     totalOrçamento = Double.parseDouble(lblTotalOrcamento.getText().replace(",", "."));
@@ -568,6 +570,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
     private void btnLimparTelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparTelaActionPerformed
         limparTela();
+        alterar = false;
+        txtOrcamento.setEditable(true);
     }//GEN-LAST:event_btnLimparTelaActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
@@ -601,6 +605,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 } else if (alterar) {
                     orcamento.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
                     oDAO.updateOrcameto(orcamento);
+                    this.dispose();
                 }
                 for (int i = 0; i < linhas; i++) {
                     String vlTotal = tblProduto.getValueAt(i, 4).toString().replaceAll(",", ".");
@@ -627,14 +632,18 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        int confirmacao = JOptionPane.showConfirmDialog(this, "Excluir Orcamento N° " + txtOrcamento.getText() + "\n"
-                + "Cliente: " + txtNome.getText() + "", "Exclusão", 0, 0);
-        if (confirmacao == 0) {
-            int id = Integer.parseInt(txtOrcamento.getText());
-            pdDAO.delete(id);
-            oDAO.delete(id);
-            limparTela();
-            JOptionPane.showMessageDialog(rootPane, "Orçamento Excluído!");
+        if (txtOrcamento.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira um orçamento para exclusão");
+        } else {
+            int confirmacao = JOptionPane.showConfirmDialog(this, "Excluir Orcamento N° " + txtOrcamento.getText() + "\n"
+                    + "Cliente: " + txtNome.getText() + "", "Exclusão", 0, 0);
+            if (confirmacao == 0) {
+                int id = Integer.parseInt(txtOrcamento.getText());
+                pdDAO.delete(id);
+                oDAO.delete(id);
+                limparTela();
+                JOptionPane.showMessageDialog(rootPane, "Orçamento Excluído!");
+            }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -724,6 +733,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
         TelaPesquisaOrcamento tela = new TelaPesquisaOrcamento(null, rootPaneCheckingEnabled, 0);
         tela.setVisible(true);
         alterar = tela.alterar;
+        if(alterar){
+            txtOrcamento.setEditable(false);
+        }
         boolean aprovado = tela.o.isAprovado();
         if (tela.o.getIdOrcamento() == 0 || tela.o.getIdPessoa() == 0) {
             limparTela();
@@ -734,7 +746,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 botao();
             } else if (!aprovado) {
                 botaoVisible();
-            }
+            }            
             txtData.setText(sdfD.format(tela.o.getData()));
             txtOrcamento.setText(tela.o.getIdOrcamento() + "");
             txtCodPessoa.setText(tela.o.getIdPessoa() + "");

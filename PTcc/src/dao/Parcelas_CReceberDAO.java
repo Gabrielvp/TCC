@@ -53,28 +53,7 @@ public class Parcelas_CReceberDAO extends MySQL {
         }
         return false;
     }
-
-    public void update(int id) {
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET aprovado = true WHERE idOrcamento = ? ");
-            Orcamento orcamento = new Orcamento();
-            ps.setInt(1, id);
-            
-            ps.execute();
-            ps.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
+    
     public void updateOrcameto(Orcamento orcamento) {
         Connection c = this.getConnection();
         try {

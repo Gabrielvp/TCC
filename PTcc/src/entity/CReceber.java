@@ -22,6 +22,19 @@ public class CReceber {
     private int idPessoa;
     private String pessoa;
     private String formPagamento;
+    private boolean aprovado;
+    
+    public CReceber(){
+        
+    }
+
+    public boolean isAprovado() {
+        return aprovado;
+    }
+
+    public void setAprovado(boolean aprovado) {
+        this.aprovado = aprovado;
+    }
 
     public String getPessoa() {
         return pessoa;

@@ -37,6 +37,7 @@ public class CReceberDAO extends MySQL {
             ps.setInt(6, creceber.getParcelas());
             ps.setInt(7, creceber.getIdPessoa());
             ps.setString(8, creceber.getPessoa());
+           
 
             ps.execute();
 

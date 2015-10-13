@@ -64,7 +64,7 @@ create table cReceber(
     parcelas int,
     quitado boolean not null,
     idPessoa int not null,
-    pessoa varchar(150) not null
+    pessoa varchar(150) not null,
 
     constraint FK_pessoa_receber foreign key (idPessoa) references pessoa (idPessoa)
 );

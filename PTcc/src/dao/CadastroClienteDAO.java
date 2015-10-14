@@ -277,7 +277,7 @@ public class CadastroClienteDAO extends MySQL {
 
         try {
             PreparedStatement ps = c.prepareStatement("SELECT idPessoa, nome , email , completo, rua, numero, cep, "
-                    + "bairro, cidade, estado,cpf , rg ,telResidencial , telCelular, telComercial "
+                    + "bairro, cidade, estado,cpf , rg ,telResidencial , telCelular, telComercial, observacoes "
                     + "FROM Pessoa WHERE idPessoa = ?");
 
             ps.setInt(1, id);
@@ -299,6 +299,7 @@ public class CadastroClienteDAO extends MySQL {
                 objPessoa.setTelResidencial(rs.getString("telResidencial"));
                 objPessoa.setTelCelular(rs.getString("telCelular"));
                 objPessoa.setTelComercial(rs.getString("telComercial"));
+                objPessoa.setObservacoes(rs.getString("observacoes"));
 
             }
             rs.close();

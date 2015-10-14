@@ -11,6 +11,7 @@ import entity.Produto;
 import java.awt.AWTKeyStroke;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -37,6 +38,7 @@ public class TelaProdutos extends javax.swing.JDialog {
     boolean alterar = false;
     ProdutoDAO pDAO = new ProdutoDAO();
     Produto p = new Produto();
+    DecimalFormat df = new DecimalFormat("####.00");
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -385,8 +387,8 @@ public class TelaProdutos extends javax.swing.JDialog {
         p.setDescricao(txtDescricao.getText());
         p.setCodBarras(txtCdBarras.getText());
         p.setQtd(Double.parseDouble(txtQtd.getText()));
-        p.setValorVenda(Double.parseDouble(txtValorVenda.getText()));
-        p.setValorCompra(Double.parseDouble(txtValorCompra.getText()));
+        p.setValorVenda(Double.parseDouble(txtValorVenda.getText().replace(",", ".")));
+        p.setValorCompra(Double.parseDouble(txtValorCompra.getText().replace(",", ".")));
         p.setUnidade((EnumUnidade) cbUnidade.getSelectedItem());
         p.setMarca(txtMarca.getText());
         p.setModelo(txtModelo.getText());
@@ -422,8 +424,8 @@ public class TelaProdutos extends javax.swing.JDialog {
                 txtDescricao.setText(p.getDescricao());
                 txtQtd.setText(p.getQtd() + "");
                 txtCdBarras.setText(p.getCodBarras());
-                txtValorVenda.setText(p.getValorVenda() + "");
-                txtValorCompra.setText(p.getValorCompra() + "");
+                txtValorVenda.setText(df.format(p.getValorVenda()) + "");
+                txtValorCompra.setText(df.format(p.getValorCompra()) + "");
                 cbUnidade.setSelectedIndex(p.getUnidade().getCodigo());
                 txtMarca.setText(p.getMarca());
                 txtModelo.setText(p.getModelo());
@@ -450,8 +452,8 @@ public class TelaProdutos extends javax.swing.JDialog {
         txtDescricao.setText(p.getDescricao());
         txtCdBarras.setText(p.getCodBarras());
         txtQtd.setText(p.getQtd() + "");
-        txtValorVenda.setText(p.getValorVenda() + "");
-        txtValorCompra.setText(p.getValorCompra() + "");
+        txtValorVenda.setText(df.format(p.getValorVenda()) + "");
+        txtValorCompra.setText(df.format(p.getValorCompra()) + "");
         cbUnidade.setSelectedIndex(p.getUnidade().getCodigo());
         txtMarca.setText(p.getMarca());
         txtModelo.setText(p.getModelo());
@@ -504,7 +506,7 @@ public class TelaProdutos extends javax.swing.JDialog {
         }
     }
 
-    public void desabilitarCampos(){
+    public void desabilitarCampos() {
         txtCodigo.setEnabled(false);
         txtDescricao.setEnabled(false);
         txtCdBarras.setEnabled(false);
@@ -517,8 +519,8 @@ public class TelaProdutos extends javax.swing.JDialog {
         txtFornecedor.setEnabled(false);
         txtReferencia.setEnabled(false);
     }
-    
-    public void habilitarCampos(){              
+
+    public void habilitarCampos() {
         txtCodigo.setEnabled(true);
         txtDescricao.setEnabled(true);
         txtCdBarras.setEnabled(true);
@@ -529,9 +531,9 @@ public class TelaProdutos extends javax.swing.JDialog {
         txtMarca.setEnabled(true);
         txtModelo.setEnabled(true);
         txtFornecedor.setEnabled(true);
-        txtReferencia.setEnabled(true);      
+        txtReferencia.setEnabled(true);
     }
-    
+
     public void limpar() {
         DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
         txtCodigo.setText("");
@@ -560,7 +562,7 @@ public class TelaProdutos extends javax.swing.JDialog {
         txtModelo.setText("");
         txtFornecedor.setText("");
         txtReferencia.setText("");
-    }  
+    }
 
     /**
      * @param args the command line arguments

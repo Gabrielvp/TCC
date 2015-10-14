@@ -104,7 +104,7 @@
                       <Component id="btnSalvar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnExcluir" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <EmptySpace pref="19" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -120,6 +120,8 @@
                       <Color PropertyName="color" blue="99" green="33" red="0" type="rgb"/>
                     </LineBorder>
                   </Border>
+                  <Font PropertyName="font" name="Tahoma" size="10" style="0"/>
+                  <Color PropertyName="color" blue="99" green="33" red="0" type="rgb"/>
                 </TitledBorder>
               </Border>
             </Property>
@@ -410,6 +412,8 @@
                       <Color PropertyName="color" blue="99" green="33" red="0" type="rgb"/>
                     </LineBorder>
                   </Border>
+                  <Font PropertyName="font" name="Tahoma" size="10" style="0"/>
+                  <Color PropertyName="color" blue="99" green="33" red="0" type="rgb"/>
                 </TitledBorder>
               </Border>
             </Property>
@@ -543,7 +547,8 @@
                           <Color PropertyName="color" blue="99" green="33" red="0" type="rgb"/>
                         </LineBorder>
                       </Border>
-                      <Font PropertyName="font" name="sansserif" size="10" style="1"/>
+                      <Font PropertyName="font" name="sansserif" size="10" style="0"/>
+                      <Color PropertyName="color" blue="99" green="33" red="0" type="rgb"/>
                     </TitledBorder>
                   </Border>
                 </Property>

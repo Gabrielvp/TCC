@@ -113,11 +113,6 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
 
         cbDia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbDia.setBorder(null);
-        cbDia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbDiaActionPerformed(evt);
-            }
-        });
         jPanel2.add(cbDia, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 47, 234, -1));
 
         jLabel6.setText("Dia:");
@@ -218,15 +213,10 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
 
         String dia = cbDia.getSelectedItem().toString();
         cDAO.insert(c);
-        limparTela();
         atualizaTabelaConfiguracao();
         limparTela();
         JOptionPane.showMessageDialog(this, "Configuração salva com sucesso!");
     }//GEN-LAST:event_btnSalvarActionPerformed
-
-    private void cbDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDiaActionPerformed
-
-    }//GEN-LAST:event_cbDiaActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int sel = tblConfiguracao.getSelectedRow();

@@ -733,7 +733,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         TelaPesquisaOrcamento tela = new TelaPesquisaOrcamento(null, rootPaneCheckingEnabled, 0);
         tela.setVisible(true);
         alterar = tela.alterar;
-        if(alterar){
+        if (alterar) {
             txtOrcamento.setEditable(false);
         }
         boolean aprovado = tela.o.isAprovado();
@@ -746,7 +746,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 botao();
             } else if (!aprovado) {
                 botaoVisible();
-            }            
+            }
             txtData.setText(sdfD.format(tela.o.getData()));
             txtOrcamento.setText(tela.o.getIdOrcamento() + "");
             txtCodPessoa.setText(tela.o.getIdPessoa() + "");
@@ -780,22 +780,26 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLimpaProdutoActionPerformed
 
     private void btnAprovadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprovadoActionPerformed
-        int id = Integer.parseInt(txtOrcamento.getText());
-        oDAO.update(id);
-        botao();
-        String vl = lblTotalOrcamento.getText().replaceAll(",", ".");
-        o.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
-        o.setIdPessoa(Integer.parseInt(txtCodPessoa.getText()));
-        o.setNome(txtNome.getText());
-        o.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
-        try {
-            o.setData(sdfD.parse(txtData.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
+        if (txtOrcamento.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Carregue um orçamento para ser aprovado!");
+        } else {
+            int id = Integer.parseInt(txtOrcamento.getText());
+            oDAO.update(id);
+            botao();
+            String vl = lblTotalOrcamento.getText().replaceAll(",", ".");
+            o.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+            o.setIdPessoa(Integer.parseInt(txtCodPessoa.getText()));
+            o.setNome(txtNome.getText());
+            o.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+            try {
+                o.setData(sdfD.parse(txtData.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            o.setTotal(Double.parseDouble(vl));
+            TelaContasAReceber tela = new TelaContasAReceber(null, rootPaneCheckingEnabled, o);
+            tela.setVisible(true);
         }
-        o.setTotal(Double.parseDouble(vl));
-        TelaContasAReceber tela = new TelaContasAReceber(null, rootPaneCheckingEnabled, o);
-        tela.setVisible(true);
     }//GEN-LAST:event_btnAprovadoActionPerformed
 
     public void atualizaTabela(int id) {

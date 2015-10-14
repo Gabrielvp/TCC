@@ -376,7 +376,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                     .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 700, 170));
@@ -479,6 +479,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         } else {
         }
         JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+        limparTela();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed
@@ -518,6 +519,23 @@ public class TelaContasAReceber extends javax.swing.JDialog {
 
     public void limparOrc() {
         txtOrcamento.setText("");
+    }
+    
+    public void limparTela(){
+        DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
+        txtCodigoPessoa.setText("");
+        txtNome.setText("");
+        txtOrcamento.setText("");
+        txtOrcamento.setText("");
+        txtFatura.setText("");
+        txtTotal.setText("");
+        txtData.setText("");
+        txtVencimento.setText("");
+        txtParcelas.setText("");
+        txtValorParcela.setText("");
+        txtEntrada.setText("");
+        txtIntervalo.setText("");
+        model.setNumRows(0);
     }
 
     public void combo() {

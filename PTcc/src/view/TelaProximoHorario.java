@@ -155,7 +155,7 @@ public class TelaProximoHorario extends javax.swing.JDialog {
             } catch (ParseException ex) {
                 Logger.getLogger(TelaProximoHorario.class.getName()).log(Level.SEVERE, null, ex);
             }
-            TelaAgendamento a = new TelaAgendamento(null, rootPaneCheckingEnabled, d, novo);
+            TelaAgendamento a = new TelaAgendamento(null, rootPaneCheckingEnabled, d, novo, null);
             a.setVisible(true);
             // this.dispose();
             removeLinha();

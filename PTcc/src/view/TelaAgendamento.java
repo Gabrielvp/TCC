@@ -28,11 +28,12 @@ public class TelaAgendamento extends javax.swing.JDialog {
     /**
      * Creates new form Agendamento
      */
-    public TelaAgendamento(java.awt.Frame parent, boolean modal, DataHora a, boolean novo) {
+    public TelaAgendamento(java.awt.Frame parent, boolean modal, DataHora a, boolean novo, Agenda ag) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
+        txtIdPessoa.setEditable(false);
         this.dtHora = a;
         lblData.setText(sdfD.format(dtHora.getData()));
         lblHorario.setText(sdfH.format(dtHora.getHorario()));
@@ -40,6 +41,13 @@ public class TelaAgendamento extends javax.swing.JDialog {
         this.novo = novo;
         if (!novo) {
             btnSalvar.setEnabled(false);
+        }
+        if(ag != null){
+            txtIdPessoa.setText(ag.getPessoa().getIdPessoa()+"");
+            txtNome.setText(ag.getPessoa().getNome());
+            txtCelular.setText(ag.getPessoa().getTelCelular());
+            txtaDescricao.setText(ag.getDescricao());
+            desabilitaJTxt();
         }
     }
 
@@ -49,6 +57,7 @@ public class TelaAgendamento extends javax.swing.JDialog {
     pessoaAgendamentoDAO pADAO = new pessoaAgendamentoDAO();
     agendamentoDAO aDAO = new agendamentoDAO();
     boolean novo;
+    boolean pessoaNova = true;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -98,7 +107,7 @@ public class TelaAgendamento extends javax.swing.JDialog {
 
         txtaDescricao.setColumns(20);
         txtaDescricao.setRows(5);
-        txtaDescricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)), "Descrição", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 0, 10), new java.awt.Color(0, 51, 153))); // NOI18N
+        txtaDescricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)), "Descrição", 0, 2, new java.awt.Font("Tahoma", 0, 10), new java.awt.Color(0, 51, 153))); // NOI18N
         jScrollPane1.setViewportView(txtaDescricao);
 
         btnFinanceiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Cifrão.png"))); // NOI18N
@@ -183,9 +192,7 @@ public class TelaAgendamento extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 0, 0)
-                                        .addComponent(jLabel6)))
+                                    .addComponent(jLabel6))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel8)
@@ -321,10 +328,15 @@ public class TelaAgendamento extends javax.swing.JDialog {
         } catch (ParseException ex) {
             Logger.getLogger(TelaAgendamento.class.getName()).log(Level.SEVERE, null, ex);
         }
-        pADAO.insert(p);
-        a.setIdPessoa(p.getIdPessoa());
-        aDAO.insert(a);
-
+        if (pessoaNova) {
+            pADAO.insert(p);
+            a.setIdPessoa(p.getIdPessoa());
+            aDAO.insert(a);
+        }
+        else{
+            a.setIdPessoa(Integer.parseInt(txtIdPessoa.getText()));
+            aDAO.insert(a);
+        }
         this.dispose();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -341,6 +353,8 @@ public class TelaAgendamento extends javax.swing.JDialog {
 
     private void tblPessoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPessoaMousePressed
         if (evt.getClickCount() == 2) {
+            txtIdPessoa.setEditable(false);
+            pessoaNova = false;
             CadastroClienteDAO cDAO = new CadastroClienteDAO();
             int linha = tblPessoa.getSelectedRow();
             String nome = tblPessoa.getValueAt(linha, 0).toString();
@@ -367,6 +381,12 @@ public class TelaAgendamento extends javax.swing.JDialog {
             }
         }
         return d;
+    }
+    
+    public void desabilitaJTxt(){
+        txtIdPessoa.setEditable(false);
+        txtNome.setEditable(false);
+        txtCelular.setEditable(false);
     }
 
     public void buscaNome(String nome) {
@@ -418,7 +438,7 @@ public class TelaAgendamento extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaAgendamento dialog = new TelaAgendamento(new javax.swing.JFrame(), true, null, true);
+                TelaAgendamento dialog = new TelaAgendamento(new javax.swing.JFrame(), true, null, true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -61,8 +61,7 @@ create table cReceber(
     total double not null,
     data date not null,
     vencimento date not null,
-    parcelas int,
-    quitado boolean not null,
+    parcelas int,   
     idPessoa int not null,
     pessoa varchar(150) not null,
 
@@ -70,7 +69,7 @@ create table cReceber(
 );
 
 create table parcelas_cReceber(
-	idParcelas_cReceber int not null auto_increment primary key,
+    idParcelas_cReceber int not null auto_increment primary key,
     fatura varchar(50) not null,
     parcelas varchar(50) not null,
     valor double not null,

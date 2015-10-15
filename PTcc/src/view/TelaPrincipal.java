@@ -11,6 +11,7 @@ import dao.agendamentoDAO;
 import entity.Agenda;
 import entity.Configuracao;
 import entity.DataHora;
+import entity.Pessoa;
 import java.awt.Color;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -54,6 +57,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     int cont = 0;
     CDataHora cDt = new CDataHora();
     ConfiguracaoDAO cDAO = new ConfiguracaoDAO();
+     DefaultTableCellRenderer direita = new DefaultTableCellRenderer();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -98,10 +102,10 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tela Principal - Agenda Financeira");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)), "", 0, 2));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", 0, 2, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
 
         jLabel3.setText("Nome:");
 
@@ -190,11 +194,11 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Horário", "Cliente", "Serviço"
+                "Horário", "ID", "Cliente", "Serviço", "Telefone"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -217,9 +221,13 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             tblPrincipal.getColumnModel().getColumn(0).setResizable(false);
             tblPrincipal.getColumnModel().getColumn(0).setPreferredWidth(25);
             tblPrincipal.getColumnModel().getColumn(1).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tblPrincipal.getColumnModel().getColumn(1).setPreferredWidth(10);
             tblPrincipal.getColumnModel().getColumn(2).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(2).setPreferredWidth(300);
+            tblPrincipal.getColumnModel().getColumn(2).setPreferredWidth(150);
+            tblPrincipal.getColumnModel().getColumn(3).setResizable(false);
+            tblPrincipal.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tblPrincipal.getColumnModel().getColumn(4).setResizable(false);
+            tblPrincipal.getColumnModel().getColumn(4).setPreferredWidth(70);
         }
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 211, 630, 382));
@@ -416,8 +424,11 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
     private void tblPrincipalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPrincipalMousePressed
         DataHora dt = new DataHora();
+        DefaultTableModel mode = (DefaultTableModel)tblPrincipal.getModel();
         SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
+        Agenda a = new Agenda();
+        Pessoa p = new Pessoa();
         int linha = tblPrincipal.getSelectedRow();
 
         if (evt.getClickCount() == 2) {
@@ -431,12 +442,17 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
             if (tblPrincipal.getValueAt(linha, 1).toString().equals("")) {
                 novo = true;
-                TelaAgendamento a = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo);
-                a.setVisible(true);
+                TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, null);
+                tela.setVisible(true);
             } else {
-                novo = false;
-                TelaAgendamento a = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo);
-                a.setVisible(true);
+                novo = false;  
+                p.setIdPessoa(Integer.parseInt(tblPrincipal.getValueAt(linha, 1).toString()));
+                p.setNome(tblPrincipal.getValueAt(linha, 2).toString());
+                p.setTelCelular(tblPrincipal.getValueAt(linha, 4).toString());
+                a.setDescricao(tblPrincipal.getValueAt(linha, 3).toString());
+                a.setPessoa(p);
+                TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, a);
+                tela.setVisible(true);
             }
         }
         limparTabela();
@@ -687,6 +703,8 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }
 
     public void atualizaTabela() {
+        direita.setHorizontalAlignment(SwingConstants.RIGHT);
+        tblPrincipal.getColumnModel().getColumn(1).setCellRenderer(direita);
         DefaultTableModel model
                 = (DefaultTableModel) this.tblPrincipal.getModel();
 
@@ -711,8 +729,10 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             verificaHora = tblPrincipal.getValueAt(j, 0).toString() + ":00";
             for (int i = 0; i < listaAgendamentos.size(); i++) {
                 if (listaAgendamentos.get(i).getHora().toString().equals(verificaHora)) {
-                    model.setValueAt(listaAgendamentos.get(i), j, 2);
-                    model.setValueAt(listaAgendamentos.get(i).getPessoa().getNome(), j, 1);
+                    model.setValueAt(listaAgendamentos.get(i), j, 3);
+                    model.setValueAt(listaAgendamentos.get(i).getPessoa().getIdPessoa(), j, 1);
+                    model.setValueAt(listaAgendamentos.get(i).getPessoa().getNome(), j, 2);
+                    model.setValueAt(listaAgendamentos.get(i).getPessoa().getTelCelular(), j, 4);
                 }
             }
         }

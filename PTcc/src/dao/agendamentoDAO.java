@@ -105,7 +105,7 @@ public class agendamentoDAO extends MySQL {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = c.prepareStatement("SELECT agendamento.hora, agendamento.descricao, agendamento.data, pessoa.nome"
+                    = c.prepareStatement("SELECT agendamento.hora, agendamento.descricao, agendamento.data, pessoa.nome, pessoa.idPessoa, pessoa.telCelular"
                             + " FROM agendamento INNER JOIN pessoa on"
                             + " pessoa.idPessoa = agendamento.idPessoa WHERE data = ? ORDER BY hora ASC");
             ps.setDate(1, data);
@@ -118,6 +118,8 @@ public class agendamentoDAO extends MySQL {
                 agenda.setHora(rs.getTime("Hora"));
                 agenda.setData(rs.getDate("Data"));
                 pessoa.setNome(rs.getString("Nome"));
+                pessoa.setIdPessoa(rs.getInt("idPessoa"));
+                pessoa.setTelCelular(rs.getString("telCelular"));
 
                 agenda.setPessoa(pessoa);
                 lista.add(agenda);

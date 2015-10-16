@@ -195,27 +195,31 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        Configuracao c = new Configuracao();
-        ConfiguracaoDAO cDAO = new ConfiguracaoDAO();
+        if (txtHoraInicio.getText().equals("  :  ") || txtHoraFim.getText().equals("  :  ") || txtIntervalo.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Preencha todos os campos");
+        } else {
+            Configuracao c = new Configuracao();
+            ConfiguracaoDAO cDAO = new ConfiguracaoDAO();
 
-        try {
-            c.setHoraInicial(sdfH.parse(txtHoraInicio.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaConfiguracoes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            c.setHoraFinal(sdfH.parse(txtHoraFim.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaConfiguracoes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        c.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
-        c.setDia((EnumDiaSemana) cbDia.getSelectedItem());
+            try {
+                c.setHoraInicial(sdfH.parse(txtHoraInicio.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaConfiguracoes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                c.setHoraFinal(sdfH.parse(txtHoraFim.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaConfiguracoes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            c.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
+            c.setDia((EnumDiaSemana) cbDia.getSelectedItem());
 
-        String dia = cbDia.getSelectedItem().toString();
-        cDAO.insert(c);
-        atualizaTabelaConfiguracao();
-        limparTela();
-        JOptionPane.showMessageDialog(this, "Configuração salva com sucesso!");
+            String dia = cbDia.getSelectedItem().toString();
+            cDAO.insert(c);
+            atualizaTabelaConfiguracao();
+            limparTela();
+            JOptionPane.showMessageDialog(this, "Configuração salva com sucesso!");
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed

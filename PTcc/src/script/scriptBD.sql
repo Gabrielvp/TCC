@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Agendamento` (
   `idAgendamento` INT NOT NULL AUTO_INCREMENT,
   `data` DATE NOT NULL,
   `hora` TIME NOT NULL,
-  `descricao` VARCHAR(45) NOT NULL,
+  `descricao` VARCHAR(300) NOT NULL,
   `dia` VARCHAR(45) NOT NULL,
   `idPessoa` INT NOT NULL,
   PRIMARY KEY (`idAgendamento`, `idPessoa`),

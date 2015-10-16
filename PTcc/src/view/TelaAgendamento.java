@@ -47,6 +47,8 @@ public class TelaAgendamento extends javax.swing.JDialog {
             txtNome.setText(ag.getPessoa().getNome());
             txtCelular.setText(ag.getPessoa().getTelCelular());
             txtaDescricao.setText(ag.getDescricao());
+            int con = ag.getDescricao().length();
+            lblContador.setText(260 - con +"");
             desabilitaJTxt();
         }
         txtaDescricao.setLineWrap(true);

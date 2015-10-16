@@ -761,6 +761,8 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         for (int i = 0; i < tblPrincipal.getRowCount(); i++) {
             model.setValueAt(text, i, 2);
             model.setValueAt(text, i, 1);
+            model.setValueAt(text, i, 3);
+            model.setValueAt(text, i, 4);
         }
     }
 

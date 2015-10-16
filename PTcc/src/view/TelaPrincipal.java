@@ -57,7 +57,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     int cont = 0;
     CDataHora cDt = new CDataHora();
     ConfiguracaoDAO cDAO = new ConfiguracaoDAO();
-     DefaultTableCellRenderer direita = new DefaultTableCellRenderer();
+    DefaultTableCellRenderer direita = new DefaultTableCellRenderer();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,10 +102,10 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tela Principal - Agenda Financeira");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)), "", 0, 2));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", 0, 2, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
 
         jLabel3.setText("Nome:");
 
@@ -258,6 +258,11 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         btnProximo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnProximoMousePressed(evt);
+            }
+        });
+        btnProximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProximoActionPerformed(evt);
             }
         });
         jPanel2.add(btnProximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 180, -1, -1));
@@ -424,7 +429,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
     private void tblPrincipalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPrincipalMousePressed
         DataHora dt = new DataHora();
-        DefaultTableModel mode = (DefaultTableModel)tblPrincipal.getModel();
+        DefaultTableModel mode = (DefaultTableModel) tblPrincipal.getModel();
         SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
         Agenda a = new Agenda();
@@ -444,8 +449,13 @@ public final class TelaPrincipal extends javax.swing.JFrame {
                 novo = true;
                 TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, null);
                 tela.setVisible(true);
+                limparTabela();
+                dataTela();
+                atualizaTabela();
+                atualizaDiaSemanaTela();
+                cont = 0;
             } else {
-                novo = false;  
+                novo = false;
                 p.setIdPessoa(Integer.parseInt(tblPrincipal.getValueAt(linha, 1).toString()));
                 p.setNome(tblPrincipal.getValueAt(linha, 2).toString());
                 p.setTelCelular(tblPrincipal.getValueAt(linha, 4).toString());
@@ -453,11 +463,17 @@ public final class TelaPrincipal extends javax.swing.JFrame {
                 a.setPessoa(p);
                 TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, a);
                 tela.setVisible(true);
+                limparTabela();
+                dataTela();
+                atualizaTabela();
+                atualizaDiaSemanaTela();
             }
         }
         limparTabela();
         atualizaTabela();
         atualizaDiaSemanaTela();
+
+
     }//GEN-LAST:event_tblPrincipalMousePressed
 
     private void btnCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaixaActionPerformed
@@ -618,6 +634,10 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         TelaFormaDePagamento tela = new TelaFormaDePagamento(this, novo);
         tela.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnProximoActionPerformed
 
     String inicio;
     String fim;

@@ -448,12 +448,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             if (tblPrincipal.getValueAt(linha, 1).toString().equals("")) {
                 novo = true;
                 TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, null);
-                tela.setVisible(true);
-                limparTabela();
-                dataTela();
-                atualizaTabela();
-                atualizaDiaSemanaTela();
-                cont = 0;
+                tela.setVisible(true);                
             } else {
                 novo = false;
                 p.setIdPessoa(Integer.parseInt(tblPrincipal.getValueAt(linha, 1).toString()));
@@ -462,11 +457,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
                 a.setDescricao(tblPrincipal.getValueAt(linha, 3).toString());
                 a.setPessoa(p);
                 TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, a);
-                tela.setVisible(true);
-                limparTabela();
-                dataTela();
-                atualizaTabela();
-                atualizaDiaSemanaTela();
+                tela.setVisible(true);                
             }
         }
         limparTabela();

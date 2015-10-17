@@ -10,8 +10,6 @@ import dao.agendamentoDAO;
 import entity.Pessoa;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,7 +25,9 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        setResizable(false);        
+        setResizable(false);
+        jTxtObservacoes.setLineWrap(true);
+        jTxtObservacoes.setWrapStyleWord(true);
     }
 
     CadastroClienteDAO pDAO = new CadastroClienteDAO();
@@ -76,6 +76,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jTxtObservacoes = new javax.swing.JTextArea();
         btnSalvar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
+        btnSalvar1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         ckbCadastroIncompleto = new javax.swing.JCheckBox();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -116,6 +117,11 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(511, 151, -1, -1));
 
         txtEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtEstado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtEstadoKeyPressed(evt);
+            }
+        });
         jPanel1.add(txtEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(511, 171, 58, 20));
 
         jLabel5.setText("Cidade");
@@ -253,6 +259,14 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             }
         });
 
+        btnSalvar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
+        btnSalvar1.setText("Limpar");
+        btnSalvar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvar1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -272,9 +286,11 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                         .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSalvar)
+                .addComponent(btnSalvar1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnExcluir)
+                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
         );
         jPanel4Layout.setVerticalGroup(
@@ -288,8 +304,9 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalvar)
-                    .addComponent(btnExcluir))
+                    .addComponent(btnExcluir)
+                    .addComponent(btnSalvar1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -344,6 +361,11 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         });
         tblPessoa.setShowHorizontalLines(true);
         tblPessoa.setShowVerticalLines(true);
+        tblPessoa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblPessoaMousePressed(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblPessoa);
         if (tblPessoa.getColumnModel().getColumnCount() > 0) {
             tblPessoa.getColumnModel().getColumn(0).setResizable(false);
@@ -446,6 +468,20 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         String nome = txtNome.getText();
         atualizaTabelaPessoa(nome);
     }//GEN-LAST:event_txtNomeKeyPressed
+
+    private void btnSalvar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvar1ActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_btnSalvar1ActionPerformed
+
+    private void tblPessoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPessoaMousePressed
+        if (evt.getClickCount() == 2) {
+            alterar();
+        }
+    }//GEN-LAST:event_tblPessoaMousePressed
+
+    private void txtEstadoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEstadoKeyPressed
+        txtEstado.setSelectionStart(1);
+    }//GEN-LAST:event_txtEstadoKeyPressed
     public boolean verificaCadastroCompleto() {
         if (txtNome.getText().equals("")) {
             return false;
@@ -594,7 +630,10 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnLimparTela;
+    private javax.swing.JButton btnLimparTela1;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnSalvar1;
     private javax.swing.JCheckBox ckbCadastroIncompleto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

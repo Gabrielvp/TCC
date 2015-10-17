@@ -5,6 +5,25 @@
  */
 package view;
 
+import dao.CPagarDAO;
+import dao.FormaPagamentoDAO;
+import dao.Parcelas_CPagarDAO;
+import entity.CPagar;
+import entity.FormaPagamento;
+import entity.Parcelas_CPagar;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Gabriel1
@@ -19,7 +38,14 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
+        String data = sdfD.format(new Date());
+        txtData.setText(data);
+        combo();
     }
+    
+    SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+    DecimalFormat df = new DecimalFormat("####.00");
+    DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,7 +69,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         txtParcelas = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblParcelas = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         txtNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -58,7 +84,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         btnPesquisaCliente = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        cbFormaPagamento = new javax.swing.JComboBox();
         jLabel13 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -74,6 +100,11 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         btnSalvar.setBackground(new java.awt.Color(255, 255, 255));
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Apply.png"))); // NOI18N
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 400, -1, -1));
 
         btnExcluir.setBackground(new java.awt.Color(255, 255, 255));
@@ -96,16 +127,26 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         jLabel11.setText("Intervalo:");
 
         txtIntervalo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtIntervalo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtIntervaloKeyPressed(evt);
+            }
+        });
 
         txtValorParcela.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
         jLabel7.setText("Parcelas:");
 
         txtParcelas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtParcelas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtParcelasKeyPressed(evt);
+            }
+        });
 
         jLabel8.setText("Valor R$:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblParcelas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -121,12 +162,12 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setShowHorizontalLines(true);
-        jTable1.setShowVerticalLines(true);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        tblParcelas.setShowHorizontalLines(true);
+        tblParcelas.setShowVerticalLines(true);
+        jScrollPane1.setViewportView(tblParcelas);
+        if (tblParcelas.getColumnModel().getColumnCount() > 0) {
+            tblParcelas.getColumnModel().getColumn(1).setResizable(false);
+            tblParcelas.getColumnModel().getColumn(2).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -225,7 +266,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
 
         jLabel12.setText("Forma Pagamento");
 
-        jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
+        cbFormaPagamento.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel13.setText("Código:");
 
@@ -243,7 +284,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel13)
@@ -294,7 +335,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                             .addComponent(jLabel1))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -344,13 +385,128 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPesquisaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaClienteActionPerformed
-       String nome = txtNome.getText();
-        TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome);
-       tela.setVisible(true);
-       txtNome.setText(tela.p.getNome());
-       txtCodigo.setText(tela.p.getIdPessoa()+"");
+        String nome = txtNome.getText();
+        if (nome.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+        } else {
+            TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome);
+            tela.setVisible(true);
+            txtNome.setText(tela.p.getNome());
+            txtCodigo.setText(tela.p.getIdPessoa() + "");
+        }
     }//GEN-LAST:event_btnPesquisaClienteActionPerformed
 
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        CPagarDAO cpDAO = new CPagarDAO();
+        CPagar cp = new CPagar();
+        Parcelas_CPagar pCP = new Parcelas_CPagar();
+        Parcelas_CPagarDAO pcpDAO = new Parcelas_CPagarDAO();
+        
+        String vl = txtTotal.getText().replaceAll(",", ".");
+        cp.setIdPessoa(Integer.parseInt(txtCodigo.getText()));
+        cp.setPessoa(txtNome.getText());
+        cp.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
+        cp.setFatura(txtFatura.getText());
+        cp.setTotal(Double.parseDouble(vl));
+        try {
+            cp.setData(sdfD.parse(txtData.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            cp.setVencimento(sdfD.parse(txtVencimento.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        cpDAO.insert(cp);
+        if (!txtParcelas.getText().equals(null)) {
+            int linhas = tblParcelas.getRowCount();
+            for (int i = 0; i < linhas; i++) {
+                String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
+                pCP.setFatura(txtFatura.getText());
+                pCP.setParcelas(tblParcelas.getValueAt(i, 0).toString());
+                pCP.setValor(Double.parseDouble(valor));
+                try {
+                    pCP.setEntrada(sdfD.parse(txtEntrada.getText()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    pCP.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                pCP.setIntervalo(Integer.parseInt(txtIntervalo.getText()));                
+                pCP.setIdCPagar(cp.getIdCPagar());
+                
+                pcpDAO.insert(pCP);
+            }
+        } else {
+        }
+        JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+        limparTela();
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed
+       if (evt.getKeyCode() == evt.VK_ENTER) {
+            String vl = txtTotal.getText().replaceAll(",", ".");
+            double valor = Double.parseDouble(vl);
+            int parcelas = Integer.parseInt(txtParcelas.getText());
+            double resultado = valor / parcelas;
+            txtValorParcela.setText(df.format(resultado) + "");
+        }
+    }//GEN-LAST:event_txtParcelasKeyPressed
+
+    private void txtIntervaloKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIntervaloKeyPressed
+      int contador = 0;
+        DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
+            tblParcelas.getColumnModel().getColumn(1).setCellRenderer(esquerda);
+            tblParcelas.getColumnModel().getColumn(2).setCellRenderer(esquerda);
+            try {
+                int intervalo = Integer.parseInt(txtIntervalo.getText());
+                int parcelas = Integer.parseInt(txtParcelas.getText());
+                Date data = sdfD.parse(txtEntrada.getText());
+                GregorianCalendar calInicio = new GregorianCalendar();
+                for (int i = 0; i < parcelas; i++) {
+                    contador++;
+                    calInicio.add(GregorianCalendar.DAY_OF_MONTH, intervalo);
+                    data = calInicio.getTime();
+                    model.addRow(new Object[]{txtFatura.getText() + "/" + contador, txtValorParcela.getText(), sdfD.format(data)});
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_txtIntervaloKeyPressed
+
+    public void combo() {
+        cbFormaPagamento.removeAll();
+        cbFormaPagamento.removeAllItems();
+        cbFormaPagamento.addItem("Selecione a Forma de Pagamento");
+        FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
+        List<FormaPagamento> lista = fpDAO.lista();
+        for (FormaPagamento fp : lista) {
+            cbFormaPagamento.addItem(fp.getDescricao());
+        }
+    }
+    
+     public void limparTela(){
+        DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
+        txtCodigo.setText("");
+        txtNome.setText("");        
+        txtFatura.setText("");
+        txtTotal.setText("");
+        txtData.setText("");
+        txtVencimento.setText("");
+        txtParcelas.setText("");
+        txtValorParcela.setText("");
+        txtEntrada.setText("");
+        txtIntervalo.setText("");
+        model.setNumRows(0);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -405,7 +561,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     private javax.swing.JButton btnPesquisaCliente;
     private javax.swing.JButton btnPesquisaOrcamento;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox cbFormaPagamento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -422,7 +578,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblParcelas;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JFormattedTextField txtData;
     private javax.swing.JFormattedTextField txtEntrada;

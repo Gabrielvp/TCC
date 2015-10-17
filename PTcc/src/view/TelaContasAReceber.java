@@ -455,33 +455,44 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
         }
         crDAO.insert(cr);
-        if (!txtParcelas.getText().equals(null)) {
-            int linhas = tblParcelas.getRowCount();
-            for (int i = 0; i < linhas; i++) {
-                String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
-                pCR.setFatura(txtFatura.getText());
-                pCR.setParcelas(tblParcelas.getValueAt(i, 0).toString());
-                pCR.setValor(Double.parseDouble(valor));
-                try {
-                    pCR.setEntrada(sdfD.parse(txtEntrada.getText()));
-                } catch (ParseException ex) {
-                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+        if (!txtParcelas.getText().equals("")) {
+            if (txtValorParcela.getText().equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Pressione enter no campo parcelas para gerar o valor");
+            } else if (txtEntrada.getText().equals("  /  /    ")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite a data de entrada");
+            } else if (txtIntervalo.getText().equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite o intervalo");
+            } else {
+                int linhas = tblParcelas.getRowCount();
+                for (int i = 0; i < linhas; i++) {
+                    String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
+                    pCR.setFatura(txtFatura.getText());
+                    pCR.setParcelas(tblParcelas.getValueAt(i, 0).toString());
+                    pCR.setValor(Double.parseDouble(valor));
+                    try {
+                        pCR.setEntrada(sdfD.parse(txtEntrada.getText()));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    try {
+                        pCR.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    pCR.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
+                    pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+                    pCR.setIdCReceber(cr.getIdCReceber());
+
+                    pCRDAO.insert(pCR);
                 }
-                try {
-                    pCR.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
-                } catch (ParseException ex) {
-                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                pCR.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
-                pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
-                pCR.setIdCReceber(cr.getIdCReceber());
-                
-                pCRDAO.insert(pCR);
             }
+            JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+            limparTela();
         } else {
+            JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+            limparTela();
         }
-        JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
-        limparTela();
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed
@@ -522,12 +533,11 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     public void limparOrc() {
         txtOrcamento.setText("");
     }
-    
-    public void limparTela(){
+
+    public void limparTela() {
         DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
         txtCodigoPessoa.setText("");
         txtNome.setText("");
-        txtOrcamento.setText("");
         txtOrcamento.setText("");
         txtFatura.setText("");
         txtTotal.setText("");

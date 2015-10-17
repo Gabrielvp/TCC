@@ -20,7 +20,16 @@ public class CPagar {
     private Date vencimento;
     private int parcelas;
     private int idPessoa;
+    private String pessoa;
     private String formPagamento;
+
+    public String getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(String pessoa) {
+        this.pessoa = pessoa;
+    }
 
     public int getIdCPagar() {
         return idCPagar;

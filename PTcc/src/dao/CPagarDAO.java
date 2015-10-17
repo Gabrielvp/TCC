@@ -28,7 +28,7 @@ public class CPagarDAO extends MySQL {
         try {
             PreparedStatement ps
                     = c.prepareStatement("INSERT INTO cpagar (fatura, total, data, vencimento, parcelas, idPessoa, formPagamento)"
-                            + "VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, cpagar.getFatura());
             ps.setDouble(2, cpagar.getTotal());
             ps.setString(3, sdfD.format(cpagar.getData()));

@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Pessoa` (
 
 create table cPagar(
     idCPagar integer not null auto_increment primary key,
-    formPagamento int not null,
+    formPagamento varchar(50) not null,
     fatura varchar(20) not null,
     total double not null,
     data date not null,
@@ -52,6 +52,19 @@ create table cPagar(
     idPessoa int not null,
     
     constraint FK_pessoa_pagar foreign key (idPessoa) references pessoa (idPessoa)
+);
+
+create table parcelas_cPagar(
+    idParcelas_cPagar int not null auto_increment primary key,
+    fatura varchar(50) not null,
+    parcelas varchar(50) not null,
+    valor double not null,
+    entrada Date not null,
+    vencimento Date not null,
+    intervalo int,   
+    idCPagar int not null,
+    
+    constraint fk_cPagar foreign key (idCPagar) references cPagar (idCPagar)
 );
 
 create table cReceber(

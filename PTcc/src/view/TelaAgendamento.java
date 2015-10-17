@@ -48,7 +48,7 @@ public class TelaAgendamento extends javax.swing.JDialog {
             txtCelular.setText(ag.getPessoa().getTelCelular());
             txtaDescricao.setText(ag.getDescricao());
             int con = ag.getDescricao().length();
-            lblContador.setText(260 - con +"");
+            lblContador.setText(260 - con + "");
             desabilitaJTxt();
         }
         txtaDescricao.setLineWrap(true);
@@ -291,6 +291,8 @@ public class TelaAgendamento extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblPessoa.setShowHorizontalLines(true);
+        tblPessoa.setShowVerticalLines(true);
         tblPessoa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblPessoaMousePressed(evt);
@@ -331,42 +333,45 @@ public class TelaAgendamento extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         Pessoa p = new Pessoa();
         Agenda a = new Agenda();
-        p.setNome(txtNome.getText());
-        p.setTelCelular(txtCelular.getText());
-        p.setCompleto(false);
-        a.setDescricao(txtaDescricao.getText());
-        a.setDia(lblDia.getText());
-        try {
-            a.setData(sdfD.parse(lblData.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaAgendamento.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            a.setHora(sdfH.parse(lblHorario.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaAgendamento.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (pessoaNova) {
-            pADAO.insert(p);
-            a.setIdPessoa(p.getIdPessoa());
-            aDAO.insert(a);
+
+        if (txtNome.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira um Nome");
+        } else if (txtCelular.getText().equals("(  )     -    ")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira um Telefone");
+        } else if (txtaDescricao.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira uma descrição");
         } else {
-            a.setIdPessoa(Integer.parseInt(txtIdPessoa.getText()));
-            aDAO.insert(a);
-        }
+            p.setNome(txtNome.getText());
+            p.setTelCelular(txtCelular.getText());
+            p.setCompleto(false);
+            a.setDescricao(txtaDescricao.getText());
+            a.setDia(lblDia.getText());
+            try {
+                a.setData(sdfD.parse(lblData.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaAgendamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                a.setHora(sdfH.parse(lblHorario.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaAgendamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (pessoaNova) {
+                pADAO.insert(p);
+                a.setIdPessoa(p.getIdPessoa());
+                aDAO.insert(a);
+            } else {
+                a.setIdPessoa(Integer.parseInt(txtIdPessoa.getText()));
+                aDAO.insert(a);
+            }
         this.dispose();
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnFinanceiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinanceiroActionPerformed
         TelaContasAReceber f = new TelaContasAReceber(null, rootPaneCheckingEnabled, null);
         f.setVisible(true);
     }//GEN-LAST:event_btnFinanceiroActionPerformed
-
-    private void txtNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyReleased
-        String nome = txtNome.getText();
-        buscaNome(nome);
-
-    }//GEN-LAST:event_txtNomeKeyReleased
 
     private void tblPessoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPessoaMousePressed
         if (evt.getClickCount() == 2) {
@@ -387,9 +392,14 @@ public class TelaAgendamento extends javax.swing.JDialog {
     private void txtaDescricaoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtaDescricaoKeyPressed
         txtaDescricao.setSelectionStart(258);
         int num = 260;
-        int cont = Integer.parseInt(txtaDescricao.getText().length()+"");
-        lblContador.setText(num - cont+"");        
+        int cont = Integer.parseInt(txtaDescricao.getText().length() + "");
+        lblContador.setText(num - cont + "");
     }//GEN-LAST:event_txtaDescricaoKeyPressed
+
+    private void txtNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyReleased
+        String nome = txtNome.getText();
+        buscaNome(nome);
+    }//GEN-LAST:event_txtNomeKeyReleased
 
     public boolean ehInteiro(String s) {
 

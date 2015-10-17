@@ -75,6 +75,8 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblOrcamento.setShowHorizontalLines(true);
+        tblOrcamento.setShowVerticalLines(true);
         tblOrcamento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblOrcamentoMousePressed(evt);

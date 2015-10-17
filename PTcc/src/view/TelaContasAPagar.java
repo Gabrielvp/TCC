@@ -121,6 +121,8 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setShowHorizontalLines(true);
+        jTable1.setShowVerticalLines(true);
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(1).setResizable(false);

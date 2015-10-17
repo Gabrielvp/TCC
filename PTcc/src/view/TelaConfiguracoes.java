@@ -144,6 +144,8 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
                 "Dia", "Inicio", "Fim", "Intervalo"
             }
         ));
+        tblConfiguracao.setShowHorizontalLines(true);
+        tblConfiguracao.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblConfiguracao);
         if (tblConfiguracao.getColumnModel().getColumnCount() > 0) {
             tblConfiguracao.getColumnModel().getColumn(0).setPreferredWidth(50);

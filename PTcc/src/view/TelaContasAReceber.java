@@ -173,6 +173,8 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblParcelas.setShowHorizontalLines(true);
+        tblParcelas.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblParcelas);
         if (tblParcelas.getColumnModel().getColumnCount() > 0) {
             tblParcelas.getColumnModel().getColumn(0).setResizable(false);

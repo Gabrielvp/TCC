@@ -77,6 +77,8 @@ public class TelaProximoHorario extends javax.swing.JDialog {
                 "Dia", "Data", "Horário"
             }
         ));
+        tblHorarioLivre.setShowHorizontalLines(true);
+        tblHorarioLivre.setShowVerticalLines(true);
         tblHorarioLivre.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblHorarioLivreMousePressed(evt);
@@ -157,7 +159,7 @@ public class TelaProximoHorario extends javax.swing.JDialog {
             }
             TelaAgendamento a = new TelaAgendamento(null, rootPaneCheckingEnabled, d, novo, null);
             a.setVisible(true);
-            // this.dispose();
+            this.dispose();
             removeLinha();
         }
     }//GEN-LAST:event_tblHorarioLivreMousePressed
@@ -253,17 +255,12 @@ public class TelaProximoHorario extends javax.swing.JDialog {
     }
 
     public void removeLinha() {
-        DefaultTableModel model
-                = (DefaultTableModel) this.tblHorarioLivre.getModel();
-        agendamentoDAO aDAO = new agendamentoDAO();
-        int linha = tblHorarioLivre.getRowCount() - 1;
-        String tb = tblHorarioLivre.getValueAt(linha, 1).toString();
+        DefaultTableModel model = (DefaultTableModel) this.tblHorarioLivre.getModel();
+        agendamentoDAO aDAO = new agendamentoDAO();       
 
         String verificaHora;
         String verificaData;
-        GregorianCalendar calInicio = new GregorianCalendar();
-        calInicio.add(GregorianCalendar.DAY_OF_MONTH, 1);
-        dt = calInicio.getTime();
+        GregorianCalendar calInicio = new GregorianCalendar();           
         java.sql.Date data;
         data = new java.sql.Date(dt.getTime());
         for (int j = 0; j < tblHorarioLivre.getRowCount(); j++) {

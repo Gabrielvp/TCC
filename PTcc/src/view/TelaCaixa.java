@@ -76,6 +76,8 @@ public class TelaCaixa extends javax.swing.JDialog {
                 "Cliente", "Descrição", "Data", "Valor", "Vencimento"
             }
         ));
+        tblSaida.setShowHorizontalLines(true);
+        tblSaida.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblSaida);
         if (tblSaida.getColumnModel().getColumnCount() > 0) {
             tblSaida.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -244,6 +246,8 @@ public class TelaCaixa extends javax.swing.JDialog {
                 "Cliente", "Descrição", "Data", "Valor", "Vencimento"
             }
         ));
+        tblEntrada.setShowHorizontalLines(true);
+        tblEntrada.setShowVerticalLines(true);
         jScrollPane3.setViewportView(tblEntrada);
         if (tblEntrada.getColumnModel().getColumnCount() > 0) {
             tblEntrada.getColumnModel().getColumn(0).setPreferredWidth(150);

@@ -51,16 +51,7 @@ public class TelaPesquisaAgendamento extends javax.swing.JDialog {
 
         tblAgendamento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Nome", "Data", "Horário", "Dia"
@@ -74,6 +65,8 @@ public class TelaPesquisaAgendamento extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblAgendamento.setShowHorizontalLines(true);
+        tblAgendamento.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblAgendamento);
         if (tblAgendamento.getColumnModel().getColumnCount() > 0) {
             tblAgendamento.getColumnModel().getColumn(0).setResizable(false);
@@ -108,6 +101,7 @@ public class TelaPesquisaAgendamento extends javax.swing.JDialog {
         if (teste) {
             List<Agenda> listaAntiga = aDAO.listarAgendamentosPessoaRealizadas(nome);
             for (int i = 0; i < listaAntiga.size(); i++) {
+                model.addRow(new Object[]{});
                 model.setValueAt(listaAntiga.get(i).getPessoa().getNome(), i, 0);
                 model.setValueAt(sdfD.format(listaAntiga.get(i).getData()), i, 1);
                 model.setValueAt(listaAntiga.get(i).getHora(), i, 2);
@@ -116,6 +110,7 @@ public class TelaPesquisaAgendamento extends javax.swing.JDialog {
         } else {
             List<Agenda> lista = aDAO.listarAgendamentosPessoa(nome);
             for (int i = 0; i < lista.size(); i++) {
+                model.addRow(new Object[]{});
                 model.setValueAt(lista.get(i).getPessoa().getNome(), i, 0);
                 model.setValueAt(sdfD.format(lista.get(i).getData()), i, 1);
                 model.setValueAt(lista.get(i).getHora(), i, 2);

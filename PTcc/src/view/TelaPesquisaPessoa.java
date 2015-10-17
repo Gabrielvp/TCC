@@ -63,6 +63,8 @@ public class TelaPesquisaPessoa extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblPessoa.setShowHorizontalLines(true);
+        tblPessoa.setShowVerticalLines(true);
         tblPessoa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblPessoaMousePressed(evt);

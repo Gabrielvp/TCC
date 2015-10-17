@@ -162,7 +162,7 @@ public class CadastroClienteDAO extends MySQL {
         List<Pessoa> listaBuscaNome = new ArrayList<Pessoa>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome FROM pessoa WHERE completo = 1 and nome like ?");
+            PreparedStatement ps = c.prepareStatement("SELECT idPessoa, nome, cpf, email, telCelular FROM pessoa WHERE completo = 1 and nome like ?");
             ps.setString(1, nome + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -170,6 +170,9 @@ public class CadastroClienteDAO extends MySQL {
                 Pessoa pessoa = new Pessoa();
                 pessoa.setIdPessoa(rs.getInt("idPessoa"));
                 pessoa.setNome(rs.getString("Nome"));
+                pessoa.setCpf(rs.getString("CPF"));
+                pessoa.setEmail(rs.getString("email"));
+                pessoa.setTelCelular(rs.getString("telCelular"));
 
                 listaBuscaNome.add(pessoa);
 

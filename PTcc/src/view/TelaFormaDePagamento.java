@@ -154,6 +154,8 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblFormaPagamento.setShowHorizontalLines(true);
+        tblFormaPagamento.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblFormaPagamento);
         if (tblFormaPagamento.getColumnModel().getColumnCount() > 0) {
             tblFormaPagamento.getColumnModel().getColumn(0).setResizable(false);

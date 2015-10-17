@@ -10,6 +10,8 @@ import dao.agendamentoDAO;
 import entity.Pessoa;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,7 +27,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(false);        
     }
 
     CadastroClienteDAO pDAO = new CadastroClienteDAO();
@@ -74,17 +76,17 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jTxtObservacoes = new javax.swing.JTextArea();
         btnSalvar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblPessoa = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         ckbCadastroIncompleto = new javax.swing.JCheckBox();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblPessoa = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Pessoas - Agenda Financeira");
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Dados", 0, 2, new java.awt.Font("Tahoma", 0, 10), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Dados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 0, 10), new java.awt.Color(0, 51, 153))); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Nome");
@@ -162,13 +164,13 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jLabel11.setText("e-mail");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(327, 59, -1, -1));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Telefones", 0, 2, new java.awt.Font("Tahoma", 0, 10), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Telefones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 0, 10), new java.awt.Color(0, 51, 153))); // NOI18N
 
         jLabel10.setText("Residencial");
 
         txtFoneResidencial.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
-            txtFoneResidencial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)####-####")));
+            txtFoneResidencial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) ####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -177,7 +179,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
         txtFoneCelular.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
-            txtFoneCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)####-####")));
+            txtFoneCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) ####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -186,7 +188,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
         txtFoneComercial.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
-            txtFoneComercial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)####-####")));
+            txtFoneComercial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) ####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -232,7 +234,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
         jTxtObservacoes.setColumns(20);
         jTxtObservacoes.setRows(5);
-        jTxtObservacoes.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Observações", 0, 2, new java.awt.Font("sansserif", 0, 10), new java.awt.Color(0, 51, 153))); // NOI18N
+        jTxtObservacoes.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Observações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 0, 10), new java.awt.Color(0, 51, 153))); // NOI18N
         jScrollPane1.setViewportView(jTxtObservacoes);
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Apply.png"))); // NOI18N
@@ -291,43 +293,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        tblPessoa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
-        tblPessoa.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Nome", "CPF", "E-mail", "Celular"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tblPessoa.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tblPessoaMousePressed(evt);
-            }
-        });
-        tblPessoa.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tblPessoaKeyReleased(evt);
-            }
-        });
-        jScrollPane2.setViewportView(tblPessoa);
-        if (tblPessoa.getColumnModel().getColumnCount() > 0) {
-            tblPessoa.getColumnModel().getColumn(0).setResizable(false);
-            tblPessoa.getColumnModel().getColumn(0).setPreferredWidth(10);
-            tblPessoa.getColumnModel().getColumn(1).setPreferredWidth(50);
-            tblPessoa.getColumnModel().getColumn(2).setPreferredWidth(20);
-            tblPessoa.getColumnModel().getColumn(3).setPreferredWidth(100);
-            tblPessoa.getColumnModel().getColumn(4).setPreferredWidth(20);
-        }
-
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
         ckbCadastroIncompleto.setText("Cadastro Incompleto");
@@ -344,7 +309,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ckbCadastroIncompleto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(364, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,6 +319,41 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
+        tblPessoa.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome", "CPF", "e-mail", "Telefone"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblPessoa.setShowHorizontalLines(true);
+        tblPessoa.setShowVerticalLines(true);
+        jScrollPane3.setViewportView(tblPessoa);
+        if (tblPessoa.getColumnModel().getColumnCount() > 0) {
+            tblPessoa.getColumnModel().getColumn(0).setResizable(false);
+            tblPessoa.getColumnModel().getColumn(0).setPreferredWidth(5);
+            tblPessoa.getColumnModel().getColumn(1).setPreferredWidth(40);
+            tblPessoa.getColumnModel().getColumn(2).setPreferredWidth(25);
+            tblPessoa.getColumnModel().getColumn(3).setPreferredWidth(60);
+            tblPessoa.getColumnModel().getColumn(4).setPreferredWidth(20);
+        }
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -362,9 +362,10 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addComponent(jScrollPane3)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,7 +373,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2))
+                .addComponent(jScrollPane3))
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -441,42 +442,30 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
 
-    private void tblPessoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPessoaMousePressed
-        alterar();
-    }//GEN-LAST:event_tblPessoaMousePressed
-
-    private void tblPessoaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblPessoaKeyReleased
-        if (evt.getKeyCode() == evt.VK_UP) {
-            alterar();
-        } else if (evt.getKeyCode() == evt.VK_DOWN) {
-            alterar();
-        }
-    }//GEN-LAST:event_tblPessoaKeyReleased
-
     private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
         String nome = txtNome.getText();
         atualizaTabelaPessoa(nome);
     }//GEN-LAST:event_txtNomeKeyPressed
     public boolean verificaCadastroCompleto() {
-        if (txtNome.getText().equals("")) {           
+        if (txtNome.getText().equals("")) {
             return false;
-        } else if (txtCpf.getText().equals("")) {           
+        } else if (txtCpf.getText().equals("")) {
             return false;
-        } else if (txtRg.getText().equals("")) {           
+        } else if (txtRg.getText().equals("")) {
             return false;
-        } else if (txtEmail.getText().equals("")) {           
+        } else if (txtEmail.getText().equals("")) {
             return false;
-        } else if (txtRua.getText().equals("")) {          
+        } else if (txtRua.getText().equals("")) {
             return false;
-        } else if (txtNumero.getText().equals("")) {           
+        } else if (txtNumero.getText().equals("")) {
             return false;
-        } else if (txtCep.getText().equals("")) {           
+        } else if (txtCep.getText().equals("")) {
             return false;
-        } else if (txtBairro.getText().equals("")) {           
+        } else if (txtBairro.getText().equals("")) {
             return false;
-        } else if (txtCidade.getText().equals("")) {           
+        } else if (txtCidade.getText().equals("")) {
             return false;
-        } else if (txtEstado.getText().equals("")) {          
+        } else if (txtEstado.getText().equals("")) {
             return false;
         }
         return true;
@@ -553,7 +542,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         txtFoneResidencial.setText(p.getTelResidencial());
         txtNumero.setText(p.getNumero() + "");
         txtRg.setText(p.getRg());
-        txtRua.setText(p.getRua());        
+        txtRua.setText(p.getRua());
         jTxtObservacoes.setText(p.getObservacoes());
     }
 
@@ -625,7 +614,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTxtObservacoes;
     private javax.swing.JTable tblPessoa;
     private javax.swing.JTextField txtBairro;

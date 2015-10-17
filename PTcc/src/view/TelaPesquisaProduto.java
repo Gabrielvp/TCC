@@ -64,6 +64,8 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblProduto.setShowHorizontalLines(true);
+        tblProduto.setShowVerticalLines(true);
         tblProduto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblProdutoMousePressed(evt);

@@ -212,6 +212,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 "Cd Produto", "Produto", "Qtd", "R$ Unit.", "R$ Total"
             }
         ));
+        tblProduto.setShowHorizontalLines(true);
+        tblProduto.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblProduto);
         if (tblProduto.getColumnModel().getColumnCount() > 0) {
             tblProduto.getColumnModel().getColumn(0).setResizable(false);

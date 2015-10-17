@@ -1,10 +1,14 @@
 package dao;
 
+import entity.CPagar;
 import entity.Parcelas_CPagar;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -45,4 +49,35 @@ public class Parcelas_CPagarDAO extends MySQL {
         }
         return false;
     }
+    
+    public List<Parcelas_CPagar> listarParcelasString(String fat) {
+        List<Parcelas_CPagar> listarParcelas = new ArrayList<>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("select parcelas, valor, vencimento where fatura = ?");
+            ps.setString(1, fat);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Parcelas_CPagar cp = new Parcelas_CPagar();
+                cp.setParcelas(rs.getString("parcelas"));
+                cp.setValor(rs.getDouble("valor"));                
+                cp.setVencimento(rs.getDate("Vencimento"));     
+                listarParcelas.add(cp);
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listarParcelas;
+    }   
 }

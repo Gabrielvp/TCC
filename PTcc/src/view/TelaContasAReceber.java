@@ -40,6 +40,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         setResizable(false);
         this.orc = o;
+        txtValorParcela.setEditable(false);
         if (orc == null) {
             limparOrc();
         } else {
@@ -122,6 +123,11 @@ public class TelaContasAReceber extends javax.swing.JDialog {
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Delete.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 400, -1, -1));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Parcelas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 10), new java.awt.Color(0, 51, 153))); // NOI18N
@@ -438,61 +444,72 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         Parcelas_CReceber pCR = new Parcelas_CReceber();
         Parcelas_CReceberDAO pCRDAO = new Parcelas_CReceberDAO();
 
-        String vl = txtTotal.getText().replaceAll(",", ".");
-        cr.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
-        cr.setPessoa(txtNome.getText());
-        cr.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
-        cr.setFatura(txtFatura.getText());
-        cr.setTotal(Double.parseDouble(vl));
-        try {
-            cr.setData(sdfD.parse(txtData.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            cr.setVencimento(sdfD.parse(txtVencimento.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        crDAO.insert(cr);
-        if (!txtParcelas.getText().equals("")) {
-            if (txtValorParcela.getText().equals("")) {
-                JOptionPane.showMessageDialog(rootPane, "Pressione enter no campo parcelas para gerar o valor");
-            } else if (txtEntrada.getText().equals("  /  /    ")) {
-                JOptionPane.showMessageDialog(rootPane, "Digite a data de entrada");
-            } else if (txtIntervalo.getText().equals("")) {
-                JOptionPane.showMessageDialog(rootPane, "Digite o intervalo");
-            } else {
-                int linhas = tblParcelas.getRowCount();
-                for (int i = 0; i < linhas; i++) {
-                    String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
-                    pCR.setFatura(txtFatura.getText());
-                    pCR.setParcelas(tblParcelas.getValueAt(i, 0).toString());
-                    pCR.setValor(Double.parseDouble(valor));
-                    try {
-                        pCR.setEntrada(sdfD.parse(txtEntrada.getText()));
-                    } catch (ParseException ex) {
-                        Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    try {
-                        pCR.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
-                    } catch (ParseException ex) {
-                        Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    pCR.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
-                    pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
-                    pCR.setIdCReceber(cr.getIdCReceber());
-
-                    pCRDAO.insert(pCR);
-                }
-            }
-            JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
-            limparTela();
+        if (cbFormaPagamento.getSelectedItem().toString().equals("Selecione a Forma de Pagamento")) {
+            JOptionPane.showMessageDialog(rootPane, "Selecione a Forma de Pagamento!");
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
-            limparTela();
-        }
+            String vl = txtTotal.getText().replaceAll(",", ".");
+            cr.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
+            cr.setPessoa(txtNome.getText());
+            cr.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
+            cr.setFatura(txtFatura.getText());
+            cr.setTotal(Double.parseDouble(vl));
+            try {
+                cr.setData(sdfD.parse(txtData.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                cr.setVencimento(sdfD.parse(txtVencimento.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (txtParcelas.getText().equals("")) {
+                crDAO.insert(cr);
+                JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+                limparTela();
+            } else {
+                crDAO.insert(cr);
+            }
 
+            if (!txtParcelas.getText().equals("")) {
+                if (txtValorParcela.getText().equals("")) {
+                    JOptionPane.showMessageDialog(rootPane, "Insira o número de parcelas e pressione enter");
+                } else if (txtEntrada.getText().equals("  /  /    ")) {
+                    JOptionPane.showMessageDialog(rootPane, "Insira a data da entrada");
+                } else if (txtIntervalo.getText().equals("")) {
+                    JOptionPane.showMessageDialog(rootPane, "Insira o intervalo entre as parcelas");
+                } else if (tblParcelas.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(rootPane, "Insira o intervalo entre as parcelas e pressione enter");
+                } else {
+                    int linhas = tblParcelas.getRowCount();
+                    for (int i = 0; i < linhas; i++) {
+                        String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
+                        pCR.setFatura(txtFatura.getText());
+                        pCR.setParcelas(tblParcelas.getValueAt(i, 0).toString());
+                        pCR.setValor(Double.parseDouble(valor));
+                        try {
+                            pCR.setEntrada(sdfD.parse(txtEntrada.getText()));
+                        } catch (ParseException ex) {
+                            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        try {
+                            pCR.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
+                        } catch (ParseException ex) {
+                            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        pCR.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
+                        pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+                        pCR.setIdCReceber(cr.getIdCReceber());
+
+                        pCRDAO.insert(pCR);
+                    }
+                    JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+                    limparTela();
+                }
+
+            } else {
+            }
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed
@@ -523,12 +540,18 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                     calInicio.add(GregorianCalendar.DAY_OF_MONTH, intervalo);
                     data = calInicio.getTime();
                     model.addRow(new Object[]{txtFatura.getText() + "/" + contador, txtValorParcela.getText(), sdfD.format(data)});
+
                 }
             } catch (ParseException ex) {
-                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TelaContasAReceber.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_txtIntervaloKeyPressed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     public void limparOrc() {
         txtOrcamento.setText("");
@@ -575,16 +598,21 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaContasAReceber.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaContasAReceber.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaContasAReceber.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaContasAReceber.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaContasAReceber.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaContasAReceber.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaContasAReceber.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaContasAReceber.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

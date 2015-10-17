@@ -38,7 +38,7 @@ public class Parcelas_CReceberDAO extends MySQL {
             ps.setInt(7, pCReceber.getIdOrcamento());
             ps.setInt(8, pCReceber.getIdCReceber());
 
-            ps.execute();           
+            ps.execute();
             ps.close();
             return true;
 
@@ -49,22 +49,22 @@ public class Parcelas_CReceberDAO extends MySQL {
                 c.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
-            }            
-        }
+            }
+        }        
         return false;
     }
-    
+
     public void updateOrcameto(Orcamento orcamento) {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET cliente = ?, total = ?, desconto = ?, idPessoa = ? WHERE idOrcamento = ? ");
-            
+
             ps.setString(1, orcamento.getNome());
             ps.setDouble(2, orcamento.getTotal());
             ps.setDouble(3, orcamento.getDesconto());
-            ps.setInt(4, orcamento.getIdPessoa());  
+            ps.setInt(4, orcamento.getIdPessoa());
             ps.setInt(5, orcamento.getIdOrcamento());
-            
+
             ps.execute();
             ps.close();
 
@@ -79,7 +79,7 @@ public class Parcelas_CReceberDAO extends MySQL {
             JOptionPane.showMessageDialog(null, "Alterado com Sucesso!");
         }
     }
-    
+
     public void delete(int id) {
         Connection c = this.getConnection();
         try {
@@ -137,7 +137,7 @@ public class Parcelas_CReceberDAO extends MySQL {
         }
         return listarOrcamentos;
     }
-    
+
     public List<Orcamento> listarOrcamentosPessoa(int id) {
         List<Orcamento> listarOrcamentos = new ArrayList<Orcamento>();
         Connection c = this.getConnection();
@@ -237,7 +237,7 @@ public class Parcelas_CReceberDAO extends MySQL {
         }
         return orcamento;
     }
-    
+
     public Orcamento getOrcamentoIdPessoa(int id) {
         Connection c = this.getConnection();
 

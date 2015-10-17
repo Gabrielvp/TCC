@@ -11,6 +11,7 @@ import dao.Parcelas_CPagarDAO;
 import entity.CPagar;
 import entity.FormaPagamento;
 import entity.Parcelas_CPagar;
+import entity.Pessoa;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,10 +43,12 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         txtData.setText(data);
         combo();
     }
-    
+
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat df = new DecimalFormat("####.00");
     DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
+    Pessoa p = new Pessoa();
+    CPagarDAO cpDAO = new CPagarDAO();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -229,6 +232,11 @@ public class TelaContasAPagar extends javax.swing.JDialog {
 
         btnPesquisaOrcamento.setBackground(new java.awt.Color(255, 255, 255));
         btnPesquisaOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
+        btnPesquisaOrcamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisaOrcamentoActionPerformed(evt);
+            }
+        });
 
         txtFatura.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
@@ -337,30 +345,26 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
+                .addGap(10, 10, 10)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(txtFatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6))))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtFatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(14, 14, 14))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(btnPesquisaOrcamento)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6))
+                            .addComponent(btnPesquisaOrcamento))
+                        .addGap(14, 14, 14)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(txtVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 15, Short.MAX_VALUE))
+                .addGap(0, 13, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 700, 170));
@@ -401,54 +405,75 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         CPagar cp = new CPagar();
         Parcelas_CPagar pCP = new Parcelas_CPagar();
         Parcelas_CPagarDAO pcpDAO = new Parcelas_CPagarDAO();
-        
-        String vl = txtTotal.getText().replaceAll(",", ".");
-        cp.setIdPessoa(Integer.parseInt(txtCodigo.getText()));
-        cp.setPessoa(txtNome.getText());
-        cp.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
-        cp.setFatura(txtFatura.getText());
-        cp.setTotal(Double.parseDouble(vl));
-        try {
-            cp.setData(sdfD.parse(txtData.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            cp.setVencimento(sdfD.parse(txtVencimento.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        cpDAO.insert(cp);
-        if (!txtParcelas.getText().equals(null)) {
-            int linhas = tblParcelas.getRowCount();
-            for (int i = 0; i < linhas; i++) {
-                String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
-                pCP.setFatura(txtFatura.getText());
-                pCP.setParcelas(tblParcelas.getValueAt(i, 0).toString());
-                pCP.setValor(Double.parseDouble(valor));
-                try {
-                    pCP.setEntrada(sdfD.parse(txtEntrada.getText()));
-                } catch (ParseException ex) {
-                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                try {
-                    pCP.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
-                } catch (ParseException ex) {
-                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                pCP.setIntervalo(Integer.parseInt(txtIntervalo.getText()));                
-                pCP.setIdCPagar(cp.getIdCPagar());
-                
-                pcpDAO.insert(pCP);
-            }
+
+        if (cbFormaPagamento.getSelectedItem().toString().equals("Selecione a Forma de Pagamento")) {
+            JOptionPane.showMessageDialog(rootPane, "Selecione a Forma de Pagamento!");
         } else {
+            String vl = txtTotal.getText().replaceAll(",", ".");
+            cp.setIdPessoa(Integer.parseInt(txtCodigo.getText()));
+            cp.setPessoa(txtNome.getText());
+            cp.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
+            cp.setFatura(txtFatura.getText());
+            cp.setTotal(Double.parseDouble(vl));
+            try {
+                cp.setData(sdfD.parse(txtData.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                cp.setVencimento(sdfD.parse(txtVencimento.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (txtParcelas.getText().equals("")) {
+                cpDAO.insert(cp);
+                JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+                limparTela();
+            } else {
+                cpDAO.insert(cp);
+            }
+
+            if (!txtParcelas.getText().equals("")) {
+                if (txtValorParcela.getText().equals("")) {
+                    JOptionPane.showMessageDialog(rootPane, "Insira o número de parcelas e pressione enter");
+                } else if (txtEntrada.getText().equals("  /  /    ")) {
+                    JOptionPane.showMessageDialog(rootPane, "Insira a data da entrada");
+                } else if (txtIntervalo.getText().equals("")) {
+                    JOptionPane.showMessageDialog(rootPane, "Insira o intervalo entre as parcelas");
+                } else if (tblParcelas.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(rootPane, "Insira o intervalo entre as parcelas e pressione enter");
+                } else {
+                    int linhas = tblParcelas.getRowCount();
+                    for (int i = 0; i < linhas; i++) {
+                        String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
+                        pCP.setFatura(txtFatura.getText());
+                        pCP.setParcelas(tblParcelas.getValueAt(i, 0).toString());
+                        pCP.setValor(Double.parseDouble(valor));
+                        try {
+                            pCP.setEntrada(sdfD.parse(txtEntrada.getText()));
+                        } catch (ParseException ex) {
+                            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        try {
+                            pCP.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
+                        } catch (ParseException ex) {
+                            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        pCP.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
+                        pCP.setIdCPagar(cp.getIdCPagar());
+
+                        pcpDAO.insert(pCP);
+                    }
+                    JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+                    limparTela();
+                }
+            } else {
+            }
         }
-        JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
-        limparTela();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed
-       if (evt.getKeyCode() == evt.VK_ENTER) {
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             String vl = txtTotal.getText().replaceAll(",", ".");
             double valor = Double.parseDouble(vl);
             int parcelas = Integer.parseInt(txtParcelas.getText());
@@ -458,7 +483,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     }//GEN-LAST:event_txtParcelasKeyPressed
 
     private void txtIntervaloKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIntervaloKeyPressed
-      int contador = 0;
+        int contador = 0;
         DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
         if (evt.getKeyCode() == evt.VK_ENTER) {
             esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -481,6 +506,32 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_txtIntervaloKeyPressed
 
+    private void btnPesquisaOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaOrcamentoActionPerformed
+        if(txtCodigo.getText().equals("")||txtNome.getText().equals("")){
+            JOptionPane.showMessageDialog(rootPane, "Insira uma pessoa para pesquisa");
+        }else{
+        int id = Integer.parseInt(txtCodigo.getText());
+        p.setIdPessoa(Integer.parseInt(txtCodigo.getText()));
+        p.setNome(txtNome.getText());
+        TelaPesquisaFatura tela = new TelaPesquisaFatura(null, rootPaneCheckingEnabled, id, p);
+        tela.setVisible(true);
+        String fatura = tela.coluna;
+        
+        DefaultTableModel model = (DefaultTableModel)tblParcelas.getModel();
+        List<CPagar> lista = cpDAO.listarCPagarString(fatura);
+            for (int i = 0; i < lista.size(); i++) {                
+                txtFatura.setText(lista.get(i).getFatura());
+                txtTotal.setText(df.format(lista.get(i).getTotal())+"");
+                txtData.setText(sdfD.format(lista.get(i).getData()));
+                txtVencimento.setText(sdfD.format(lista.get(i).getVencimento()));
+                cbFormaPagamento.setSelectedItem(lista.get(i).getFormPagamento().toString());
+                if(lista.get(i).getParcelas() > 0){
+                    txtParcelas.setText(lista.get(i).getParcelas()+"");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnPesquisaOrcamentoActionPerformed
+
     public void combo() {
         cbFormaPagamento.removeAll();
         cbFormaPagamento.removeAllItems();
@@ -491,11 +542,11 @@ public class TelaContasAPagar extends javax.swing.JDialog {
             cbFormaPagamento.addItem(fp.getDescricao());
         }
     }
-    
-     public void limparTela(){
+
+    public void limparTela() {
         DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
         txtCodigo.setText("");
-        txtNome.setText("");        
+        txtNome.setText("");
         txtFatura.setText("");
         txtTotal.setText("");
         txtData.setText("");
@@ -506,7 +557,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         txtIntervalo.setText("");
         model.setNumRows(0);
     }
-    
+
     /**
      * @param args the command line arguments
      */

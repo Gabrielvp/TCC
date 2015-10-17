@@ -57,7 +57,7 @@ create table cPagar(
 create table parcelas_cPagar(
     idParcelas_cPagar int not null auto_increment primary key,
     fatura varchar(50) not null,
-    parcelas varchar(50) not null,
+    parcela varchar(50) not null,
     valor double not null,
     entrada Date not null,
     vencimento Date not null,
@@ -84,7 +84,7 @@ create table cReceber(
 create table parcelas_cReceber(
     idParcelas_cReceber int not null auto_increment primary key,
     fatura varchar(50) not null,
-    parcelas varchar(50) not null,
+    parcela varchar(50) not null,
     valor double not null,
     entrada Date not null,
     vencimento Date not null,

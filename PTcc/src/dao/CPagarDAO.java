@@ -58,6 +58,33 @@ public class CPagarDAO extends MySQL {
         return false;
     }
     
+    public boolean updateParcela(CPagar cpagar) {
+
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps
+                    = c.prepareStatement("UPDATE CPagar SET parcelas = ? WHERE fatura = ?");
+                           
+            ps.setInt(1, cpagar.getParcelas());
+            ps.setString(2, cpagar.getFatura());
+            
+
+            ps.execute();
+            ps.close();
+            return true;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
+    }
+    
     public List<CPagar> listarCPagar(int id) {
         List<CPagar> listarCPagar = new ArrayList<>();
         Connection c = this.getConnection();
@@ -95,7 +122,7 @@ public class CPagarDAO extends MySQL {
         List<CPagar> listarCPagar = new ArrayList<>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("select formPagamento, fatura, total, data, vencimento from cPagar where fatura = ?");
+            PreparedStatement ps = c.prepareStatement("select formPagamento, fatura, total, data, vencimento, parcelas from cPagar where fatura = ?");
             ps.setString(1, fat);
             
             ResultSet rs = ps.executeQuery();
@@ -106,6 +133,7 @@ public class CPagarDAO extends MySQL {
                 cp.setTotal(rs.getDouble("Total"));
                 cp.setData(rs.getDate("Data"));
                 cp.setVencimento(rs.getDate("Vencimento"));     
+                cp.setParcelas(rs.getInt("Parcelas"));     
                 listarCPagar.add(cp);
             }
 
@@ -124,6 +152,29 @@ public class CPagarDAO extends MySQL {
         return listarCPagar;
     }   
 
+    public void delete(int id, String fat) {
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("DELETE FROM cpagar where idPessoa = ? and fatura = ? ");
+                  
+            ps.setInt(1, id);
+            ps.setString(2, fat);
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
     public void update(int id) {
         Connection c = this.getConnection();
         try {
@@ -170,29 +221,4 @@ public class CPagarDAO extends MySQL {
             JOptionPane.showMessageDialog(null, "Alterado com Sucesso!");
         }
     }
-    
-    public void delete(int id) {
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("DELETE FROM orcamento "
-                    + "WHERE idOrcamento = ?");
-
-            ps.setInt(1, id);
-
-            ps.execute();
-            ps.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    
 }

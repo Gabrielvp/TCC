@@ -49,6 +49,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
     Pessoa p = new Pessoa();
     CPagarDAO cpDAO = new CPagarDAO();
+    Parcelas_CPagarDAO pcpDAO = new Parcelas_CPagarDAO();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -113,6 +114,11 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         btnExcluir.setBackground(new java.awt.Color(255, 255, 255));
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Delete.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 400, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -345,20 +351,21 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtFatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(14, 14, 14))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3)
+                                .addComponent(txtFatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel6))
-                            .addComponent(btnPesquisaOrcamento))
-                        .addGap(14, 14, 14)))
+                                .addComponent(jLabel6)))
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPesquisaOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -449,6 +456,8 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                         pCP.setFatura(txtFatura.getText());
                         pCP.setParcelas(tblParcelas.getValueAt(i, 0).toString());
                         pCP.setValor(Double.parseDouble(valor));
+                        cp.setParcelas(Integer.parseInt(txtParcelas.getText()));
+                        cpDAO.updateParcela(cp);
                         try {
                             pCP.setEntrada(sdfD.parse(txtEntrada.getText()));
                         } catch (ParseException ex) {
@@ -507,30 +516,55 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     }//GEN-LAST:event_txtIntervaloKeyPressed
 
     private void btnPesquisaOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaOrcamentoActionPerformed
-        if(txtCodigo.getText().equals("")||txtNome.getText().equals("")){
+        if (txtCodigo.getText().equals("") || txtNome.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Insira uma pessoa para pesquisa");
-        }else{
-        int id = Integer.parseInt(txtCodigo.getText());
-        p.setIdPessoa(Integer.parseInt(txtCodigo.getText()));
-        p.setNome(txtNome.getText());
-        TelaPesquisaFatura tela = new TelaPesquisaFatura(null, rootPaneCheckingEnabled, id, p);
-        tela.setVisible(true);
-        String fatura = tela.coluna;
-        
-        DefaultTableModel model = (DefaultTableModel)tblParcelas.getModel();
-        List<CPagar> lista = cpDAO.listarCPagarString(fatura);
-            for (int i = 0; i < lista.size(); i++) {                
+        } else {
+            int id = Integer.parseInt(txtCodigo.getText());
+            p.setIdPessoa(Integer.parseInt(txtCodigo.getText()));
+            p.setNome(txtNome.getText());
+            TelaPesquisaFatura tela = new TelaPesquisaFatura(null, rootPaneCheckingEnabled, id, p);
+            tela.setVisible(true);
+            String fatura = tela.coluna;
+
+            DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
+            List<CPagar> lista = cpDAO.listarCPagarString(fatura);
+            List<Parcelas_CPagar> listaParcelas = pcpDAO.listarParcelasString(fatura);
+            for (int i = 0; i < lista.size(); i++) {
                 txtFatura.setText(lista.get(i).getFatura());
-                txtTotal.setText(df.format(lista.get(i).getTotal())+"");
+                txtTotal.setText(df.format(lista.get(i).getTotal()) + "");
                 txtData.setText(sdfD.format(lista.get(i).getData()));
                 txtVencimento.setText(sdfD.format(lista.get(i).getVencimento()));
                 cbFormaPagamento.setSelectedItem(lista.get(i).getFormPagamento().toString());
-                if(lista.get(i).getParcelas() > 0){
-                    txtParcelas.setText(lista.get(i).getParcelas()+"");
+                if (lista.get(i).getParcelas() > 0) {
+                    txtParcelas.setText(lista.get(i).getParcelas() + "");
+                    for (int j = 0; j < listaParcelas.size(); j++) {
+                        model.addRow(new Object[]{});
+                        txtIntervalo.setText(listaParcelas.get(i).getIntervalo() + "");
+                        txtEntrada.setText(sdfD.format(listaParcelas.get(i).getEntrada()));
+                        txtValorParcela.setText(df.format(listaParcelas.get(i).getValor()));
+                        model.setValueAt(listaParcelas.get(j).getParcelas(), j, 0);
+                        model.setValueAt(df.format(listaParcelas.get(j).getValor()), j, 1);
+                        model.setValueAt(sdfD.format(listaParcelas.get(j).getVencimento()), j, 2);
+                    }
+
                 }
             }
         }
     }//GEN-LAST:event_btnPesquisaOrcamentoActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o  Débito?", "Exclusão", 0, 0);
+        if (confirmacao == 0) {
+            int id = Integer.parseInt(txtCodigo.getText());
+            String fat = txtFatura.getText();
+            pcpDAO.delete(fat);
+            cpDAO.delete(id, fat);
+            JOptionPane.showMessageDialog(rootPane, "Orçamento Excluído!");
+            limparTela();
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    
 
     public void combo() {
         cbFormaPagamento.removeAll();
@@ -555,6 +589,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         txtValorParcela.setText("");
         txtEntrada.setText("");
         txtIntervalo.setText("");
+        cbFormaPagamento.setSelectedIndex(0);
         model.setNumRows(0);
     }
 

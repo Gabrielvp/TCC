@@ -1,6 +1,5 @@
 package dao;
 
-import entity.CPagar;
 import entity.Parcelas_CPagar;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,20 +48,22 @@ public class Parcelas_CPagarDAO extends MySQL {
         }
         return false;
     }
-    
+
     public List<Parcelas_CPagar> listarParcelasString(String fat) {
         List<Parcelas_CPagar> listarParcelas = new ArrayList<>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("select parcelas, valor, vencimento where fatura = ?");
+            PreparedStatement ps = c.prepareStatement("select parcelas, valor, vencimento, intervalo, entrada from Parcelas_cpagar where fatura = ?");
             ps.setString(1, fat);
-            
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Parcelas_CPagar cp = new Parcelas_CPagar();
                 cp.setParcelas(rs.getString("parcelas"));
-                cp.setValor(rs.getDouble("valor"));                
-                cp.setVencimento(rs.getDate("Vencimento"));     
+                cp.setValor(rs.getDouble("valor"));
+                cp.setVencimento(rs.getDate("Vencimento"));
+                cp.setIntervalo(rs.getInt("Intervalo"));
+                cp.setEntrada(rs.getDate("Entrada"));
                 listarParcelas.add(cp);
             }
 
@@ -79,5 +80,27 @@ public class Parcelas_CPagarDAO extends MySQL {
             }
         }
         return listarParcelas;
-    }   
+    }
+
+    public void delete(String fat) {
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("DELETE FROM parcelas_cpagar where fatura = ?");                    
+
+            ps.setString(1, fat);
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

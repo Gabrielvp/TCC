@@ -118,6 +118,7 @@ public class CPagarDAO extends MySQL {
         }
         return listarCPagar;
     }   
+    
     public List<CPagar> listarCPagarString(String fat) {
         List<CPagar> listarCPagar = new ArrayList<>();
         Connection c = this.getConnection();

@@ -1,9 +1,6 @@
 package dao;
 
 import entity.CReceber;
-import entity.Orcamento;
-import entity.Produto;
-import entity.ProdutoOrcamento;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +8,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -61,16 +57,21 @@ public class CReceberDAO extends MySQL {
         }
         return false;
     }
+    
+    public boolean updateParcela(CReceber creceber) {
 
-    public void update(int id) {
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET aprovado = true WHERE idOrcamento = ? ");
-            Orcamento orcamento = new Orcamento();
-            ps.setInt(1, id);
+            PreparedStatement ps
+                    = c.prepareStatement("UPDATE CReceber SET parcelas = ? WHERE fatura = ?");
+                           
+            ps.setInt(1, creceber.getParcelas());
+            ps.setString(2, creceber.getFatura());
             
+
             ps.execute();
             ps.close();
+            return true;
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -81,75 +82,26 @@ public class CReceberDAO extends MySQL {
                 ex.printStackTrace();
             }
         }
-    }
-
-    public void updateOrcameto(Orcamento orcamento) {
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET cliente = ?, total = ?, desconto = ?, idPessoa = ? WHERE idOrcamento = ? ");
-            
-            ps.setString(1, orcamento.getNome());
-            ps.setDouble(2, orcamento.getTotal());
-            ps.setDouble(3, orcamento.getDesconto());
-            ps.setInt(4, orcamento.getIdPessoa());  
-            ps.setInt(5, orcamento.getIdOrcamento());
-            
-            ps.execute();
-            ps.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(null, "Alterado com Sucesso!");
-        }
+        return false;
     }
     
-    public void delete(int id) {
+    public List<CReceber> listarCReceberString(String fat) {
+        List<CReceber> listarCReceber = new ArrayList<>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("DELETE FROM orcamento "
-                    + "WHERE idOrcamento = ?");
-
-            ps.setInt(1, id);
-
-            ps.execute();
-            ps.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    public List<Orcamento> listarOrcamentos() {
-        List<Orcamento> listarOrcamentos = new ArrayList<Orcamento>();
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("select orcamento.data, orcamento.idOrcamento, orcamento.cliente, orcamento.total, orcamento.aprovado from orcamento");
-
+            PreparedStatement ps = c.prepareStatement("select formPagamento, fatura, total, data, vencimento, parcelas from cReceber where fatura = ?");
+            ps.setString(1, fat);
+            
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Orcamento orcamento = new Orcamento();
-                Produto produto = new Produto();
-                ProdutoOrcamento pOrcamento = new ProdutoOrcamento();
-
-                orcamento.setData(rs.getDate("Data"));
-                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
-                orcamento.setNome(rs.getString("Cliente"));
-                orcamento.setTotal(rs.getDouble("Total"));
-                orcamento.setAprovado(rs.getBoolean("Aprovado"));
-                listarOrcamentos.add(orcamento);
+                CReceber cr = new CReceber();
+                cr.setFormPagamento(rs.getString("formPagamento"));
+                cr.setFatura(rs.getString("fatura"));
+                cr.setTotal(rs.getDouble("Total"));
+                cr.setData(rs.getDate("Data"));
+                cr.setVencimento(rs.getDate("Vencimento"));     
+                cr.setParcelas(rs.getInt("Parcelas"));     
+                listarCReceber.add(cr);
             }
 
             ps.execute();
@@ -164,24 +116,26 @@ public class CReceberDAO extends MySQL {
                 ex.printStackTrace();
             }
         }
-        return listarOrcamentos;
-    }
+        return listarCReceber;
+    }    
     
-    public List<Orcamento> listarOrcamentosPessoa(int id) {
-        List<Orcamento> listarOrcamentos = new ArrayList<Orcamento>();
+    public List<CReceber> listarCReceber(int id) {
+        List<CReceber> listarCReceber = new ArrayList<>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("select orcamento.data, orcamento.idOrcamento, orcamento.cliente, orcamento.total, orcamento.aprovado from orcamento where idPessoa = ?");
+            PreparedStatement ps = c.prepareStatement("select formPagamento, fatura, total, data, vencimento, parcelas from cReceber where idPessoa = ?");
             ps.setInt(1, id);
+            
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Orcamento orcamento = new Orcamento();
-                orcamento.setData(rs.getDate("Data"));
-                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
-                orcamento.setNome(rs.getString("Cliente"));
-                orcamento.setTotal(rs.getDouble("Total"));
-                orcamento.setAprovado(rs.getBoolean("Aprovado"));
-                listarOrcamentos.add(orcamento);
+                CReceber cr = new CReceber();
+                cr.setFormPagamento("formPagamento");
+                cr.setFatura(rs.getString("fatura"));
+                cr.setTotal(rs.getDouble("Total"));
+                cr.setData(rs.getDate("Data"));
+                cr.setVencimento(rs.getDate("Vencimento"));    
+                cr.setParcelas(rs.getInt("parcelas"));
+                listarCReceber.add(cr);
             }
 
             ps.execute();
@@ -196,106 +150,6 @@ public class CReceberDAO extends MySQL {
                 ex.printStackTrace();
             }
         }
-        return listarOrcamentos;
-    }
-
-    public List<Orcamento> listaOrcamentoId(int id) {
-        List<Orcamento> listaOrcamentoId = new ArrayList<>();
-        Connection c = this.getConnection();
-        Orcamento orcamento = new Orcamento();
-
-        try {
-            PreparedStatement ps = c.prepareStatement("select orcamento.idorcamento, orcamento.data, orcamento.cliente, orcamento.idpessoa, orcamento.total, produto_orcamento.idproduto,\n"
-                    + "produto_orcamento.produto, produto_orcamento.valor, produto_orcamento.qtd, produto_orcamento.total from\n"
-                    + "orcamento inner join produto_orcamento on orcamento.idorcamento = produto_orcamento.idOrcamento");
-
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
-                orcamento.setData(rs.getDate("Data"));
-                orcamento.setNome(rs.getString("Cliente"));
-                orcamento.setIdPessoa(rs.getInt("idPessoa"));
-                orcamento.setTotal(rs.getDouble("Total"));
-
-                listaOrcamentoId.add(orcamento);
-            }
-            rs.close();
-            ps.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return listaOrcamentoId;
-    }
-
-    public Orcamento getOrcamentoId(int id) {
-        Connection c = this.getConnection();
-
-        Orcamento orcamento = new Orcamento();
-        try {
-            PreparedStatement ps = c.prepareStatement("SELECT orcamento.idOrcamento, orcamento.data, orcamento.idPessoa, orcamento.cliente,"
-                    + "orcamento.total, orcamento.aprovado FROM orcamento WHERE idOrcamento = ?");
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
-                orcamento.setData(rs.getDate("Data"));
-                orcamento.setNome(rs.getString("Cliente"));
-                orcamento.setIdPessoa(rs.getInt("idPessoa"));
-                orcamento.setTotal(rs.getDouble("Total"));
-                orcamento.setAprovado(rs.getBoolean("Aprovado"));
-            }
-            rs.close();
-            ps.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return orcamento;
-    }
-    
-    public Orcamento getOrcamentoIdPessoa(int id) {
-        Connection c = this.getConnection();
-
-        Orcamento orcamento = new Orcamento();
-        try {
-            PreparedStatement ps = c.prepareStatement("SELECT orcamento.idOrcamento, orcamento.data, orcamento.idPessoa, orcamento.cliente,"
-                    + "orcamento.total, orcamento.aprovado FROM orcamento WHERE idPessoa = ?");
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
-                orcamento.setData(rs.getDate("Data"));
-                orcamento.setNome(rs.getString("Cliente"));
-                orcamento.setIdPessoa(rs.getInt("idPessoa"));
-                orcamento.setTotal(rs.getDouble("Total"));
-                orcamento.setAprovado(rs.getBoolean("Aprovado"));
-            }
-            rs.close();
-            ps.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return orcamento;
-    }
+        return listarCReceber;
+    }   
 }

@@ -582,7 +582,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
             String fat = txtFatura.getText();
             pcpDAO.delete(fat);
             cpDAO.delete(id, fat);
-            JOptionPane.showMessageDialog(rootPane, "Orçamento Excluído!");
+            JOptionPane.showMessageDialog(rootPane, "Débito Excluído!");
             limparTela();
         }
     }//GEN-LAST:event_btnExcluirActionPerformed

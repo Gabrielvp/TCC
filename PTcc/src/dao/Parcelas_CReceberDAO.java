@@ -55,7 +55,7 @@ public class Parcelas_CReceberDAO extends MySQL {
         List<Parcelas_CReceber> listarParcelas = new ArrayList<>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("select parcelas, valor, vencimento, intervalo, entrada from Parcelas_creceber where fatura = ?");
+            PreparedStatement ps = c.prepareStatement("select parcelas, valor, vencimento, intervalo, entrada, idOrcamento from Parcelas_creceber where fatura = ?");
             ps.setString(1, fat);
 
             ResultSet rs = ps.executeQuery();
@@ -66,6 +66,7 @@ public class Parcelas_CReceberDAO extends MySQL {
                 cr.setVencimento(rs.getDate("Vencimento"));
                 cr.setIntervalo(rs.getInt("Intervalo"));
                 cr.setEntrada(rs.getDate("Entrada"));
+                cr.setIdOrcamento(rs.getInt("idOrcamento"));
                 listarParcelas.add(cr);
             }
 
@@ -83,4 +84,26 @@ public class Parcelas_CReceberDAO extends MySQL {
         }
         return listarParcelas;
     }    
+    
+    public void delete(String fat) {
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("DELETE FROM parcelas_creceber where fatura = ?");                    
+
+            ps.setString(1, fat);
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

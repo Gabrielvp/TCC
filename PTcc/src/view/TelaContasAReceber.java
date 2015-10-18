@@ -530,6 +530,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                         pCR.setFatura(txtFatura.getText());
                         pCR.setParcelas(tblParcelas.getValueAt(i, 0).toString());
                         pCR.setValor(Double.parseDouble(valor));
+                        cr.setParcelas(Integer.parseInt(txtParcelas.getText()));
                         crDAO.updateParcela(cr);
                         try {
                             pCR.setEntrada(sdfD.parse(txtEntrada.getText()));
@@ -542,7 +543,11 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                             Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         pCR.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
-                        pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+                        if (txtOrcamento.getText().equals("")) {
+                            pCR.setIdOrcamento(0);
+                        } else {
+                            pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+                        }
                         pCR.setIdCReceber(cr.getIdCReceber());
 
                         pCRDAO.insert(pCR);
@@ -594,7 +599,15 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }//GEN-LAST:event_txtIntervaloKeyPressed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-
+        int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o  Débito?", "Exclusão", 0, 0);
+        if (confirmacao == 0) {
+            int id = Integer.parseInt(txtCodigoPessoa.getText());
+            String fat = txtFatura.getText();
+            pcrDAO.delete(fat);
+            crDAO.delete(id, fat);
+            JOptionPane.showMessageDialog(rootPane, "Débito Excluído!");
+            limparTela();
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnPesquisaOrcamento1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaOrcamento1ActionPerformed
@@ -625,10 +638,13 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                         txtIntervalo.setText(listaParcelas.get(i).getIntervalo() + "");
                         txtEntrada.setText(sdfD.format(listaParcelas.get(i).getEntrada()));
                         txtValorParcela.setText(df.format(listaParcelas.get(i).getValor()));
+                        txtOrcamento.setText(listaParcelas.get(i).getIdOrcamento() + "");
                         model.setValueAt(listaParcelas.get(j).getParcelas(), j, 0);
                         model.setValueAt(df.format(listaParcelas.get(j).getValor()), j, 1);
                         model.setValueAt(sdfD.format(listaParcelas.get(j).getVencimento()), j, 2);
                     }
+                } else {
+                    txtOrcamento.setText(txtFatura.getText());
                 }
             }
         }

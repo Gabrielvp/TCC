@@ -58,6 +58,29 @@ public class CReceberDAO extends MySQL {
         return false;
     }
     
+    public void delete(int id, String fat) {
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("DELETE FROM creceber where idPessoa = ? and fatura = ? ");
+                  
+            ps.setInt(1, id);
+            ps.setString(2, fat);
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
     public boolean updateParcela(CReceber creceber) {
 
         Connection c = this.getConnection();

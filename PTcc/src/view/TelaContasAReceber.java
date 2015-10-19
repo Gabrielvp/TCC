@@ -599,6 +599,11 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }//GEN-LAST:event_txtIntervaloKeyPressed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (txtCodigoPessoa.getText().equals("") || txtNome.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira uma pessoa");
+        } else if (txtFatura.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira uma fatura");
+        } else {
         int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o  Débito?", "Exclusão", 0, 0);
         if (confirmacao == 0) {
             int id = Integer.parseInt(txtCodigoPessoa.getText());
@@ -607,6 +612,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             crDAO.delete(id, fat);
             JOptionPane.showMessageDialog(rootPane, "Débito Excluído!");
             limparTela();
+        }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 

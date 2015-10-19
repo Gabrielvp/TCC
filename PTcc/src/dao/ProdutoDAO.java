@@ -90,14 +90,14 @@ public class ProdutoDAO extends MySQL {
         }
         return produto;
     }
-    
+
     public List<Produto> buscarProduto(String produto) {
         List<Produto> listaBuscaProduto = new ArrayList<Produto>();
         Connection c = this.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("SELECT produto.idproduto, produto.descricao, produto.cod_barras, produto.quantidade, "
-                            + " produto.valor_venda, produto.valor_compra, produto.unidade, produto.marca, produto.modelo, produto.fornecedor, produto.referencia"
-                            + " FROM produto where descricao LIKE ?");
+                    + " produto.valor_venda, produto.valor_compra, produto.unidade, produto.marca, produto.modelo, produto.fornecedor, produto.referencia"
+                    + " FROM produto where descricao LIKE ?");
             ps.setString(1, produto + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -133,14 +133,14 @@ public class ProdutoDAO extends MySQL {
         }
         return listaBuscaProduto;
     }
-    
+
     public List<Produto> buscarProdutoId(int id) {
         List<Produto> listaBuscaProduto = new ArrayList<Produto>();
         Connection c = this.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("SELECT produto.idproduto, produto.descricao, produto.cod_barras, produto.quantidade, "
-                            + " produto.valor_venda, produto.valor_compra, produto.unidade, produto.marca, produto.modelo, produto.fornecedor, produto.referencia"
-                            + " FROM produto where idProduto = ?");
+                    + " produto.valor_venda, produto.valor_compra, produto.unidade, produto.marca, produto.modelo, produto.fornecedor, produto.referencia"
+                    + " FROM produto where idProduto = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -177,29 +177,28 @@ public class ProdutoDAO extends MySQL {
         return listaBuscaProduto;
     }
 
-
     public void delete(int id) {
-     Connection c = this.getConnection();
-     try {
-     PreparedStatement ps = c.prepareStatement("DELETE FROM produto "
-     + "WHERE idProduto = ?");
-     ps.setInt(1, id);
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("DELETE FROM produto "
+                    + "WHERE idProduto = ?");
+            ps.setInt(1, id);
 
-     ps.execute();
-     ps.close();
+            ps.execute();
+            ps.close();
 
-     } catch (SQLException ex) {
-     ex.printStackTrace();
-     } finally {
-     try {
-     c.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
 
-     } catch (SQLException ex) {
-     ex.printStackTrace();
-     }
-     }
-     }
-    
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     public void update(Produto produto, int id) {
 
         Connection c = this.getConnection();
@@ -223,6 +222,58 @@ public class ProdutoDAO extends MySQL {
             ps.setString(10, produto.getReferencia());
             ps.setBoolean(11, produto.isAtivo());
             ps.setInt(12, id);
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void baixaProduto(Double qtd, int id) {
+
+        Connection c = this.getConnection();
+        Produto produto = new Produto();
+
+        try {
+
+            PreparedStatement ps = c.prepareStatement("UPDATE produto SET quantidade = ? WHERE idProduto = ?");
+
+            ps.setDouble(1, (qtd - produto.getQtd()));
+            ps.setInt(2, produto.getIdProduto());
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void addProduto(Double qtd, int id) {
+
+        Connection c = this.getConnection();
+        Produto produto = new Produto();
+
+        try {
+
+            PreparedStatement ps = c.prepareStatement("UPDATE produto SET quantidade = (quantidade + ?) WHERE idProduto = ?");
+
+            ps.setDouble(1, produto.getQtd());
+            ps.setInt(2, produto.getIdProduto());
 
             ps.execute();
             ps.close();

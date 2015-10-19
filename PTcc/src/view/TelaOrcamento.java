@@ -122,6 +122,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
         btnLimpaProduto = new javax.swing.JButton();
         lblAprovado = new javax.swing.JLabel();
+        lblEstoque = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Orçamento - Agenda Financeira");
@@ -226,7 +227,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
             tblProduto.getColumnModel().getColumn(4).setPreferredWidth(60);
         }
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 208, 616, 326));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 214, 616, 320));
 
         btnAprovado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Good mark.png"))); // NOI18N
         btnAprovado.setText("Aprovado");
@@ -396,6 +397,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
         lblAprovado.setText("ORÇAMENTO APROVADO");
         jPanel1.add(lblAprovado, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 30, -1, -1));
 
+        lblEstoque.setFont(new java.awt.Font("sansserif", 0, 10)); // NOI18N
+        lblEstoque.setForeground(new java.awt.Color(0, 51, 153));
+        lblEstoque.setText("0");
+        jPanel1.add(lblEstoque, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -421,6 +427,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
             txtCodProduto.setText(tela.p.getIdProduto() + "");
             txtProduto.setText(tela.p.getDescricao());
             txtValor.setText(df.format(tela.p.getValorVenda()) + "");
+            lblEstoque.setText(tela.p.getQtd()+"");
         }
     }//GEN-LAST:event_btnPesquisaProdutoActionPerformed
 
@@ -727,6 +734,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_txtProdutoKeyReleased
 
     private void txtPesquisaOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisaOrcamentoActionPerformed
+        limpaProduto();
         DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
         esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
         tblProduto.getColumnModel().getColumn(2).setCellRenderer(esquerda);
@@ -782,6 +790,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLimpaProdutoActionPerformed
 
     private void btnAprovadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprovadoActionPerformed
+        ProdutoDAO pDAO = new ProdutoDAO();
+        DefaultTableModel model = (DefaultTableModel)tblProduto.getModel();
         if (txtOrcamento.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Carregue um orçamento para ser aprovado!");
         } else {
@@ -797,6 +807,12 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 o.setData(sdfD.parse(txtData.getText()));
             } catch (ParseException ex) {
                 Logger.getLogger(TelaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (int i = 0; i < tblProduto.getRowCount(); i++) {
+                int idp =  Integer.parseInt(tblProduto.getValueAt(i,0).toString());
+                Double qt = Double.parseDouble(tblProduto.getValueAt(i, 2).toString());
+                pDAO.baixaProduto(qt, id);
+                System.out.println(idp + "/"+qt);
             }
             o.setTotal(Double.parseDouble(vl));
             TelaContasAReceber tela = new TelaContasAReceber(null, rootPaneCheckingEnabled, o);
@@ -944,6 +960,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private javax.swing.JLabel lblAprovado;
     private javax.swing.JLabel lblDescontoItem;
     private javax.swing.JLabel lblDescontoOrcamento;
+    private javax.swing.JLabel lblEstoque;
     private javax.swing.JLabel lblTotalItem;
     private javax.swing.JLabel lblTotalOrcamento;
     private javax.swing.JTable tblProduto;

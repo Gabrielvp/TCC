@@ -9,6 +9,8 @@ import dao.ProdutoDAO;
 import entity.Produto;
 import java.text.DecimalFormat;
 import java.util.List;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,6 +34,7 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
     String pesquisa;
     ProdutoDAO pDAO = new ProdutoDAO();
     Produto p = new Produto();
+    DefaultTableCellRenderer direita = new DefaultTableCellRenderer();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,11 +56,11 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Código", "Produto", "Valor"
+                "Código", "Produto", "Valor", "Estoque"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -84,6 +87,8 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
             tblProduto.getColumnModel().getColumn(1).setPreferredWidth(200);
             tblProduto.getColumnModel().getColumn(2).setResizable(false);
             tblProduto.getColumnModel().getColumn(2).setPreferredWidth(15);
+            tblProduto.getColumnModel().getColumn(3).setResizable(false);
+            tblProduto.getColumnModel().getColumn(3).setPreferredWidth(10);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -121,6 +126,9 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
     }//GEN-LAST:event_tblProdutoKeyReleased
 
     public void buscaProduto(String produto) {
+        direita.setHorizontalAlignment(SwingConstants.RIGHT);
+        tblProduto.getColumnModel().getColumn(2).setCellRenderer(direita);
+        tblProduto.getColumnModel().getColumn(3).setCellRenderer(direita);
         List<Produto> listaProduto = pDAO.buscarProduto(produto);
         DefaultTableModel modelo = (DefaultTableModel) tblProduto.getModel();
         for (int i = 0; i < listaProduto.size(); i++) {
@@ -128,6 +136,7 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
             modelo.setValueAt(listaProduto.get(i).getIdProduto(), i, 0);
             modelo.setValueAt(listaProduto.get(i).getDescricao(), i, 1);
             modelo.setValueAt(df.format(listaProduto.get(i).getValorVenda()), i, 2);
+            modelo.setValueAt(listaProduto.get(i).getQtd(), i, 3);
         }
     }
     DecimalFormat df = new DecimalFormat("#,###.00");

@@ -617,7 +617,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             int id = Integer.parseInt(txtCodigoPessoa.getText());
             p.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
             p.setNome(txtNome.getText());
-            TelaPesquisaFaturaReceber tela = new TelaPesquisaFaturaReceber(null, rootPaneCheckingEnabled, id, p);
+            TelaPesquisaFatura tela = new TelaPesquisaFatura(null, rootPaneCheckingEnabled, id, p, 1);
             tela.setVisible(true);
             String fatura = tela.coluna;
 

@@ -5,9 +5,13 @@
  */
 package view;
 
+import dao.CPagarDAO;
 import dao.CReceberDAO;
+import entity.CPagar;
 import entity.CReceber;
+import entity.Orcamento;
 import entity.Pessoa;
+import entity.ProdutoOrcamento;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -19,29 +23,35 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author felipe.cunha
  */
-public class TelaPesquisaFaturaReceber extends javax.swing.JDialog {
+public class TelaPesquisaFatura extends javax.swing.JDialog {
 
     /**
      * Creates new form TelaPesquisaOrcamento
      */
-    public TelaPesquisaFaturaReceber(java.awt.Frame parent, boolean modal, int cd, Pessoa p) {
+    public TelaPesquisaFatura(java.awt.Frame parent, boolean modal, int cd, Pessoa p, int tela) {
         super(parent, modal);
         initComponents();
         this.codigo = cd;
+        this.view = tela;
         preencheTabela(codigo);
         setLocationRelativeTo(null);
         setResizable(false);
         lblCodigo.setText(p.getIdPessoa()+"");
-        lblNome.setText(p.getNome());
+        lblNome.setText(p.getNome());        
     }
 
     int codigo;
+    CPagarDAO cpDAO = new CPagarDAO();
     CReceberDAO crDAO = new CReceberDAO();
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat df = new DecimalFormat("#,###.00");
-    DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();       
+    DefaultTableCellRenderer direita = new DefaultTableCellRenderer();
+    DefaultTableCellRenderer center = new DefaultTableCellRenderer();
+    List<Orcamento> lista;
+    List<ProdutoOrcamento> listaPOrcamento;
     boolean alterar;
     String coluna;
+    int view;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -89,7 +99,7 @@ public class TelaPesquisaFaturaReceber extends javax.swing.JDialog {
             tblFatura.getColumnModel().getColumn(0).setResizable(false);
             tblFatura.getColumnModel().getColumn(0).setPreferredWidth(15);
             tblFatura.getColumnModel().getColumn(1).setResizable(false);
-            tblFatura.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tblFatura.getColumnModel().getColumn(1).setPreferredWidth(10);
             tblFatura.getColumnModel().getColumn(2).setResizable(false);
             tblFatura.getColumnModel().getColumn(2).setPreferredWidth(20);
             tblFatura.getColumnModel().getColumn(3).setResizable(false);
@@ -163,18 +173,33 @@ public class TelaPesquisaFaturaReceber extends javax.swing.JDialog {
     }//GEN-LAST:event_tblFaturaMousePressed
 
     private void preencheTabela(int codigo) {
-        esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
-        tblFatura.getColumnModel().getColumn(3).setCellRenderer(esquerda);
-        DefaultTableModel model = (DefaultTableModel) tblFatura.getModel();        
-            List<CReceber> lista = crDAO.listarCReceber(codigo);
+        direita.setHorizontalAlignment(SwingConstants.RIGHT);
+        tblFatura.getColumnModel().getColumn(2).setCellRenderer(direita);
+        center.setHorizontalAlignment(SwingConstants.CENTER);
+        tblFatura.getColumnModel().getColumn(0).setCellRenderer(center);
+        tblFatura.getColumnModel().getColumn(1).setCellRenderer(center);
+        tblFatura.getColumnModel().getColumn(3).setCellRenderer(center);
+        DefaultTableModel model = (DefaultTableModel) tblFatura.getModel();
+        if(view == 2){
+            List<CPagar> lista = cpDAO.listarCPagar(codigo);
             for (int i = 0; i < lista.size(); i++) {
                 model.addRow(new Object[]{});
-                tblFatura.setValueAt(sdfD.format(lista.get(i).getVencimento()), i, 0);
-                tblFatura.setValueAt(lista.get(i).getParcelas(), i, 1);
-                tblFatura.setValueAt(df.format(lista.get(i).getTotal()), i, 2);
-                tblFatura.setValueAt(lista.get(i).getFatura(), i, 3);
+                model.setValueAt(sdfD.format(lista.get(i).getVencimento()), i, 0);
+                model.setValueAt(lista.get(i).getParcelas(), i, 1);
+                model.setValueAt(df.format(lista.get(i).getTotal()), i, 2);
+                model.setValueAt(lista.get(i).getFatura(), i, 3);
+            }
+        }else if(view == 1){
+             List<CReceber> lista = crDAO.listarCReceber(codigo);
+            for (int i = 0; i < lista.size(); i++) {
+                model.addRow(new Object[]{});
+                model.setValueAt(sdfD.format(lista.get(i).getVencimento()), i, 0);
+                model.setValueAt(lista.get(i).getParcelas(), i, 1);
+                model.setValueAt(df.format(lista.get(i).getTotal()), i, 2);
+                model.setValueAt(lista.get(i).getFatura(), i, 3);
             }
         }
+    }
     
 
     /**
@@ -194,14 +219,30 @@ public class TelaPesquisaFaturaReceber extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPesquisaFaturaReceber.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPesquisaFatura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPesquisaFaturaReceber.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPesquisaFatura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPesquisaFaturaReceber.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPesquisaFatura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaPesquisaFaturaReceber.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPesquisaFatura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -222,7 +263,7 @@ public class TelaPesquisaFaturaReceber extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaPesquisaFaturaReceber dialog = new TelaPesquisaFaturaReceber(new javax.swing.JFrame(), true, 0, null);
+                TelaPesquisaFatura dialog = new TelaPesquisaFatura(new javax.swing.JFrame(), true, 0, null, 0);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

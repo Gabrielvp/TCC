@@ -1,6 +1,5 @@
 package dao;
 
-import entity.Parcelas_CPagar;
 import entity.Parcelas_CReceber;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

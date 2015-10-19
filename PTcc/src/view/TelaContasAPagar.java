@@ -576,18 +576,22 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisaOrcamentoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o  Débito?", "Exclusão", 0, 0);
-        if (confirmacao == 0) {
-            int id = Integer.parseInt(txtCodigo.getText());
-            String fat = txtFatura.getText();
-            pcpDAO.delete(fat);
-            cpDAO.delete(id, fat);
-            JOptionPane.showMessageDialog(rootPane, "Débito Excluído!");
-            limparTela();
+        if (txtCodigo.getText().equals("") || txtNome.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira uma pessoa");
+        } else if (txtFatura.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira uma fatura");
+        } else {
+            int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o  Débito?", "Exclusão", 0, 0);
+            if (confirmacao == 0) {
+                int id = Integer.parseInt(txtCodigo.getText());
+                String fat = txtFatura.getText();
+                pcpDAO.delete(fat);
+                cpDAO.delete(id, fat);
+                JOptionPane.showMessageDialog(rootPane, "Débito Excluído!");
+                limparTela();
+            }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
-
-    
 
     public void combo() {
         cbFormaPagamento.removeAll();

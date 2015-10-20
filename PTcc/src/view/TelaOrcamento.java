@@ -581,6 +581,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
         limparTela();
         alterar = false;
         txtOrcamento.setEditable(true);
+        resultado = 0;
+        totalOrçamento = 0;
+        totalDesconto = 0;
     }//GEN-LAST:event_btnLimparTelaActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed

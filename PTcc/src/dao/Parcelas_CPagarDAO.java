@@ -23,7 +23,7 @@ public class Parcelas_CPagarDAO extends MySQL {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO parcelas_cpagar (fatura, parcelas, valor, entrada, vencimento, intervalo, idCPagar)"
+                    = c.prepareStatement("INSERT INTO parcelas_cpagar (fatura, parcela, valor, entrada, vencimento, intervalo, idCPagar)"
                             + "VALUES (?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, pCPagar.getFatura());
             ps.setString(2, pCPagar.getParcelas());
@@ -53,7 +53,7 @@ public class Parcelas_CPagarDAO extends MySQL {
         List<Parcelas_CPagar> listarParcelas = new ArrayList<>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("select parcelas, valor, vencimento, intervalo, entrada from Parcelas_cpagar where fatura = ?");
+            PreparedStatement ps = c.prepareStatement("select parcela, valor, vencimento, intervalo, entrada from Parcelas_cpagar where fatura = ?");
             ps.setString(1, fat);
 
             ResultSet rs = ps.executeQuery();

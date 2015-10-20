@@ -584,6 +584,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                 int parcelas = Integer.parseInt(txtParcelas.getText());
                 Date data = sdfD.parse(txtEntrada.getText());
                 GregorianCalendar calInicio = new GregorianCalendar();
+                model.setNumRows(0);
                 for (int i = 0; i < parcelas; i++) {
                     contador++;
                     calInicio.add(GregorianCalendar.DAY_OF_MONTH, intervalo);

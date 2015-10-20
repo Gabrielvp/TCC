@@ -524,6 +524,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                 int intervalo = Integer.parseInt(txtIntervalo.getText());
                 int parcelas = Integer.parseInt(txtParcelas.getText());
                 Date data = sdfD.parse(txtEntrada.getText());
+                model.setNumRows(0);
                 GregorianCalendar calInicio = new GregorianCalendar();
                 for (int i = 0; i < parcelas; i++) {
                     contador++;

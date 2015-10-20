@@ -237,16 +237,15 @@ public class ProdutoDAO extends MySQL {
         }
     }
 
-    public void baixaProduto(Double qtd, int id) {
+    public void baixaProduto(double qtd, Produto produto) {
 
         Connection c = this.getConnection();
-        Produto produto = new Produto();
 
         try {
 
-            PreparedStatement ps = c.prepareStatement("UPDATE produto SET quantidade = ? WHERE idProduto = ?");
-
-            ps.setDouble(1, (qtd - produto.getQtd()));
+            PreparedStatement ps = c.prepareStatement("UPDATE produto SET quantidade = (quantidade - ?) WHERE idProduto = ?");
+          
+            ps.setDouble(1, qtd);
             ps.setInt(2, produto.getIdProduto());
 
             ps.execute();

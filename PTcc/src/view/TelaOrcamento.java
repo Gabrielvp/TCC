@@ -213,8 +213,6 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 "Cd Produto", "Produto", "Qtd", "R$ Unit.", "R$ Total"
             }
         ));
-        tblProduto.setShowHorizontalLines(true);
-        tblProduto.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblProduto);
         if (tblProduto.getColumnModel().getColumnCount() > 0) {
             tblProduto.getColumnModel().getColumn(0).setResizable(false);
@@ -812,10 +810,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 Logger.getLogger(TelaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
             }
             for (int i = 0; i < tblProduto.getRowCount(); i++) {
-                int idp =  Integer.parseInt(tblProduto.getValueAt(i,0).toString());
+                p.setIdProduto(Integer.parseInt(tblProduto.getValueAt(i,0).toString()));
                 Double qt = Double.parseDouble(tblProduto.getValueAt(i, 2).toString());
-                pDAO.baixaProduto(qt, id);
-                System.out.println(idp + "/"+qt);
+                pDAO.baixaProduto(qt, p);                
             }
             o.setTotal(Double.parseDouble(vl));
             TelaContasAReceber tela = new TelaContasAReceber(null, rootPaneCheckingEnabled, o);

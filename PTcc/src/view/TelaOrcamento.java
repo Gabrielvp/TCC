@@ -439,6 +439,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
             txtProduto.setText(tela.p.getDescricao());
             txtValor.setText(df.format(tela.p.getValorVenda()) + "");
             lblEstoque.setText(tela.p.getQtd() + "");
+            if(txtProduto.getText().equals("")){
+                    limpaProduto();
+                }
         }
     }//GEN-LAST:event_btnPesquisaProdutoActionPerformed
 
@@ -734,7 +737,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtCodProduto.setText(tela.p.getIdProduto() + "");
                 txtProduto.setText(tela.p.getDescricao());
                 txtValor.setText(df.format(tela.p.getValorVenda()) + "");
-                txtQtdProduto.requestFocus();                
+                txtQtdProduto.requestFocus();
+                if(txtProduto.getText().equals("")){
+                    limpaProduto();
+                }
             }
         }
     }//GEN-LAST:event_txtProdutoKeyReleased
@@ -835,11 +841,14 @@ public class TelaOrcamento extends javax.swing.JDialog {
             } else {
                 TelaPesquisaProduto tela = new TelaPesquisaProduto(null, rootPaneCheckingEnabled, null, id);
                 tela.setVisible(true);
-                limpaProduto();
+                //limpaProduto();
                 txtCodProduto.setText(tela.p.getIdProduto() + "");
                 txtProduto.setText(tela.p.getDescricao());
                 txtValor.setText(df.format(tela.p.getValorVenda()) + "");
                 txtQtdProduto.requestFocus();
+                if(txtProduto.getText().equals("")){
+                    limpaProduto();
+                }
             }
         }
     }//GEN-LAST:event_txtCodProdutoKeyPressed
@@ -858,9 +867,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
                     if (txtCodPessoa.getText().equals("0")) {
                         limparPessoa();
                     }
-                    if(txtCodPessoa.getText().length() > 0){
-                    txtCodProduto.requestFocus();
-                        
+                    if (txtCodPessoa.getText().length() > 0) {
+                        txtCodProduto.requestFocus();
+
                     }
                 }
             }

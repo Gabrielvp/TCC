@@ -78,6 +78,9 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
             }
         });
         tblProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tblProdutoKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 tblProdutoKeyReleased(evt);
             }
@@ -119,7 +122,11 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
     }//GEN-LAST:event_tblProdutoMousePressed
 
     private void tblProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblProdutoKeyReleased
-        if (evt.getKeyCode() == evt.VK_ENTER) {
+       
+    }//GEN-LAST:event_tblProdutoKeyReleased
+
+    private void tblProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblProdutoKeyPressed
+         if (evt.getKeyCode() == evt.VK_ENTER) {
             if (tblProduto.getRowCount() == 0) {
 
             } else {
@@ -131,7 +138,7 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
                 this.dispose();
             }
         }
-    }//GEN-LAST:event_tblProdutoKeyReleased
+    }//GEN-LAST:event_tblProdutoKeyPressed
 
     public void buscaProduto(String produto) {
         direita.setHorizontalAlignment(SwingConstants.RIGHT);

@@ -92,8 +92,6 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         cbFormaPagamento = new javax.swing.JComboBox();
         jLabel13 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -174,8 +172,6 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        tblParcelas.setShowHorizontalLines(true);
-        tblParcelas.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblParcelas);
         if (tblParcelas.getColumnModel().getColumnCount() > 0) {
             tblParcelas.getColumnModel().getColumn(1).setResizable(false);
@@ -283,18 +279,9 @@ public class TelaContasAPagar extends javax.swing.JDialog {
 
         jLabel12.setText("Forma Pagamento");
 
-        cbFormaPagamento.setBackground(new java.awt.Color(255, 255, 255));
-
         jLabel13.setText("Código:");
 
         txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
-
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("A Vista");
-
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Prazo");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -341,12 +328,8 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel5)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(52, 52, 52)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jRadioButton1)
-                                    .addComponent(jRadioButton2))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                        .addComponent(txtVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 303, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -388,11 +371,8 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jRadioButton1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton2)
-                                .addGap(8, 8, 8)))))
+                                    .addComponent(jLabel6))
+                                .addGap(32, 32, 32)))))
                 .addGap(0, 13, Short.MAX_VALUE))
         );
 
@@ -692,8 +672,6 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblParcelas;
     private javax.swing.JTextField txtCodigo;

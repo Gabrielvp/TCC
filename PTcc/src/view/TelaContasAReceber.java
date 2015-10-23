@@ -456,7 +456,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         if (nome.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
         } else {
-            TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome);
+            TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome, 0);
             tela.setVisible(true);
             txtCodigoPessoa.setText(tela.p.getIdPessoa() + "");
             txtNome.setText(tela.p.getNome());

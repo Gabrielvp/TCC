@@ -59,7 +59,7 @@ public class Parcelas_CPagarDAO extends MySQL {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Parcelas_CPagar cp = new Parcelas_CPagar();
-                cp.setParcelas(rs.getString("parcelas"));
+                cp.setParcelas(rs.getString("parcela"));
                 cp.setValor(rs.getDouble("valor"));
                 cp.setVencimento(rs.getDate("Vencimento"));
                 cp.setIntervalo(rs.getInt("Intervalo"));

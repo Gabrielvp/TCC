@@ -225,6 +225,39 @@ public class CadastroClienteDAO extends MySQL {
         }
         return listaBuscaNome;
     }
+    
+    public List<Pessoa> buscarNomeId(int id) {
+        List<Pessoa> listaBuscaNome = new ArrayList<Pessoa>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT pessoa.idPessoa, pessoa.nome, pessoa.telCelular FROM pessoa WHERE idPessoa = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Pessoa pessoa = new Pessoa();
+                pessoa.setIdPessoa(rs.getInt("idPessoa"));
+                pessoa.setNome(rs.getString("Nome"));
+                pessoa.setTelCelular(rs.getString("telCelular"));
+
+                listaBuscaNome.add(pessoa);
+
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listaBuscaNome;
+    }
 
     public List<Pessoa> listarPessoasCompleto() {
         List<Pessoa> listaPessoasCompleto = new ArrayList<Pessoa>();

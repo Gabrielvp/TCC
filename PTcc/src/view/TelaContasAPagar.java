@@ -422,7 +422,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         if (nome.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
         } else {
-            TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome);
+            TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome, 0);
             tela.setVisible(true);
             txtNome.setText(tela.p.getNome());
             txtCodigo.setText(tela.p.getIdPessoa() + "");

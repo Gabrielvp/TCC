@@ -133,7 +133,7 @@ public class ProdutoDAO extends MySQL {
         }
         return listaBuscaProduto;
     }
-
+    
     public List<Produto> buscarProdutoId(int id) {
         List<Produto> listaBuscaProduto = new ArrayList<Produto>();
         Connection c = this.getConnection();
@@ -175,7 +175,7 @@ public class ProdutoDAO extends MySQL {
             }
         }
         return listaBuscaProduto;
-    }
+    }   
 
     public void delete(int id) {
         Connection c = this.getConnection();

@@ -60,7 +60,7 @@ public class Parcelas_CReceberDAO extends MySQL {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Parcelas_CReceber cr = new Parcelas_CReceber();
-                cr.setParcelas(rs.getString("parcelas"));
+                cr.setParcelas(rs.getString("parcela"));
                 cr.setValor(rs.getDouble("valor"));
                 cr.setVencimento(rs.getDate("Vencimento"));
                 cr.setIntervalo(rs.getInt("Intervalo"));

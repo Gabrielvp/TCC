@@ -22,15 +22,18 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
     /**
      * Creates new form TelaPesquisaPessoa
      */
-    public TelaPesquisaProduto(java.awt.Frame parent, boolean modal, String produto) {
+    public TelaPesquisaProduto(java.awt.Frame parent, boolean modal, String produto, int id) {
         super(parent, modal);
         initComponents();
         this.pesquisa = produto;
+        this.cd = id;
         buscaProduto(produto);
+        buscaProdutoId(cd);
         setLocationRelativeTo(null);
         setResizable(false);
     }
 
+    int cd;
     String pesquisa;
     ProdutoDAO pDAO = new ProdutoDAO();
     Produto p = new Produto();
@@ -117,11 +120,16 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
 
     private void tblProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblProdutoKeyReleased
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            int linha = tblProduto.getSelectedRow();
-            String coluna = tblProduto.getValueAt(linha, 0).toString();
-            int id = Integer.parseInt(coluna);
-            p = pDAO.getProdutoById(id);
-            this.dispose();
+            if (tblProduto.getRowCount() == 0) {
+
+            } else {
+                tblProduto.selectAll();
+                int linha = tblProduto.getSelectedRow();
+                String coluna = tblProduto.getValueAt(linha, 0).toString();
+                int id = Integer.parseInt(coluna);
+                p = pDAO.getProdutoById(id);
+                this.dispose();
+            }
         }
     }//GEN-LAST:event_tblProdutoKeyReleased
 
@@ -139,6 +147,22 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
             modelo.setValueAt(listaProduto.get(i).getQtd(), i, 3);
         }
     }
+
+    public void buscaProdutoId(int id) {
+        direita.setHorizontalAlignment(SwingConstants.RIGHT);
+        tblProduto.getColumnModel().getColumn(2).setCellRenderer(direita);
+        tblProduto.getColumnModel().getColumn(3).setCellRenderer(direita);
+        List<Produto> listaProduto = pDAO.buscarProdutoId(id);
+        DefaultTableModel modelo = (DefaultTableModel) tblProduto.getModel();
+        for (int i = 0; i < listaProduto.size(); i++) {
+            modelo.addRow(new Object[]{});
+            modelo.setValueAt(listaProduto.get(i).getIdProduto(), i, 0);
+            modelo.setValueAt(listaProduto.get(i).getDescricao(), i, 1);
+            modelo.setValueAt(df.format(listaProduto.get(i).getValorVenda()), i, 2);
+            modelo.setValueAt(listaProduto.get(i).getQtd(), i, 3);
+        }
+    }
+
     DecimalFormat df = new DecimalFormat("#,###.00");
 
     /**
@@ -174,7 +198,7 @@ public class TelaPesquisaProduto extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaPesquisaProduto dialog = new TelaPesquisaProduto(new javax.swing.JFrame(), true, null);
+                TelaPesquisaProduto dialog = new TelaPesquisaProduto(new javax.swing.JFrame(), true, null, 0);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

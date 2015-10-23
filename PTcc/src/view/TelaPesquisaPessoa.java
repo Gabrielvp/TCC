@@ -19,15 +19,18 @@ public class TelaPesquisaPessoa extends javax.swing.JDialog {
     /**
      * Creates new form TelaPesquisaPessoa
      */
-    public TelaPesquisaPessoa(java.awt.Frame parent, boolean modal, String nome) {
+    public TelaPesquisaPessoa(java.awt.Frame parent, boolean modal, String nome, int id) {
         super(parent, modal);
         initComponents();
+        this.cd = id;
         this.pesquisa = nome;
+        buscaPessoaId(cd);
         buscaPessoa(nome);
         setLocationRelativeTo(null);
         setResizable(false);
     }
 
+    int cd;
     String pesquisa;
     CadastroClienteDAO cDAO = new CadastroClienteDAO();
     Pessoa p = new Pessoa();
@@ -71,6 +74,9 @@ public class TelaPesquisaPessoa extends javax.swing.JDialog {
             }
         });
         tblPessoa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tblPessoaKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 tblPessoaKeyReleased(evt);
             }
@@ -104,23 +110,47 @@ public class TelaPesquisaPessoa extends javax.swing.JDialog {
             int linha = tblPessoa.getSelectedRow();
             String coluna = tblPessoa.getValueAt(linha, 0).toString();
             int id = Integer.parseInt(coluna);
-            p = cDAO.getPessoaById(id);     
+            p = cDAO.getPessoaById(id);
             this.dispose();
         }
     }//GEN-LAST:event_tblPessoaMousePressed
 
     private void tblPessoaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblPessoaKeyReleased
-         if (evt.getKeyCode()== evt.VK_ENTER) {
-            int linha = tblPessoa.getSelectedRow();
-            String coluna = tblPessoa.getValueAt(linha, 0).toString();
-            int id = Integer.parseInt(coluna);
-            p = cDAO.getPessoaById(id);     
-            this.dispose();
-        }
+
     }//GEN-LAST:event_tblPessoaKeyReleased
+
+    private void tblPessoaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblPessoaKeyPressed
+        try {
+            if (evt.getKeyCode() == evt.VK_ENTER) {
+                if (tblPessoa.getRowCount() == 0) {
+
+                } else {
+                    tblPessoa.selectAll();
+                    int linha = tblPessoa.getSelectedRow();
+                    String coluna = tblPessoa.getValueAt(linha, 0).toString();
+                    int id = Integer.parseInt(coluna);
+                    p = cDAO.getPessoaById(id);
+                    this.dispose();
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_tblPessoaKeyPressed
 
     public void buscaPessoa(String nome) {
         List<Pessoa> listaPessoa = cDAO.buscarNome(nome);
+        DefaultTableModel modelo = (DefaultTableModel) tblPessoa.getModel();
+        for (int i = 0; i < listaPessoa.size(); i++) {
+            modelo.addRow(new Object[]{});
+            modelo.setValueAt(listaPessoa.get(i).getIdPessoa(), i, 0);
+            modelo.setValueAt(listaPessoa.get(i).getNome(), i, 1);
+            modelo.setValueAt(listaPessoa.get(i).getTelCelular(), i, 2);
+        }
+    }
+
+    public void buscaPessoaId(int cd) {
+        List<Pessoa> listaPessoa = cDAO.buscarNomeId(cd);
         DefaultTableModel modelo = (DefaultTableModel) tblPessoa.getModel();
         for (int i = 0; i < listaPessoa.size(); i++) {
             modelo.addRow(new Object[]{});
@@ -160,7 +190,7 @@ public class TelaPesquisaPessoa extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaPesquisaPessoa dialog = new TelaPesquisaPessoa(new javax.swing.JFrame(), true, null);
+                TelaPesquisaPessoa dialog = new TelaPesquisaPessoa(new javax.swing.JFrame(), true, null, 0);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

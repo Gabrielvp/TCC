@@ -201,9 +201,7 @@ public class OrcamentoDAO extends MySQL {
         Orcamento orcamento = new Orcamento();
 
         try {
-            PreparedStatement ps = c.prepareStatement("select orcamento.idorcamento, orcamento.data, orcamento.cliente, orcamento.idpessoa, orcamento.total, produto_orcamento.idproduto,\n"
-                    + "produto_orcamento.produto, produto_orcamento.valor, produto_orcamento.qtd, produto_orcamento.total from\n"
-                    + "orcamento inner join produto_orcamento on orcamento.idorcamento = produto_orcamento.idOrcamento");
+            PreparedStatement ps = c.prepareStatement("select orcamento.data, orcamento.idOrcamento, orcamento.cliente, orcamento.total, orcamento.aprovado from orcamento WHERE idOrcamento = ?");
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();

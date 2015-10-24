@@ -15,6 +15,15 @@ public class FormaPagamento {
     private String descricao;
     private int parcela;
     private int intervalo;
+    private boolean aVista;
+
+    public boolean isaVista() {
+        return aVista;
+    }
+
+    public void setaVista(boolean aVista) {
+        this.aVista = aVista;
+    }
 
     public int getIdFormaPagamento() {
         return idFormaPagamento;

@@ -26,11 +26,12 @@ public class FormaPagamentoDAO extends MySQL {
         try {
             PreparedStatement ps
                     = c.prepareStatement("INSERT INTO forma_pagamento "
-                            + "(descricao, parcela, intervalo)  "
-                            + "VALUES ( ?, ?, ?)");
+                            + "(descricao, parcela, intervalo, aVista)  "
+                            + "VALUES ( ?, ?, ?, ?)");
             ps.setString(1, fPagamento.getDescricao());
             ps.setInt(2, fPagamento.getParcela());
             ps.setInt(3, fPagamento.getIntervalo());
+            ps.setBoolean(4, fPagamento.isaVista());
 
             ps.execute();
             ps.close();
@@ -54,13 +55,47 @@ public class FormaPagamentoDAO extends MySQL {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = c.prepareStatement(" SELECT descricao, parcela, intervalo FROM forma_pagamento");
+                    = c.prepareStatement(" SELECT descricao, parcela, intervalo, aVista FROM forma_pagamento");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 FormaPagamento fp = new FormaPagamento();
                 fp.setDescricao(rs.getString("Descricao"));
                 fp.setParcela(rs.getInt("Parcela"));
                 fp.setIntervalo(rs.getInt("Intervalo"));
+                fp.setaVista(rs.getBoolean("aVista"));
+
+                lista.add(fp);
+
+            }
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return lista;
+    }
+    
+    public List<FormaPagamento> listaDesc(String desc) {
+        List<FormaPagamento> lista = new ArrayList<>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps
+                    = c.prepareStatement(" SELECT descricao, parcela, intervalo, aVista FROM forma_pagamento WHERE descricao = ?");
+            ps.setString(1, desc);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                FormaPagamento fp = new FormaPagamento();
+                fp.setDescricao(rs.getString("Descricao"));
+                fp.setParcela(rs.getInt("Parcela"));
+                fp.setIntervalo(rs.getInt("Intervalo"));
+                fp.setaVista(rs.getBoolean("aVista"));
 
                 lista.add(fp);
 

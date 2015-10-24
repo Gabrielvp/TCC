@@ -43,7 +43,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         txtData.setText(data);
         combo();
     }
-
+    
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat df = new DecimalFormat("####.00");
     DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
@@ -133,6 +133,11 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtEntrada.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtEntradaKeyPressed(evt);
+            }
+        });
 
         jLabel11.setText("Intervalo:");
 
@@ -279,6 +284,12 @@ public class TelaContasAPagar extends javax.swing.JDialog {
 
         jLabel12.setText("Forma Pagamento");
 
+        cbFormaPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbFormaPagamentoActionPerformed(evt);
+            }
+        });
+
         jLabel13.setText("Código:");
 
         txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
@@ -414,7 +425,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         CPagar cp = new CPagar();
         Parcelas_CPagar pCP = new Parcelas_CPagar();
         Parcelas_CPagarDAO pcpDAO = new Parcelas_CPagarDAO();
-
+        
         if (cbFormaPagamento.getSelectedItem().toString().equals("Selecione a Forma de Pagamento")) {
             JOptionPane.showMessageDialog(rootPane, "Selecione a Forma de Pagamento!");
         } else {
@@ -441,7 +452,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
             } else {
                 cpDAO.insert(cp);
             }
-
+            
             if (!txtParcelas.getText().equals("")) {
                 if (txtValorParcela.getText().equals("")) {
                     JOptionPane.showMessageDialog(rootPane, "Insira o número de parcelas e pressione enter");
@@ -472,7 +483,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                         }
                         pCP.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
                         pCP.setIdCPagar(cp.getIdCPagar());
-
+                        
                         pcpDAO.insert(pCP);
                     }
                     JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
@@ -528,7 +539,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
             TelaPesquisaFatura tela = new TelaPesquisaFatura(null, rootPaneCheckingEnabled, id, p, 2);
             tela.setVisible(true);
             String fatura = tela.coluna;
-
+            
             DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
             List<CPagar> lista = cpDAO.listarCPagarString(fatura);
             List<Parcelas_CPagar> listaParcelas = pcpDAO.listarParcelasString(fatura);
@@ -550,7 +561,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
                         model.setValueAt(df.format(listaParcelas.get(j).getValor()), j, 1);
                         model.setValueAt(sdfD.format(listaParcelas.get(j).getVencimento()), j, 2);
                     }
-
+                    
                 }
             }
         }
@@ -574,6 +585,36 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
+    private void cbFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFormaPagamentoActionPerformed
+        String desc = cbFormaPagamento.getSelectedItem().toString();
+        combo2(desc);
+    }//GEN-LAST:event_cbFormaPagamentoActionPerformed
+
+    private void txtEntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEntradaKeyPressed
+        int contador = 0;
+        DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
+            tblParcelas.getColumnModel().getColumn(1).setCellRenderer(esquerda);
+            tblParcelas.getColumnModel().getColumn(2).setCellRenderer(esquerda);
+            try {
+                int intervalo = Integer.parseInt(txtIntervalo.getText());
+                int parcelas = Integer.parseInt(txtParcelas.getText());
+                Date data = sdfD.parse(txtEntrada.getText());
+                model.setNumRows(0);
+                GregorianCalendar calInicio = new GregorianCalendar();
+                for (int i = 0; i < parcelas; i++) {
+                    contador++;
+                    calInicio.add(GregorianCalendar.DAY_OF_MONTH, intervalo);
+                    data = calInicio.getTime();
+                    model.addRow(new Object[]{txtFatura.getText() + "/" + contador, txtValorParcela.getText(), sdfD.format(data)});
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_txtEntradaKeyPressed
+    
     public void combo() {
         cbFormaPagamento.removeAll();
         cbFormaPagamento.removeAllItems();
@@ -584,7 +625,37 @@ public class TelaContasAPagar extends javax.swing.JDialog {
             cbFormaPagamento.addItem(fp.getDescricao());
         }
     }
-
+    
+    public void combo2(String desc) {
+        DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
+        FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
+        List<FormaPagamento> lista = fpDAO.listaDesc(desc);
+        for (int i = 0; i < lista.size(); i++) {
+            boolean teste = lista.get(i).isaVista();
+            if (teste) {
+                txtEntrada.setEditable(false);
+                txtParcelas.setEditable(false);
+                txtIntervalo.setEditable(false);
+                txtParcelas.setText("");
+                txtIntervalo.setText("");
+                txtValorParcela.setText("");
+                txtEntrada.setText("");
+                model.setNumRows(0);
+            } else if (teste == false) {
+                txtEntrada.setEditable(true);
+                txtParcelas.setEditable(true);
+                txtIntervalo.setEditable(true);
+                txtParcelas.setText(lista.get(i).getParcela() + "");
+                txtIntervalo.setText(lista.get(i).getIntervalo() + "");
+                String vl = txtTotal.getText().replaceAll(",", ".");
+                double valor = Double.parseDouble(vl);
+                int parcelas = Integer.parseInt(txtParcelas.getText());
+                double resultado = valor / parcelas;
+                txtValorParcela.setText(df.format(resultado) + "");
+            }
+        }
+    }
+    
     public void limparTela() {
         DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
         txtCodigo.setText("");

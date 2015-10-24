@@ -40,6 +40,14 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Pessoa` (
   PRIMARY KEY (`idPessoa`)
   );
 
+CREATE TABLE forma_pagamento (
+  idForma_pagamento int(11) NOT NULL AUTO_INCREMENT,
+  descricao varchar(50) NOT NULL,
+  parcela int(11) NOT NULL,
+  intervalo int(11) NOT NULL,
+  aVista tinyint(1) NOT NULL,
+  PRIMARY KEY (idForma_pagamento)
+);
 
 create table cPagar(
     idCPagar integer not null auto_increment primary key,

@@ -49,8 +49,8 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         btnAddFormaPagamento = new javax.swing.JButton();
         btnExcluiFormaPagamento = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rbtnAVista = new javax.swing.JRadioButton();
+        rbtnPrazo = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFormaPagamento = new javax.swing.JTable();
 
@@ -90,12 +90,12 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
             }
         });
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("A Vista");
+        buttonGroup1.add(rbtnAVista);
+        rbtnAVista.setSelected(true);
+        rbtnAVista.setText("A Vista");
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Prazo");
+        buttonGroup1.add(rbtnPrazo);
+        rbtnPrazo.setText("Prazo");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -115,11 +115,11 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton2))
+                                .addComponent(rbtnPrazo))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(74, 74, 74)
-                                .addComponent(jRadioButton1))))
+                                .addComponent(rbtnAVista))))
                     .addComponent(jLabel1)
                     .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(61, Short.MAX_VALUE))
@@ -146,12 +146,12 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
                             .addComponent(txtParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jRadioButton2))
+                            .addComponent(rbtnPrazo))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                             .addComponent(jLabel3)
                             .addGap(0, 0, 0)
                             .addComponent(txtIntervalo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jRadioButton1))
+                    .addComponent(rbtnAVista))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAddFormaPagamento)
@@ -210,6 +210,11 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
         fp.setDescricao(txtDescricao.getText());
         fp.setParcela(Integer.parseInt(txtParcela.getText()));
         fp.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
+        if(rbtnAVista.isSelected()){
+            fp.setaVista(true);
+        }else if(rbtnPrazo.isSelected()){
+            fp.setaVista(false);
+        }
         
         fDAO.insert(fp);
         atualizaTabela();
@@ -289,9 +294,9 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rbtnAVista;
+    private javax.swing.JRadioButton rbtnPrazo;
     private javax.swing.JTable tblFormaPagamento;
     private javax.swing.JTextField txtDescricao;
     private javax.swing.JTextField txtIntervalo;

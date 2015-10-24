@@ -146,6 +146,11 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtEntrada.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtEntradaKeyPressed(evt);
+            }
+        });
 
         jLabel11.setText("Intervalo:");
 
@@ -293,6 +298,12 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         });
 
         jLabel12.setText("Forma Pagamento:");
+
+        cbFormaPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbFormaPagamentoActionPerformed(evt);
+            }
+        });
 
         jLabel13.setText("Código:");
 
@@ -581,15 +592,15 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         } else if (txtFatura.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Insira uma fatura");
         } else {
-        int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o  Débito?", "Exclusão", 0, 0);
-        if (confirmacao == 0) {
-            int id = Integer.parseInt(txtCodigoPessoa.getText());
-            String fat = txtFatura.getText();
-            pcrDAO.delete(fat);
-            crDAO.delete(id, fat);
-            JOptionPane.showMessageDialog(rootPane, "Débito Excluído!");
-            limparTela();
-        }
+            int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o  Débito?", "Exclusão", 0, 0);
+            if (confirmacao == 0) {
+                int id = Integer.parseInt(txtCodigoPessoa.getText());
+                String fat = txtFatura.getText();
+                pcrDAO.delete(fat);
+                crDAO.delete(id, fat);
+                JOptionPane.showMessageDialog(rootPane, "Débito Excluído!");
+                limparTela();
+            }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -633,6 +644,38 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnPesquisaOrcamento1ActionPerformed
 
+    private void cbFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFormaPagamentoActionPerformed
+        String desc = cbFormaPagamento.getSelectedItem().toString();
+        combo2(desc);
+    }//GEN-LAST:event_cbFormaPagamentoActionPerformed
+
+    private void txtEntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEntradaKeyPressed
+        int contador = 0;
+        DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
+            tblParcelas.getColumnModel().getColumn(1).setCellRenderer(esquerda);
+            tblParcelas.getColumnModel().getColumn(2).setCellRenderer(esquerda);
+            try {
+                int intervalo = Integer.parseInt(txtIntervalo.getText());
+                int parcelas = Integer.parseInt(txtParcelas.getText());
+                Date data = sdfD.parse(txtEntrada.getText());
+                GregorianCalendar calInicio = new GregorianCalendar();
+                model.setNumRows(0);
+                for (int i = 0; i < parcelas; i++) {
+                    contador++;
+                    calInicio.add(GregorianCalendar.DAY_OF_MONTH, intervalo);
+                    data = calInicio.getTime();
+                    model.addRow(new Object[]{txtFatura.getText() + "/" + contador, txtValorParcela.getText(), sdfD.format(data)});
+
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaContasAReceber.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_txtEntradaKeyPressed
+
     public void limparOrc() {
         txtOrcamento.setText("");
     }
@@ -659,8 +702,35 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         cbFormaPagamento.addItem("Selecione a Forma de Pagamento");
         FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
         List<FormaPagamento> lista = fpDAO.lista();
-        for (FormaPagamento fp : lista) {
-            cbFormaPagamento.addItem(fp.getDescricao());
+        for (int i = 0; i < lista.size(); i++) {
+            cbFormaPagamento.addItem(lista.get(i).getDescricao());
+        }
+    }
+
+    public void combo2(String desc) {
+        FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
+        List<FormaPagamento> lista = fpDAO.listaDesc(desc);
+        for (int i = 0; i < lista.size(); i++) {
+            boolean teste = lista.get(i).isaVista();
+            if (teste) {
+                txtEntrada.setEditable(false);
+                txtParcelas.setEditable(false);
+                txtIntervalo.setEditable(false);
+                txtParcelas.setText("");
+                txtIntervalo.setText("");
+                txtValorParcela.setText("");
+            } else if (teste == false) {
+                txtEntrada.setEditable(true);
+                txtParcelas.setEditable(true);
+                txtIntervalo.setEditable(true);
+                txtParcelas.setText(lista.get(i).getParcela() + "");
+                txtIntervalo.setText(lista.get(i).getIntervalo() + "");
+                String vl = txtTotal.getText().replaceAll(",", ".");
+                double valor = Double.parseDouble(vl);
+                int parcelas = Integer.parseInt(txtParcelas.getText());
+                double resultado = valor / parcelas;
+                txtValorParcela.setText(df.format(resultado) + "");
+            }
         }
     }
 

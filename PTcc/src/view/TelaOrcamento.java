@@ -138,9 +138,6 @@ public class TelaOrcamento extends javax.swing.JDialog {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtNomeKeyPressed(evt);
             }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNomeKeyReleased(evt);
-            }
         });
         jPanel1.add(txtNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 82, 480, -1));
 
@@ -172,8 +169,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
         txtProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtProduto.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtProdutoKeyReleased(evt);
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtProdutoKeyPressed(evt);
             }
         });
         jPanel1.add(txtProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 131, 480, -1));
@@ -439,9 +436,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
             txtProduto.setText(tela.p.getDescricao());
             txtValor.setText(df.format(tela.p.getValorVenda()) + "");
             lblEstoque.setText(tela.p.getQtd() + "");
-            if(txtProduto.getText().equals("")){
-                    limpaProduto();
-                }
+            if (txtProduto.getText().equals("")) {
+                limpaProduto();
+            }
         }
     }//GEN-LAST:event_btnPesquisaProdutoActionPerformed
 
@@ -720,38 +717,19 @@ public class TelaOrcamento extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnLimpaDescontoOrcamentoActionPerformed
 
-    private void txtNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyReleased
-
-    }//GEN-LAST:event_txtNomeKeyReleased
-
-    private void txtProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProdutoKeyReleased
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            String nome = txtProduto.getText();
-            if (nome.equals("")) {
-                JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
-                txtCodPessoa.setText("");
-                limpaProduto();
-            } else {
-                TelaPesquisaProduto tela = new TelaPesquisaProduto(null, rootPaneCheckingEnabled, nome, 0);
-                tela.setVisible(true);
-                txtCodProduto.setText(tela.p.getIdProduto() + "");
-                txtProduto.setText(tela.p.getDescricao());
-                txtValor.setText(df.format(tela.p.getValorVenda()) + "");
-                txtQtdProduto.requestFocus();
-                if(txtProduto.getText().equals("")){
-                    limpaProduto();
-                }
-            }
-        }
-    }//GEN-LAST:event_txtProdutoKeyReleased
-
     private void txtPesquisaOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisaOrcamentoActionPerformed
+        Orcamento o = new Orcamento();
         limpaProduto();
         DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
         esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
         tblProduto.getColumnModel().getColumn(2).setCellRenderer(esquerda);
         tblProduto.getColumnModel().getColumn(3).setCellRenderer(esquerda);
         tblProduto.getColumnModel().getColumn(4).setCellRenderer(esquerda);
+        try {
+            o.setData(sdfD.parse(txtData.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
         TelaPesquisaOrcamento tela = new TelaPesquisaOrcamento(null, rootPaneCheckingEnabled, 0);
         tela.setVisible(true);
         alterar = tela.alterar;
@@ -834,19 +812,18 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
     private void txtCodProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodProdutoKeyPressed
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            int id = Integer.parseInt(txtCodProduto.getText());
-            if (id == 0) {
+            if (txtCodProduto.getText().equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Digite um código para pesquisa");
                 txtCodProduto.setText("");
             } else {
+                int id = Integer.parseInt(txtCodProduto.getText());
                 TelaPesquisaProduto tela = new TelaPesquisaProduto(null, rootPaneCheckingEnabled, null, id);
                 tela.setVisible(true);
-                //limpaProduto();
                 txtCodProduto.setText(tela.p.getIdProduto() + "");
                 txtProduto.setText(tela.p.getDescricao());
                 txtValor.setText(df.format(tela.p.getValorVenda()) + "");
                 txtQtdProduto.requestFocus();
-                if(txtProduto.getText().equals("")){
+                if (txtProduto.getText().equals("")) {
                     limpaProduto();
                 }
             }
@@ -890,6 +867,27 @@ public class TelaOrcamento extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_txtNomeKeyPressed
+
+    private void txtProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProdutoKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            String nome = txtProduto.getText();
+            if (nome.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+                txtCodPessoa.setText("");
+                limpaProduto();
+            } else {
+                TelaPesquisaProduto tela = new TelaPesquisaProduto(null, rootPaneCheckingEnabled, nome, 0);
+                tela.setVisible(true);
+                txtCodProduto.setText(tela.p.getIdProduto() + "");
+                txtProduto.setText(tela.p.getDescricao());
+                txtValor.setText(df.format(tela.p.getValorVenda()) + "");
+                txtQtdProduto.requestFocus();
+                if (txtProduto.getText().equals("")) {
+                    limpaProduto();
+                }
+            }
+        }
+    }//GEN-LAST:event_txtProdutoKeyPressed
 
     public void atualizaTabela(int id) {
         DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();

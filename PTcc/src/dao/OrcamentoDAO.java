@@ -4,6 +4,7 @@ import entity.Orcamento;
 import entity.Produto;
 import entity.ProdutoOrcamento;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,7 +65,7 @@ public class OrcamentoDAO extends MySQL {
             PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET aprovado = true WHERE idOrcamento = ? ");
             Orcamento orcamento = new Orcamento();
             ps.setInt(1, id);
-            
+
             ps.execute();
             ps.close();
 
@@ -83,13 +84,13 @@ public class OrcamentoDAO extends MySQL {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET cliente = ?, total = ?, desconto = ?, idPessoa = ? WHERE idOrcamento = ? ");
-            
+
             ps.setString(1, orcamento.getNome());
             ps.setDouble(2, orcamento.getTotal());
             ps.setDouble(3, orcamento.getDesconto());
-            ps.setInt(4, orcamento.getIdPessoa());  
+            ps.setInt(4, orcamento.getIdPessoa());
             ps.setInt(5, orcamento.getIdOrcamento());
-            
+
             ps.execute();
             ps.close();
 
@@ -104,7 +105,7 @@ public class OrcamentoDAO extends MySQL {
             JOptionPane.showMessageDialog(null, "Alterado com Sucesso!");
         }
     }
-    
+
     public void delete(int id) {
         Connection c = this.getConnection();
         try {
@@ -162,7 +163,7 @@ public class OrcamentoDAO extends MySQL {
         }
         return listarOrcamentos;
     }
-    
+
     public List<Orcamento> listarOrcamentosPessoa(int id) {
         List<Orcamento> listarOrcamentos = new ArrayList<Orcamento>();
         Connection c = this.getConnection();
@@ -260,7 +261,109 @@ public class OrcamentoDAO extends MySQL {
         }
         return orcamento;
     }
+
+    public List<Orcamento> listaOrcamentoIdPessoa(int id) {
+        Connection c = this.getConnection();
+        List<Orcamento> lista = new ArrayList<>();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT orcamento.idOrcamento, orcamento.data, orcamento.idPessoa, orcamento.cliente,"
+                    + "orcamento.total, orcamento.aprovado FROM orcamento WHERE idPessoa = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Orcamento orcamento = new Orcamento();
+                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
+                orcamento.setData(rs.getDate("Data"));
+                orcamento.setNome(rs.getString("Cliente"));
+                orcamento.setIdPessoa(rs.getInt("idPessoa"));
+                orcamento.setTotal(rs.getDouble("Total"));
+                orcamento.setAprovado(rs.getBoolean("Aprovado"));
+                lista.add(orcamento);
+            }
+            rs.close();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return lista;
+    }
     
+    public List<Orcamento> listaOrcamentoPeriodo(Date inicio, Date fim) {
+        Connection c = this.getConnection();
+        List<Orcamento> lista = new ArrayList<>();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT orcamento.idOrcamento, orcamento.data, orcamento.idPessoa, orcamento.cliente,"
+                    + "orcamento.total, orcamento.aprovado FROM orcamento WHERE data between  ? and  ?");
+            ps.setDate(1, inicio);
+            ps.setDate(2, fim);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Orcamento orcamento = new Orcamento();
+                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
+                orcamento.setData(rs.getDate("Data"));
+                orcamento.setNome(rs.getString("Cliente"));
+                orcamento.setIdPessoa(rs.getInt("idPessoa"));
+                orcamento.setTotal(rs.getDouble("Total"));
+                orcamento.setAprovado(rs.getBoolean("Aprovado"));
+                lista.add(orcamento);
+            }
+            rs.close();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return lista;
+    }
+    
+    public List<Orcamento> listaOrcamentoPeriodoPessoa(Date inicio, Date fim, int id) {
+        Connection c = this.getConnection();
+        List<Orcamento> lista = new ArrayList<>();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT orcamento.idOrcamento, orcamento.data, orcamento.idPessoa, orcamento.cliente,"
+                    + "orcamento.total, orcamento.aprovado FROM orcamento WHERE data between  ? and  ? and idPessoa = ?");
+            ps.setDate(1, inicio);
+            ps.setDate(2, fim);
+            ps.setInt(3, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Orcamento orcamento = new Orcamento();
+                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
+                orcamento.setData(rs.getDate("Data"));
+                orcamento.setNome(rs.getString("Cliente"));
+                orcamento.setIdPessoa(rs.getInt("idPessoa"));
+                orcamento.setTotal(rs.getDouble("Total"));
+                orcamento.setAprovado(rs.getBoolean("Aprovado"));
+                lista.add(orcamento);
+            }
+            rs.close();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return lista;
+    }
+
     public Orcamento getOrcamentoIdPessoa(int id) {
         Connection c = this.getConnection();
 
@@ -292,4 +395,38 @@ public class OrcamentoDAO extends MySQL {
         }
         return orcamento;
     }
+
+    public List<Orcamento> getOrcamentoNome(String nome) {
+        Connection c = this.getConnection();
+        List<Orcamento> lista = new ArrayList<>();
+        Orcamento orcamento = new Orcamento();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT orcamento.idOrcamento, orcamento.data, orcamento.idPessoa, orcamento.cliente,"
+                    + "orcamento.total, orcamento.aprovado FROM orcamento WHERE cliente like ?");
+            ps.setString(1, nome + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
+                orcamento.setData(rs.getDate("Data"));
+                orcamento.setNome(rs.getString("Cliente"));
+                orcamento.setIdPessoa(rs.getInt("idPessoa"));
+                orcamento.setTotal(rs.getDouble("Total"));
+                orcamento.setAprovado(rs.getBoolean("Aprovado"));
+                lista.add(orcamento);
+            }
+            rs.close();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return lista;
+    }
+
 }

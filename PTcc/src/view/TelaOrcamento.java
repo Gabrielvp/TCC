@@ -12,6 +12,8 @@ import entity.Orcamento;
 import entity.Pessoa;
 import entity.Produto;
 import entity.ProdutoOrcamento;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -52,8 +55,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
             txtNome.setText(ps.getNome());
         } else {
 
-        }
+        }        
     }
+    
 
     Pessoa ps = new Pessoa();
     ProdutoDAO pDAO = new ProdutoDAO();
@@ -128,6 +132,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
         setTitle("Orçamento - Agenda Financeira");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)));
+        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel1KeyPressed(evt);
+            }
+        });
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Nome:");
@@ -139,7 +148,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtNomeKeyPressed(evt);
             }
         });
-        jPanel1.add(txtNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 82, 480, -1));
+        jPanel1.add(txtNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 82, 480, 25));
 
         jLabel2.setText("Orçamento");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 10, -1, -1));
@@ -151,7 +160,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtOrcamentoKeyReleased(evt);
             }
         });
-        jPanel1.add(txtOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 30, 80, -1));
+        jPanel1.add(txtOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 30, 80, 25));
 
         jLabel3.setText("Data");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
@@ -162,7 +171,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 80, -1));
+        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 80, 25));
 
         jLabel4.setText("Produto");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 115, -1, -1));
@@ -173,7 +182,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtProdutoKeyPressed(evt);
             }
         });
-        jPanel1.add(txtProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 131, 480, -1));
+        jPanel1.add(txtProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 131, 480, 25));
 
         jLabel5.setText("Cd. Produto");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 115, -1, -1));
@@ -184,7 +193,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtCodProdutoKeyPressed(evt);
             }
         });
-        jPanel1.add(txtCodProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 131, 80, -1));
+        jPanel1.add(txtCodProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 131, 80, 25));
 
         jLabel6.setText("Qtd");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 160, -1, -1));
@@ -196,7 +205,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtQtdProdutoKeyReleased(evt);
             }
         });
-        jPanel1.add(txtQtdProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 176, 50, -1));
+        jPanel1.add(txtQtdProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 176, 50, 25));
 
         jLabel7.setText("Valor R$");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
@@ -208,7 +217,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtValorKeyReleased(evt);
             }
         });
-        jPanel1.add(txtValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 176, 82, -1));
+        jPanel1.add(txtValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 176, 82, 25));
 
         tblProduto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -266,7 +275,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnLimpaDescontoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpaDesconto, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 170, -1, -1));
+        jPanel1.add(btnLimpaDesconto, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 170, -1, 30));
 
         btnRemoveProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/No-entry.png"))); // NOI18N
         btnRemoveProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -292,7 +301,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtDescontoProdutoKeyReleased(evt);
             }
         });
-        jPanel1.add(txtDescontoProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 176, 80, -1));
+        jPanel1.add(txtDescontoProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 176, 80, 25));
 
         lblDescontoOrcamento.setForeground(new java.awt.Color(204, 0, 0));
         lblDescontoOrcamento.setText("*Desconto %");
@@ -310,7 +319,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtDescontoOrcamentoKeyReleased(evt);
             }
         });
-        jPanel1.add(txtDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 550, 77, -1));
+        jPanel1.add(txtDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 550, 77, 25));
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Apply.png"))); // NOI18N
         btnSalvar.setText("Salvar");
@@ -327,7 +336,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnPesquisaClienteActionPerformed(evt);
             }
         });
-        jPanel1.add(btnPesquisaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 70, -1, 37));
+        jPanel1.add(btnPesquisaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 77, -1, 30));
 
         txtPesquisaOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
         txtPesquisaOrcamento.addActionListener(new java.awt.event.ActionListener() {
@@ -335,7 +344,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtPesquisaOrcamentoActionPerformed(evt);
             }
         });
-        jPanel1.add(txtPesquisaOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(202, 16, -1, 37));
+        jPanel1.add(txtPesquisaOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, -1, 30));
 
         btnPesquisaProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
         btnPesquisaProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -343,7 +352,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnPesquisaProdutoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnPesquisaProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 119, -1, 37));
+        jPanel1.add(btnPesquisaProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 127, -1, 30));
 
         jLabel8.setText("Código");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 66, -1, -1));
@@ -354,7 +363,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtCodPessoaKeyPressed(evt);
             }
         });
-        jPanel1.add(txtCodPessoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 82, 80, -1));
+        jPanel1.add(txtCodPessoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 82, 80, 25));
 
         jLabel9.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel9.setText("Total Item R$");
@@ -378,7 +387,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnLimparTelaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimparTela, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 540, -1, 30));
+        jPanel1.add(btnLimparTela, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 550, -1, 30));
 
         btnLimpaDescontoOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Refresh.png"))); // NOI18N
         btnLimpaDescontoOrcamento.addActionListener(new java.awt.event.ActionListener() {
@@ -386,7 +395,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 btnLimpaDescontoOrcamentoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLimpaDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 540, -1, 30));
+        jPanel1.add(btnLimpaDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 550, -1, 30));
 
         jLabel10.setForeground(new java.awt.Color(204, 0, 0));
         jLabel10.setText("* Clique para alternar entre % e R$");
@@ -888,6 +897,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_txtProdutoKeyPressed
+
+    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel1KeyPressed
 
     public void atualizaTabela(int id) {
         DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();

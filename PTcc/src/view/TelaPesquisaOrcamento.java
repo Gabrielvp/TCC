@@ -5,13 +5,20 @@
  */
 package view;
 
+import dao.CadastroClienteDAO;
 import dao.OrcamentoDAO;
 import dao.ProdutoOrcamentoDAO;
 import entity.Orcamento;
+import entity.Pessoa;
 import entity.ProdutoOrcamento;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -69,11 +76,11 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtCodigo = new javax.swing.JFormattedTextField();
         txtDataFim = new javax.swing.JFormattedTextField();
         btnPesquisar = new javax.swing.JButton();
         txtDataInicio = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
+        txtCodigo = new javax.swing.JTextField();
 
         tblOrcamento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -166,11 +173,12 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addGap(0, 0, 0)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -198,8 +206,16 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
         tblOrc.setShowHorizontalLines(true);
         tblOrc.setShowVerticalLines(true);
         tblOrc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblOrcMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblOrcMousePressed(evt);
+            }
+        });
+        tblOrc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tblOrcKeyPressed(evt);
             }
         });
         jScrollPane2.setViewportView(tblOrc);
@@ -222,21 +238,34 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
 
         jLabel4.setText("Período");
 
-        txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
-        try {
-            txtCodigo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
         txtDataFim.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
             txtDataFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtDataFim.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtDataFimFocusGained(evt);
+            }
+        });
+        txtDataFim.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtDataFimMouseClicked(evt);
+            }
+        });
 
         btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
+        btnPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnPesquisarKeyPressed(evt);
+            }
+        });
 
         txtDataInicio.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
@@ -244,8 +273,25 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtDataInicio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtDataInicioFocusGained(evt);
+            }
+        });
+        txtDataInicio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtDataInicioMouseClicked(evt);
+            }
+        });
 
         jLabel5.setText("Código");
+
+        txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -254,15 +300,16 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(245, 245, 245))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNome)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(txtDataInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
@@ -283,15 +330,14 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
                         .addComponent(jLabel5))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(0, 0, 0)))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnPesquisar)
-                    .addComponent(txtDataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -336,7 +382,7 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
             String coluna = tblOrc.getValueAt(linha, 1).toString();
             int id = Integer.parseInt(coluna);
             o = oDAO.getOrcamentoId(id);
-            listaPOrcamento = pdDAO.getProdutoOrcamentoId(id); 
+            listaPOrcamento = pdDAO.getProdutoOrcamentoId(id);
             alterar = true;
             this.dispose();
         }
@@ -346,12 +392,162 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tblOrcMousePressed
 
+    private void txtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            if (txtCodigo.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Digite um código");
+            } else {
+                CadastroClienteDAO cDAO = new CadastroClienteDAO();
+                int cd = Integer.parseInt(txtCodigo.getText());
+                List<Pessoa> lista = cDAO.buscarNomeId(cd);
+                if (lista.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Código inexistente");
+                    txtCodigo.setText("");
+                    txtNome.setText("");
+                } else {
+                    for (int i = 0; i < lista.size(); i++) {
+                        txtCodigo.setText(lista.get(i).getIdPessoa() + "");
+                        txtNome.setText(lista.get(i).getNome());
+                    }
+                    btnPesquisar.requestFocus();
+                }
+            }
+        }
+    }//GEN-LAST:event_txtCodigoKeyPressed
+
+    private void tblOrcKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblOrcKeyPressed
+
+    }//GEN-LAST:event_tblOrcKeyPressed
+
+    private void tblOrcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOrcMouseClicked
+        if (evt.getClickCount() == 2) {
+            int linha = tblOrc.getSelectedRow();
+            String coluna = tblOrc.getValueAt(linha, 1).toString();
+            int id = Integer.parseInt(coluna);
+            o = oDAO.getOrcamentoId(id);
+            listaPOrcamento = pdDAO.getProdutoOrcamentoId(id);
+            alterar = true;
+            this.dispose();
+        }
+    }//GEN-LAST:event_tblOrcMouseClicked
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tblOrc.getModel();
+        if (!txtCodigo.getText().equals("") && !txtNome.getText().equals("") && txtDataInicio.getText().equals("  /  /    ")
+                && txtDataFim.getText().equals("  /  /    ")) {
+            int cd = Integer.parseInt(txtCodigo.getText());
+            List<Orcamento> lista = oDAO.listaOrcamentoIdPessoa(cd);
+            model.setNumRows(0);
+            for (int i = 0; i < lista.size(); i++) {
+                model.addRow(new Object[]{});
+                tblOrc.setValueAt(sdfD.format(lista.get(i).getData()), i, 0);
+                tblOrc.setValueAt(lista.get(i).getIdOrcamento(), i, 1);
+                tblOrc.setValueAt(lista.get(i).getNome(), i, 2);
+                tblOrc.setValueAt(df.format(lista.get(i).getTotal()), i, 3);
+            }
+            txtCodigo.setText("");
+            txtNome.setText("");
+        } else if (!txtDataInicio.getText().equals("  /  /    ") && !txtDataFim.getText().equals("  /  /    ")
+                && txtCodigo.getText().equals("") && txtNome.getText().equals("")) {
+            try {
+                Date dtIni;
+                dtIni = sdfD.parse(txtDataInicio.getText());
+                Date dtFim;
+                dtFim = sdfD.parse(txtDataFim.getText());
+                java.sql.Date dataIni;
+                java.sql.Date dataFIm;
+                dataIni = new java.sql.Date(dtIni.getTime());
+                dataFIm = new java.sql.Date(dtFim.getTime());
+                List<Orcamento> lista = oDAO.listaOrcamentoPeriodo(dataIni, dataFIm);
+                model.setNumRows(0);
+                for (int i = 0; i < lista.size(); i++) {
+                    model.addRow(new Object[]{});
+                    tblOrc.setValueAt(sdfD.format(lista.get(i).getData()), i, 0);
+                    tblOrc.setValueAt(lista.get(i).getIdOrcamento(), i, 1);
+                    tblOrc.setValueAt(lista.get(i).getNome(), i, 2);
+                    tblOrc.setValueAt(df.format(lista.get(i).getTotal()), i, 3);
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaPesquisaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (!txtCodigo.getText().equals("") && !txtNome.getText().equals("") && !txtDataInicio.getText().equals("  /  /    ")
+                && !txtDataFim.getText().equals("  /  /    ")) {
+            try {
+                int cd = Integer.parseInt(txtCodigo.getText());
+                Date dtIni;
+                dtIni = sdfD.parse(txtDataInicio.getText());
+                Date dtFim;
+                dtFim = sdfD.parse(txtDataFim.getText());
+                java.sql.Date dataIni;
+                java.sql.Date dataFIm;
+                dataIni = new java.sql.Date(dtIni.getTime());
+                dataFIm = new java.sql.Date(dtFim.getTime());
+                List<Orcamento> lista = oDAO.listaOrcamentoPeriodoPessoa(dataIni, dataFIm, cd);
+                model.setNumRows(0);
+                for (int i = 0; i < lista.size(); i++) {
+                    model.addRow(new Object[]{});
+                    tblOrc.setValueAt(sdfD.format(lista.get(i).getData()), i, 0);
+                    tblOrc.setValueAt(lista.get(i).getIdOrcamento(), i, 1);
+                    tblOrc.setValueAt(lista.get(i).getNome(), i, 2);
+                    tblOrc.setValueAt(df.format(lista.get(i).getTotal()), i, 3);
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaPesquisaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        txtCodigo.setText("");
+        txtNome.setText("");
+        txtDataFim.setText("");
+        txtDataInicio.setText("");
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnPesquisarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnPesquisarKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            if (!txtCodigo.getText().equals("") && !txtNome.getText().equals("")) {
+                DefaultTableModel model = (DefaultTableModel) tblOrc.getModel();
+                int cd = Integer.parseInt(txtCodigo.getText());
+                List<Orcamento> lista = oDAO.listaOrcamentoIdPessoa(cd);
+                model.setNumRows(0);
+                for (int i = 0; i < lista.size(); i++) {
+                    model.addRow(new Object[]{});
+                    tblOrc.setValueAt(sdfD.format(lista.get(i).getData()), i, 0);
+                    tblOrc.setValueAt(lista.get(i).getIdOrcamento(), i, 1);
+                    tblOrc.setValueAt(lista.get(i).getNome(), i, 2);
+                    tblOrc.setValueAt(df.format(lista.get(i).getTotal()), i, 3);
+                }
+                txtCodigo.setText("");
+                txtNome.setText("");
+            }
+        }
+    }//GEN-LAST:event_btnPesquisarKeyPressed
+
+    private void txtDataInicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtDataInicioMouseClicked
+        txtDataInicio.setSelectionStart(0);
+        txtDataInicio.setSelectionEnd(10);
+    }//GEN-LAST:event_txtDataInicioMouseClicked
+
+    private void txtDataFimMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtDataFimMouseClicked
+       txtDataInicio.setSelectionStart(0);
+        txtDataInicio.setSelectionEnd(10);
+    }//GEN-LAST:event_txtDataFimMouseClicked
+
+    private void txtDataInicioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDataInicioFocusGained
+       txtDataInicio.setSelectionStart(0);
+        txtDataInicio.setSelectionEnd(10);
+    }//GEN-LAST:event_txtDataInicioFocusGained
+
+    private void txtDataFimFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDataFimFocusGained
+        txtDataInicio.setSelectionStart(0);
+        txtDataInicio.setSelectionEnd(10);
+    }//GEN-LAST:event_txtDataFimFocusGained
+
     private void preencheTabela(int codigo) {
         esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
         tblOrc.getColumnModel().getColumn(3).setCellRenderer(esquerda);
         DefaultTableModel model = (DefaultTableModel) tblOrc.getModel();
         if (codigo == 0) {
             List<Orcamento> orcamento = oDAO.listarOrcamentos();
+            model.setNumRows(0);
             for (int i = 0; i < orcamento.size(); i++) {
                 model.addRow(new Object[]{});
                 tblOrc.setValueAt(sdfD.format(orcamento.get(i).getData()), i, 0);
@@ -368,6 +564,21 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
                 tblOrc.setValueAt(orcamento.get(i).getNome(), i, 2);
                 tblOrc.setValueAt(df.format(orcamento.get(i).getTotal()), i, 3);
             }
+        }
+    }
+
+    private void preencheTabelaNome(String nome) {
+        esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
+        tblOrc.getColumnModel().getColumn(3).setCellRenderer(esquerda);
+        DefaultTableModel model = (DefaultTableModel) tblOrc.getModel();
+        List<Orcamento> lista = oDAO.getOrcamentoNome(nome);
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            tblOrc.setValueAt(sdfD.format(lista.get(i).getData()), i, 0);
+            tblOrc.setValueAt(lista.get(i).getIdOrcamento(), i, 1);
+            tblOrc.setValueAt(lista.get(i).getNome(), i, 2);
+            tblOrc.setValueAt(df.format(lista.get(i).getTotal()), i, 3);
         }
     }
 
@@ -431,7 +642,7 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tblOrc;
     private javax.swing.JTable tblOrcamento;
-    private javax.swing.JFormattedTextField txtCodigo;
+    private javax.swing.JTextField txtCodigo;
     private javax.swing.JFormattedTextField txtDataFim;
     private javax.swing.JFormattedTextField txtDataInicio;
     private javax.swing.JTextField txtNome;

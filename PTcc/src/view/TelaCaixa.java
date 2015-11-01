@@ -56,7 +56,9 @@ public class TelaCaixa extends javax.swing.JDialog {
     DecimalFormat df = new DecimalFormat("####.00");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     Date d;
+    Date f;
     java.sql.Date dt;
+    java.sql.Date dtf;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -420,11 +422,27 @@ public class TelaCaixa extends javax.swing.JDialog {
     }//GEN-LAST:event_lblDataMouseClicked
 
     private void txtDataFimKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataFimKeyPressed
-       
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            try {
+                d = sdf.parse(txtData.getText());
+                f = sdf.parse(txtDataFim.getText());
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            dt = new java.sql.Date(d.getTime());
+            dtf = new java.sql.Date(f.getTime());
+            if (rbtnEntradaAVista.isSelected()) {
+                tabelaEntradasVistaPeriodo(dt, dtf);
+                somaEntradas();
+            } else if (rbtnEntradaPrazo.isSelected()) {
+                tabelaEntradasPrazo(d);
+                somaEntradas();
+            }
+        }
     }//GEN-LAST:event_txtDataFimKeyPressed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
-         Date data = new Date();
+        Date data = new Date();
         txtData.setText(sdf.format(data));
         tabelaSaidas();
         tabelaEntradas(data);
@@ -439,6 +457,22 @@ public class TelaCaixa extends javax.swing.JDialog {
         DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
         CReceberDAO crDAO = new CReceberDAO();
         List<CReceber> lista = crDAO.listarCReceberAVista((java.sql.Date) data);
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            model.setValueAt(lista.get(i).getP().getNome(), i, 0);
+            model.setValueAt(lista.get(i).getFatura(), i, 1);
+            model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
+            model.setValueAt(sdf.format(lista.get(i).getData()), i, 3);
+            model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
+            model.setValueAt(sdf.format(lista.get(i).getVencimento()), i, 5);
+        }
+    }
+    
+    public void tabelaEntradasVistaPeriodo(Date data, Date fim) {
+        DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
+        CReceberDAO crDAO = new CReceberDAO();
+        List<CReceber> lista = crDAO.listarCReceberVistaPeriodo((java.sql.Date) data, (java.sql.Date)fim);
         model.setNumRows(0);
         for (int i = 0; i < lista.size(); i++) {
             model.addRow(new Object[]{});
@@ -477,9 +511,9 @@ public class TelaCaixa extends javax.swing.JDialog {
             model.setValueAt(lista.get(i).getP().getNome(), i, 0);
             model.setValueAt(lista.get(i).getFatura(), i, 1);
             model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
-            model.setValueAt(lista.get(i).getData(), i, 3);
+            model.setValueAt(sdf.format(lista.get(i).getData()), i, 3);
             model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
-            model.setValueAt(lista.get(i).getVencimento(), i, 5);
+            model.setValueAt(sdf.format(lista.get(i).getVencimento()), i, 5);
         }
     }
 

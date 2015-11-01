@@ -23,6 +23,24 @@ public class CReceber {
     private String pessoa;
     private String formPagamento;
     private boolean aprovado;
+    private boolean aVista;
+    private Pessoa p;
+
+    public Pessoa getP() {
+        return p;
+    }
+
+    public void setP(Pessoa p) {
+        this.p = p;
+    }
+
+    public boolean isaVista() {
+        return aVista;
+    }
+
+    public void setaVista(boolean aVista) {
+        this.aVista = aVista;
+    }
     
     public CReceber(){
         

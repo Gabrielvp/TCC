@@ -1,15 +1,16 @@
 package dao;
 
 import entity.CPagar;
-import entity.Orcamento;
+import entity.CReceber;
+import entity.Pessoa;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -176,13 +177,31 @@ public class CPagarDAO extends MySQL {
         }
     }
     
-    public void update(int id) {
+    public List<CPagar> listarCPagarAVista(Date data) {
+        List<CPagar> listarCPagar = new ArrayList<>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET aprovado = true WHERE idOrcamento = ? ");
-            Orcamento orcamento = new Orcamento();
-            ps.setInt(1, id);
+            PreparedStatement ps = c.prepareStatement("select formPagamento, fatura, total, data, vencimento, parcelas, pessoa.nome, cpagar.idpessoa"
+                    + " from cpagar inner join pessoa on cpagar.idpessoa = pessoa.idpessoa where aVista = 1 and data = ?");
+            ps.setDate(1, data);
             
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CPagar cp = new CPagar();
+                Pessoa p = new Pessoa();
+                cp.setFormPagamento(rs.getString("formPagamento"));
+                cp.setFatura(rs.getString("fatura"));
+                cp.setTotal(rs.getDouble("Total"));
+                cp.setData(rs.getDate("Data"));
+                cp.setVencimento(rs.getDate("Vencimento"));
+                cp.setParcelas(rs.getInt("parcelas"));
+                cp.setIdPessoa(rs.getInt("idPessoa"));
+                p.setNome(rs.getString("Nome"));
+                p.setIdPessoa(rs.getInt("idPessoa"));
+                //cp.setP(p);
+                listarCPagar.add(cp);
+            }
+
             ps.execute();
             ps.close();
 
@@ -195,31 +214,6 @@ public class CPagarDAO extends MySQL {
                 ex.printStackTrace();
             }
         }
-    }
-
-    public void updateOrcameto(Orcamento orcamento) {
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET cliente = ?, total = ?, desconto = ?, idPessoa = ? WHERE idOrcamento = ? ");
-            
-            ps.setString(1, orcamento.getNome());
-            ps.setDouble(2, orcamento.getTotal());
-            ps.setDouble(3, orcamento.getDesconto());
-            ps.setInt(4, orcamento.getIdPessoa());  
-            ps.setInt(5, orcamento.getIdOrcamento());
-            
-            ps.execute();
-            ps.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(null, "Alterado com Sucesso!");
-        }
-    }
+        return listarCPagar;
+    }  
 }

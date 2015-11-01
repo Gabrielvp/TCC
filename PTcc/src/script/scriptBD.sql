@@ -58,6 +58,7 @@ create table cPagar(
     vencimento date not null,
     parcelas int not null,
     idPessoa int not null,
+    aVista boolean not null,
     
     constraint FK_pessoa_pagar foreign key (idPessoa) references pessoa (idPessoa)
 );
@@ -85,6 +86,7 @@ create table cReceber(
     parcelas int,   
     idPessoa int not null,
     pessoa varchar(150) not null,
+    aVista boolean not null,
 
     constraint FK_pessoa_receber foreign key (idPessoa) references pessoa (idPessoa)
 );

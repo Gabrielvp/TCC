@@ -471,8 +471,10 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         CReceber cr = new CReceber();
         CReceberDAO crDAO = new CReceberDAO();
+        FormaPagamento fPagamento = new FormaPagamento();
         Parcelas_CReceber pCR = new Parcelas_CReceber();
         Parcelas_CReceberDAO pCRDAO = new Parcelas_CReceberDAO();
+        FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
 
         if (cbFormaPagamento.getSelectedItem().toString().equals("Selecione a Forma de Pagamento")) {
             JOptionPane.showMessageDialog(rootPane, "Selecione a Forma de Pagamento!");
@@ -481,6 +483,14 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             cr.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
             cr.setPessoa(txtNome.getText());
             cr.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
+            List<FormaPagamento> lista = fpDAO.listaDesc(cbFormaPagamento.getSelectedItem().toString());
+            for (int i = 0; i < lista.size(); i++) {
+                if(lista.get(i).isaVista()){
+                    cr.setaVista(true);
+                }else{
+                    cr.setaVista(false);
+                }
+            }
             cr.setFatura(txtFatura.getText());
             cr.setTotal(Double.parseDouble(vl));
             try {

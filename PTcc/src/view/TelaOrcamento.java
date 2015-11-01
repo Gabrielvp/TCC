@@ -12,8 +12,6 @@ import entity.Orcamento;
 import entity.Pessoa;
 import entity.Produto;
 import entity.ProdutoOrcamento;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -891,6 +888,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtProduto.setText(tela.p.getDescricao());
                 txtValor.setText(df.format(tela.p.getValorVenda()) + "");
                 txtQtdProduto.requestFocus();
+                lblEstoque.setText(tela.p.getQtd() + "");
                 if (txtProduto.getText().equals("")) {
                     limpaProduto();
                 }

@@ -5,8 +5,18 @@
  */
 package view;
 
+import dao.CPagarDAO;
+import dao.CReceberDAO;
+import entity.CPagar;
+import entity.CReceber;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -28,7 +38,20 @@ public class TelaCaixa extends javax.swing.JDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            d = sdf.parse(txtData.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dt = new java.sql.Date(d.getTime());
+        tabelaEntradas(dt);
+        somaEntradas();
     }
+
+    DecimalFormat df = new DecimalFormat("####.00");
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    Date d;
+    java.sql.Date dt;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,6 +62,8 @@ public class TelaCaixa extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSaida = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
@@ -58,9 +83,13 @@ public class TelaCaixa extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnEntrada = new javax.swing.JButton();
+        rbtnEntradaPrazo = new javax.swing.JRadioButton();
+        rbtnEntradaAVista = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         btnSaida = new javax.swing.JButton();
+        rbtnSaidaAVista = new javax.swing.JRadioButton();
+        rbtnSaidaPrazo = new javax.swing.JRadioButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblEntrada = new javax.swing.JTable();
 
@@ -73,18 +102,28 @@ public class TelaCaixa extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Cliente", "Descrição", "Data", "Valor", "Vencimento"
+                "Cliente", "Documento", "Descrição", "Data", "Valor", "Vencimento"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblSaida.setShowHorizontalLines(true);
         tblSaida.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblSaida);
         if (tblSaida.getColumnModel().getColumnCount() > 0) {
             tblSaida.getColumnModel().getColumn(0).setPreferredWidth(150);
-            tblSaida.getColumnModel().getColumn(1).setPreferredWidth(300);
-            tblSaida.getColumnModel().getColumn(2).setPreferredWidth(15);
-            tblSaida.getColumnModel().getColumn(3).setPreferredWidth(50);
-            tblSaida.getColumnModel().getColumn(4).setPreferredWidth(15);
+            tblSaida.getColumnModel().getColumn(1).setResizable(false);
+            tblSaida.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tblSaida.getColumnModel().getColumn(2).setPreferredWidth(220);
+            tblSaida.getColumnModel().getColumn(3).setPreferredWidth(20);
+            tblSaida.getColumnModel().getColumn(4).setPreferredWidth(50);
+            tblSaida.getColumnModel().getColumn(5).setPreferredWidth(20);
         }
 
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)));
@@ -114,6 +153,11 @@ public class TelaCaixa extends javax.swing.JDialog {
             ex.printStackTrace();
         }
         txtData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtData.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDataKeyPressed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("Data:");
@@ -220,6 +264,19 @@ public class TelaCaixa extends javax.swing.JDialog {
         });
         jPanel2.add(btnEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(724, 13, -1, -1));
 
+        buttonGroup1.add(rbtnEntradaPrazo);
+        rbtnEntradaPrazo.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        rbtnEntradaPrazo.setForeground(new java.awt.Color(255, 255, 255));
+        rbtnEntradaPrazo.setText("Prazo");
+        jPanel2.add(rbtnEntradaPrazo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, -1));
+
+        buttonGroup1.add(rbtnEntradaAVista);
+        rbtnEntradaAVista.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        rbtnEntradaAVista.setForeground(new java.awt.Color(255, 255, 255));
+        rbtnEntradaAVista.setSelected(true);
+        rbtnEntradaAVista.setText("A Vista");
+        jPanel2.add(rbtnEntradaAVista, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, -1, -1));
+
         jPanel3.setBackground(new java.awt.Color(0, 51, 153));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -237,24 +294,47 @@ public class TelaCaixa extends javax.swing.JDialog {
         });
         jPanel3.add(btnSaida, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 10, 91, -1));
 
+        buttonGroup2.add(rbtnSaidaAVista);
+        rbtnSaidaAVista.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        rbtnSaidaAVista.setForeground(new java.awt.Color(255, 255, 255));
+        rbtnSaidaAVista.setSelected(true);
+        rbtnSaidaAVista.setText("A Vista");
+        jPanel3.add(rbtnSaidaAVista, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, -1, -1));
+
+        buttonGroup2.add(rbtnSaidaPrazo);
+        rbtnSaidaPrazo.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        rbtnSaidaPrazo.setForeground(new java.awt.Color(255, 255, 255));
+        rbtnSaidaPrazo.setText("Prazo");
+        jPanel3.add(rbtnSaidaPrazo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, -1));
+
         tblEntrada.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)));
         tblEntrada.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Cliente", "Descrição", "Data", "Valor", "Vencimento"
+                "Cliente", "Documento", "Descrição", "Data", "Valor", "Vencimento"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblEntrada.setShowHorizontalLines(true);
         tblEntrada.setShowVerticalLines(true);
         jScrollPane3.setViewportView(tblEntrada);
         if (tblEntrada.getColumnModel().getColumnCount() > 0) {
             tblEntrada.getColumnModel().getColumn(0).setPreferredWidth(150);
-            tblEntrada.getColumnModel().getColumn(1).setPreferredWidth(300);
-            tblEntrada.getColumnModel().getColumn(2).setPreferredWidth(15);
-            tblEntrada.getColumnModel().getColumn(3).setPreferredWidth(50);
-            tblEntrada.getColumnModel().getColumn(4).setPreferredWidth(15);
+            tblEntrada.getColumnModel().getColumn(1).setResizable(false);
+            tblEntrada.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tblEntrada.getColumnModel().getColumn(2).setPreferredWidth(220);
+            tblEntrada.getColumnModel().getColumn(3).setPreferredWidth(20);
+            tblEntrada.getColumnModel().getColumn(4).setPreferredWidth(50);
+            tblEntrada.getColumnModel().getColumn(5).setPreferredWidth(20);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -298,14 +378,70 @@ public class TelaCaixa extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
-       TelaContasAReceber tela = new TelaContasAReceber(null, rootPaneCheckingEnabled, null);
-       tela.setVisible(true);
+        TelaContasAReceber tela = new TelaContasAReceber(null, rootPaneCheckingEnabled, null);
+        tela.setVisible(true);
     }//GEN-LAST:event_btnEntradaActionPerformed
 
     private void btnSaidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaidaActionPerformed
-       TelaContasAPagar tela = new TelaContasAPagar(null, rootPaneCheckingEnabled);
-       tela.setVisible(true);
+        TelaContasAPagar tela = new TelaContasAPagar(null, rootPaneCheckingEnabled);
+        tela.setVisible(true);
     }//GEN-LAST:event_btnSaidaActionPerformed
+
+    private void txtDataKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            try {
+                d = sdf.parse(txtData.getText());
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            dt = new java.sql.Date(d.getTime());
+            tabelaEntradas(dt);
+            somaEntradas();
+        }
+    }//GEN-LAST:event_txtDataKeyPressed
+
+    public void tabelaEntradas(Date data) {
+        DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
+        CReceberDAO crDAO = new CReceberDAO();
+        List<CReceber> lista = crDAO.listarCReceberAVista((java.sql.Date) data);
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            model.setValueAt(lista.get(i).getP().getNome(), i, 0);
+            model.setValueAt(lista.get(i).getFatura(), i, 1);
+            model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
+            model.setValueAt(lista.get(i).getData(), i, 3);
+            model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
+            model.setValueAt(lista.get(i).getVencimento(), i, 5);
+        }
+    }
+
+    public void tabelaSaidas() {
+        DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
+        CPagarDAO cpDAO = new CPagarDAO();
+        List<CPagar> lista = cpDAO.listarCPagarAVista(dt);
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            //model.setValueAt(lista.get(i).getP().getNome(), i, 0);
+            model.setValueAt(lista.get(i).getFatura(), i, 1);
+            model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
+            model.setValueAt(lista.get(i).getData(), i, 3);
+            model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
+            model.setValueAt(lista.get(i).getVencimento(), i, 5);
+        }
+    }
+
+    public void somaEntradas() {
+        DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
+        double valor = 0;
+        double resultado = 0;
+        for (int i = 0; i < tblEntrada.getRowCount(); i++) {
+            valor = Double.parseDouble(tblEntrada.getValueAt(i, 4).toString().replace(",", "."));
+            resultado += valor;
+        }
+        lblEntrada.setText(df.format(resultado) + "");
+    }
 
     /**
      * @param args the command line arguments
@@ -321,16 +457,21 @@ public class TelaCaixa extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaCaixa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCaixa.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaCaixa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCaixa.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaCaixa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCaixa.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaCaixa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCaixa.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -355,6 +496,8 @@ public class TelaCaixa extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrada;
     private javax.swing.JButton btnSaida;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -374,6 +517,10 @@ public class TelaCaixa extends javax.swing.JDialog {
     private javax.swing.JLabel lblCaixa;
     private javax.swing.JLabel lblEntrada;
     private javax.swing.JLabel lblSaida;
+    private javax.swing.JRadioButton rbtnEntradaAVista;
+    private javax.swing.JRadioButton rbtnEntradaPrazo;
+    private javax.swing.JRadioButton rbtnSaidaAVista;
+    private javax.swing.JRadioButton rbtnSaidaPrazo;
     private javax.swing.JTable tblEntrada;
     private javax.swing.JTable tblSaida;
     private javax.swing.JFormattedTextField txtData;

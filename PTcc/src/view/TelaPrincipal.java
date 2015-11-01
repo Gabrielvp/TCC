@@ -188,7 +188,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         });
         jPanel2.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(544, 599, -1, -1));
 
-        tblPrincipal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        tblPrincipal.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)));
         tblPrincipal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

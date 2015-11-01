@@ -1,7 +1,6 @@
 package dao;
 
 import entity.CPagar;
-import entity.CReceber;
 import entity.Pessoa;
 import java.sql.Connection;
 import java.sql.Date;
@@ -26,8 +25,8 @@ public class CPagarDAO extends MySQL {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO cpagar (fatura, total, data, vencimento, parcelas, idPessoa, formPagamento)"
-                            + "VALUES (?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                    = c.prepareStatement("INSERT INTO cpagar (fatura, total, data, vencimento, parcelas, idPessoa, formPagamento, aVista)"
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, cpagar.getFatura());
             ps.setDouble(2, cpagar.getTotal());
             ps.setString(3, sdfD.format(cpagar.getData()));
@@ -35,6 +34,7 @@ public class CPagarDAO extends MySQL {
             ps.setInt(5, cpagar.getParcelas());
             ps.setInt(6, cpagar.getIdPessoa());
             ps.setString(7, cpagar.getFormPagamento());
+            ps.setBoolean(8, cpagar.isaVista());
 
             ps.execute();
 
@@ -198,7 +198,7 @@ public class CPagarDAO extends MySQL {
                 cp.setIdPessoa(rs.getInt("idPessoa"));
                 p.setNome(rs.getString("Nome"));
                 p.setIdPessoa(rs.getInt("idPessoa"));
-                //cp.setP(p);
+                cp.setP(p);
                 listarCPagar.add(cp);
             }
 

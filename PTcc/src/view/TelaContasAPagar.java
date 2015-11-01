@@ -423,8 +423,10 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         CPagarDAO cpDAO = new CPagarDAO();
         CPagar cp = new CPagar();
+        FormaPagamento fPagamento = new FormaPagamento();
         Parcelas_CPagar pCP = new Parcelas_CPagar();
         Parcelas_CPagarDAO pcpDAO = new Parcelas_CPagarDAO();
+        FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
         
         if (cbFormaPagamento.getSelectedItem().toString().equals("Selecione a Forma de Pagamento")) {
             JOptionPane.showMessageDialog(rootPane, "Selecione a Forma de Pagamento!");
@@ -433,6 +435,14 @@ public class TelaContasAPagar extends javax.swing.JDialog {
             cp.setIdPessoa(Integer.parseInt(txtCodigo.getText()));
             cp.setPessoa(txtNome.getText());
             cp.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
+            List<FormaPagamento> lista = fpDAO.listaDesc(cbFormaPagamento.getSelectedItem().toString());
+            for (int i = 0; i < lista.size(); i++) {
+                if(lista.get(i).isaVista()){
+                    cp.setaVista(true);
+                }else{
+                    cp.setaVista(false);
+                }
+            }
             cp.setFatura(txtFatura.getText());
             cp.setTotal(Double.parseDouble(vl));
             try {

@@ -46,6 +46,11 @@ public class TelaCaixa extends javax.swing.JDialog {
         dt = new java.sql.Date(d.getTime());
         tabelaEntradas(dt);
         somaEntradas();
+        txtDataFim.setVisible(false);
+        btnAtualizar.setVisible(false);
+        tabelaSaidas();
+        somaSaidas();
+        caixa();
     }
 
     DecimalFormat df = new DecimalFormat("####.00");
@@ -74,12 +79,14 @@ public class TelaCaixa extends javax.swing.JDialog {
         lblSaida = new javax.swing.JLabel();
         lblCaixa = new javax.swing.JLabel();
         txtData = new javax.swing.JFormattedTextField();
-        jLabel9 = new javax.swing.JLabel();
+        lblData = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        txtDataFim = new javax.swing.JFormattedTextField();
+        btnAtualizar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnEntrada = new javax.swing.JButton();
@@ -122,29 +129,36 @@ public class TelaCaixa extends javax.swing.JDialog {
             tblSaida.getColumnModel().getColumn(1).setPreferredWidth(20);
             tblSaida.getColumnModel().getColumn(2).setPreferredWidth(220);
             tblSaida.getColumnModel().getColumn(3).setPreferredWidth(20);
-            tblSaida.getColumnModel().getColumn(4).setPreferredWidth(50);
+            tblSaida.getColumnModel().getColumn(4).setPreferredWidth(40);
             tblSaida.getColumnModel().getColumn(5).setPreferredWidth(20);
         }
 
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Entradas R$");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 549, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Saídas R$");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 578, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Caixa R$");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(52, 607, -1, -1));
 
         lblEntrada.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblEntrada.setText("0,00");
+        jPanel1.add(lblEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 549, -1, -1));
 
         lblSaida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblSaida.setText("0,00");
+        jPanel1.add(lblSaida, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 578, -1, -1));
 
         lblCaixa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblCaixa.setText("0,00");
+        jPanel1.add(lblCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 607, -1, -1));
 
         txtData.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
@@ -158,94 +172,53 @@ public class TelaCaixa extends javax.swing.JDialog {
                 txtDataKeyPressed(evt);
             }
         });
+        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 108, -1));
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel9.setText("Data:");
+        lblData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblData.setText("Data:");
+        lblData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblDataMouseClicked(evt);
+            }
+        });
+        jPanel1.add(lblData, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, -1, -1));
 
         jLabel6.setText("Nome");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 125, -1, -1));
 
         jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 141, 260, 25));
 
         jLabel7.setText("Fatura");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 172, -1, -1));
 
         jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 188, 98, 25));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 188, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(89, Short.MAX_VALUE)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblSaida)
-                            .addComponent(lblCaixa)
-                            .addComponent(lblEntrada)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel6)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addGap(68, 68, 68)
-                .addComponent(jLabel6)
-                .addGap(0, 0, 0)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
-                .addGap(0, 0, 0)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblEntrada)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblSaida)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblCaixa))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5)))
-                .addGap(58, 58, 58))
-        );
+        txtDataFim.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        try {
+            txtDataFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtDataFim.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtDataFim.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDataFimKeyPressed(evt);
+            }
+        });
+        jPanel1.add(txtDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 108, -1));
+
+        btnAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Refresh.png"))); // NOI18N
+        btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtualizarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, 40, -1));
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 153));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -268,6 +241,11 @@ public class TelaCaixa extends javax.swing.JDialog {
         rbtnEntradaPrazo.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         rbtnEntradaPrazo.setForeground(new java.awt.Color(255, 255, 255));
         rbtnEntradaPrazo.setText("Prazo");
+        rbtnEntradaPrazo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnEntradaPrazoActionPerformed(evt);
+            }
+        });
         jPanel2.add(rbtnEntradaPrazo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, -1));
 
         buttonGroup1.add(rbtnEntradaAVista);
@@ -275,6 +253,11 @@ public class TelaCaixa extends javax.swing.JDialog {
         rbtnEntradaAVista.setForeground(new java.awt.Color(255, 255, 255));
         rbtnEntradaAVista.setSelected(true);
         rbtnEntradaAVista.setText("A Vista");
+        rbtnEntradaAVista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnEntradaAVistaActionPerformed(evt);
+            }
+        });
         jPanel2.add(rbtnEntradaAVista, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, -1, -1));
 
         jPanel3.setBackground(new java.awt.Color(0, 51, 153));
@@ -343,18 +326,13 @@ public class TelaCaixa extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 817, Short.MAX_VALUE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 817, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -395,10 +373,67 @@ public class TelaCaixa extends javax.swing.JDialog {
                 Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
             }
             dt = new java.sql.Date(d.getTime());
-            tabelaEntradas(dt);
-            somaEntradas();
+            if (rbtnEntradaAVista.isSelected()) {
+                tabelaEntradas(dt);
+                somaEntradas();
+            } else if (rbtnEntradaPrazo.isSelected()) {
+                tabelaEntradasPrazo(d);
+                somaEntradas();
+            }
         }
     }//GEN-LAST:event_txtDataKeyPressed
+
+    private void rbtnEntradaAVistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnEntradaAVistaActionPerformed
+        try {
+            d = sdf.parse(txtData.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dt = new java.sql.Date(d.getTime());
+        tabelaEntradas(dt);
+        somaEntradas();
+        caixa();
+    }//GEN-LAST:event_rbtnEntradaAVistaActionPerformed
+
+    private void rbtnEntradaPrazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnEntradaPrazoActionPerformed
+        try {
+            d = sdf.parse(txtData.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dt = new java.sql.Date(d.getTime());
+        tabelaEntradasPrazo(dt);
+        somaEntradas();
+        caixa();
+    }//GEN-LAST:event_rbtnEntradaPrazoActionPerformed
+
+    private void lblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDataMouseClicked
+        if (lblData.getText().equals("Data:")) {
+            lblData.setText("Período:");
+            txtDataFim.setVisible(true);
+            btnAtualizar.setVisible(true);
+        } else if (lblData.getText().equals("Período:")) {
+            lblData.setText("Data:");
+            txtDataFim.setVisible(false);
+            btnAtualizar.setVisible(false);
+        }
+    }//GEN-LAST:event_lblDataMouseClicked
+
+    private void txtDataFimKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataFimKeyPressed
+       
+    }//GEN-LAST:event_txtDataFimKeyPressed
+
+    private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
+         Date data = new Date();
+        txtData.setText(sdf.format(data));
+        tabelaSaidas();
+        tabelaEntradas(data);
+        somaEntradas();
+        somaSaidas();
+        caixa();
+        txtDataFim.setVisible(false);
+        btnAtualizar.setVisible(false);
+    }//GEN-LAST:event_btnAtualizarActionPerformed
 
     public void tabelaEntradas(Date data) {
         DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
@@ -410,20 +445,36 @@ public class TelaCaixa extends javax.swing.JDialog {
             model.setValueAt(lista.get(i).getP().getNome(), i, 0);
             model.setValueAt(lista.get(i).getFatura(), i, 1);
             model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
-            model.setValueAt(lista.get(i).getData(), i, 3);
+            model.setValueAt(sdf.format(lista.get(i).getData()), i, 3);
             model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
-            model.setValueAt(lista.get(i).getVencimento(), i, 5);
+            model.setValueAt(sdf.format(lista.get(i).getVencimento()), i, 5);
+        }
+    }
+
+    public void tabelaEntradasPrazo(Date data) {
+        DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
+        CReceberDAO crDAO = new CReceberDAO();
+        List<CReceber> lista = crDAO.listarCReceberPrazo((java.sql.Date) data);
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            model.setValueAt(lista.get(i).getP().getNome(), i, 0);
+            model.setValueAt(lista.get(i).getFatura(), i, 1);
+            model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
+            model.setValueAt(sdf.format(lista.get(i).getData()), i, 3);
+            model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
+            model.setValueAt(sdf.format(lista.get(i).getVencimento()), i, 5);
         }
     }
 
     public void tabelaSaidas() {
-        DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblSaida.getModel();
         CPagarDAO cpDAO = new CPagarDAO();
         List<CPagar> lista = cpDAO.listarCPagarAVista(dt);
         model.setNumRows(0);
         for (int i = 0; i < lista.size(); i++) {
             model.addRow(new Object[]{});
-            //model.setValueAt(lista.get(i).getP().getNome(), i, 0);
+            model.setValueAt(lista.get(i).getP().getNome(), i, 0);
             model.setValueAt(lista.get(i).getFatura(), i, 1);
             model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
             model.setValueAt(lista.get(i).getData(), i, 3);
@@ -441,6 +492,24 @@ public class TelaCaixa extends javax.swing.JDialog {
             resultado += valor;
         }
         lblEntrada.setText(df.format(resultado) + "");
+    }
+
+    public void somaSaidas() {
+        DefaultTableModel model = (DefaultTableModel) tblSaida.getModel();
+        double valor = 0;
+        double resultado = 0;
+        for (int i = 0; i < tblSaida.getRowCount(); i++) {
+            valor = Double.parseDouble(tblSaida.getValueAt(i, 4).toString().replace(",", "."));
+            resultado += valor;
+        }
+        lblSaida.setText(df.format(resultado) + "");
+    }
+
+    public void caixa() {
+        Double entrada = Double.parseDouble(lblEntrada.getText().replace(",", "."));
+        Double saida = Double.parseDouble(lblSaida.getText().replace(",", "."));
+        Double resultado = entrada - saida;
+        lblCaixa.setText(df.format(resultado));
     }
 
     /**
@@ -494,6 +563,7 @@ public class TelaCaixa extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAtualizar;
     private javax.swing.JButton btnEntrada;
     private javax.swing.JButton btnSaida;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -506,7 +576,6 @@ public class TelaCaixa extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -515,6 +584,7 @@ public class TelaCaixa extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblCaixa;
+    private javax.swing.JLabel lblData;
     private javax.swing.JLabel lblEntrada;
     private javax.swing.JLabel lblSaida;
     private javax.swing.JRadioButton rbtnEntradaAVista;
@@ -524,5 +594,6 @@ public class TelaCaixa extends javax.swing.JDialog {
     private javax.swing.JTable tblEntrada;
     private javax.swing.JTable tblSaida;
     private javax.swing.JFormattedTextField txtData;
+    private javax.swing.JFormattedTextField txtDataFim;
     // End of variables declaration//GEN-END:variables
 }

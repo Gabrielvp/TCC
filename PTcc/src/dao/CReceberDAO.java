@@ -216,4 +216,44 @@ public class CReceberDAO extends MySQL {
         }
         return listarCReceber;
     }
+    
+    public List<CReceber> listarCReceberPrazo(Date data) {
+        List<CReceber> listarCReceber = new ArrayList<>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("select formPagamento, fatura, total, data, vencimento, parcelas, pessoa.nome, creceber.idpessoa"
+                    + " from cReceber inner join pessoa on creceber.idpessoa = pessoa.idpessoa where aVista = 0 and data = ?");
+            ps.setDate(1, data);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CReceber cr = new CReceber();
+                Pessoa p = new Pessoa();
+                cr.setFormPagamento(rs.getString("formPagamento"));
+                cr.setFatura(rs.getString("fatura"));
+                cr.setTotal(rs.getDouble("Total"));
+                cr.setData(rs.getDate("Data"));
+                cr.setVencimento(rs.getDate("Vencimento"));
+                cr.setParcelas(rs.getInt("parcelas"));
+                cr.setIdPessoa(rs.getInt("idPessoa"));
+                p.setNome(rs.getString("Nome"));
+                p.setIdPessoa(rs.getInt("idPessoa"));
+                cr.setP(p);
+                listarCReceber.add(cr);
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listarCReceber;
+    }
 }

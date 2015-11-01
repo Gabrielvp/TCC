@@ -22,6 +22,24 @@ public class CPagar {
     private int idPessoa;
     private String pessoa;
     private String formPagamento;
+    private boolean aVista;
+    private Pessoa p;
+
+    public boolean isaVista() {
+        return aVista;
+    }
+
+    public void setaVista(boolean aVista) {
+        this.aVista = aVista;
+    }
+
+    public Pessoa getP() {
+        return p;
+    }
+
+    public void setP(Pessoa p) {
+        this.p = p;
+    }
 
     public String getPessoa() {
         return pessoa;

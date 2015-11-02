@@ -48,7 +48,7 @@ public class TelaCaixa extends javax.swing.JDialog {
         somaEntradas();
         txtDataFim.setVisible(false);
         btnAtualizar.setVisible(false);
-        tabelaSaidas();
+        tabelaSaidas(dt);
         somaSaidas();
         caixa();
     }
@@ -89,16 +89,14 @@ public class TelaCaixa extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         txtDataFim = new javax.swing.JFormattedTextField();
         btnAtualizar = new javax.swing.JButton();
+        rbtnEntradaAVista = new javax.swing.JRadioButton();
+        rbtnEntradaPrazo = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnEntrada = new javax.swing.JButton();
-        rbtnEntradaPrazo = new javax.swing.JRadioButton();
-        rbtnEntradaAVista = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         btnSaida = new javax.swing.JButton();
-        rbtnSaidaAVista = new javax.swing.JRadioButton();
-        rbtnSaidaPrazo = new javax.swing.JRadioButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblEntrada = new javax.swing.JTable();
 
@@ -174,7 +172,7 @@ public class TelaCaixa extends javax.swing.JDialog {
                 txtDataKeyPressed(evt);
             }
         });
-        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 108, -1));
+        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 108, -1));
 
         lblData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblData.setText("Data:");
@@ -183,7 +181,7 @@ public class TelaCaixa extends javax.swing.JDialog {
                 lblDataMouseClicked(evt);
             }
         });
-        jPanel1.add(lblData, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, -1, -1));
+        jPanel1.add(lblData, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jLabel6.setText("Nome");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 125, -1, -1));
@@ -212,7 +210,7 @@ public class TelaCaixa extends javax.swing.JDialog {
                 txtDataFimKeyPressed(evt);
             }
         });
-        jPanel1.add(txtDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 108, -1));
+        jPanel1.add(txtDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 108, -1));
 
         btnAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Refresh.png"))); // NOI18N
         btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -220,7 +218,28 @@ public class TelaCaixa extends javax.swing.JDialog {
                 btnAtualizarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, 40, -1));
+        jPanel1.add(btnAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 40, -1));
+
+        buttonGroup1.add(rbtnEntradaAVista);
+        rbtnEntradaAVista.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        rbtnEntradaAVista.setSelected(true);
+        rbtnEntradaAVista.setText("A Vista");
+        rbtnEntradaAVista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnEntradaAVistaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(rbtnEntradaAVista, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, -1, -1));
+
+        buttonGroup1.add(rbtnEntradaPrazo);
+        rbtnEntradaPrazo.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        rbtnEntradaPrazo.setText("Prazo");
+        rbtnEntradaPrazo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnEntradaPrazoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(rbtnEntradaPrazo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 153));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -239,29 +258,6 @@ public class TelaCaixa extends javax.swing.JDialog {
         });
         jPanel2.add(btnEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(724, 13, -1, -1));
 
-        buttonGroup1.add(rbtnEntradaPrazo);
-        rbtnEntradaPrazo.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        rbtnEntradaPrazo.setForeground(new java.awt.Color(255, 255, 255));
-        rbtnEntradaPrazo.setText("Prazo");
-        rbtnEntradaPrazo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtnEntradaPrazoActionPerformed(evt);
-            }
-        });
-        jPanel2.add(rbtnEntradaPrazo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, -1));
-
-        buttonGroup1.add(rbtnEntradaAVista);
-        rbtnEntradaAVista.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        rbtnEntradaAVista.setForeground(new java.awt.Color(255, 255, 255));
-        rbtnEntradaAVista.setSelected(true);
-        rbtnEntradaAVista.setText("A Vista");
-        rbtnEntradaAVista.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtnEntradaAVistaActionPerformed(evt);
-            }
-        });
-        jPanel2.add(rbtnEntradaAVista, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, -1, -1));
-
         jPanel3.setBackground(new java.awt.Color(0, 51, 153));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -278,19 +274,6 @@ public class TelaCaixa extends javax.swing.JDialog {
             }
         });
         jPanel3.add(btnSaida, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 10, 91, -1));
-
-        buttonGroup2.add(rbtnSaidaAVista);
-        rbtnSaidaAVista.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        rbtnSaidaAVista.setForeground(new java.awt.Color(255, 255, 255));
-        rbtnSaidaAVista.setSelected(true);
-        rbtnSaidaAVista.setText("A Vista");
-        jPanel3.add(rbtnSaidaAVista, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, -1, -1));
-
-        buttonGroup2.add(rbtnSaidaPrazo);
-        rbtnSaidaPrazo.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        rbtnSaidaPrazo.setForeground(new java.awt.Color(255, 255, 255));
-        rbtnSaidaPrazo.setText("Prazo");
-        jPanel3.add(rbtnSaidaPrazo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, -1));
 
         tblEntrada.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)));
         tblEntrada.setModel(new javax.swing.table.DefaultTableModel(
@@ -360,11 +343,25 @@ public class TelaCaixa extends javax.swing.JDialog {
     private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
         TelaContasAReceber tela = new TelaContasAReceber(null, rootPaneCheckingEnabled, null);
         tela.setVisible(true);
+        try {
+            d = sdf.parse(txtData.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dt = new java.sql.Date(d.getTime());
+        tabelaEntradas(dt);
     }//GEN-LAST:event_btnEntradaActionPerformed
 
     private void btnSaidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaidaActionPerformed
         TelaContasAPagar tela = new TelaContasAPagar(null, rootPaneCheckingEnabled);
         tela.setVisible(true);
+        try {
+            d = sdf.parse(txtData.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dt = new java.sql.Date(d.getTime());
+        tabelaSaidas(dt);
     }//GEN-LAST:event_btnSaidaActionPerformed
 
     private void txtDataKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataKeyPressed
@@ -393,7 +390,9 @@ public class TelaCaixa extends javax.swing.JDialog {
         }
         dt = new java.sql.Date(d.getTime());
         tabelaEntradas(dt);
+        tabelaSaidas(dt);
         somaEntradas();
+        somaSaidas();
         caixa();
     }//GEN-LAST:event_rbtnEntradaAVistaActionPerformed
 
@@ -405,7 +404,9 @@ public class TelaCaixa extends javax.swing.JDialog {
         }
         dt = new java.sql.Date(d.getTime());
         tabelaEntradasPrazo(dt);
+        tabelaSaidasPrazo(dt);
         somaEntradas();
+        somaSaidas();
         caixa();
     }//GEN-LAST:event_rbtnEntradaPrazoActionPerformed
 
@@ -433,10 +434,16 @@ public class TelaCaixa extends javax.swing.JDialog {
             dtf = new java.sql.Date(f.getTime());
             if (rbtnEntradaAVista.isSelected()) {
                 tabelaEntradasVistaPeriodo(dt, dtf);
+                tabelaSaidasVistaPeriodo(dt, dtf);
                 somaEntradas();
+                somaSaidas();
+                caixa();
             } else if (rbtnEntradaPrazo.isSelected()) {
-                tabelaEntradasPrazo(d);
+                tabelaEntradasPrazoPeriodo(dt, dtf);
+                tabelaSaidasPrazoPeriodo(dt, dtf);
                 somaEntradas();
+                somaSaidas();
+                caixa();
             }
         }
     }//GEN-LAST:event_txtDataFimKeyPressed
@@ -444,12 +451,20 @@ public class TelaCaixa extends javax.swing.JDialog {
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         Date data = new Date();
         txtData.setText(sdf.format(data));
-        tabelaSaidas();
-        tabelaEntradas(data);
+        try {
+            d = sdf.parse(txtData.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dt = new java.sql.Date(d.getTime());
+        tabelaSaidas(dt);
+        tabelaEntradas(dt);
+        rbtnEntradaAVista.setSelected(true);
         somaEntradas();
         somaSaidas();
         caixa();
         txtDataFim.setVisible(false);
+        txtDataFim.setText("");
         btnAtualizar.setVisible(false);
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
@@ -468,11 +483,59 @@ public class TelaCaixa extends javax.swing.JDialog {
             model.setValueAt(sdf.format(lista.get(i).getVencimento()), i, 5);
         }
     }
-    
+
     public void tabelaEntradasVistaPeriodo(Date data, Date fim) {
         DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
         CReceberDAO crDAO = new CReceberDAO();
-        List<CReceber> lista = crDAO.listarCReceberVistaPeriodo((java.sql.Date) data, (java.sql.Date)fim);
+        List<CReceber> lista = crDAO.listarCReceberVistaPeriodo((java.sql.Date) data, (java.sql.Date) fim);
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            model.setValueAt(lista.get(i).getP().getNome(), i, 0);
+            model.setValueAt(lista.get(i).getFatura(), i, 1);
+            model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
+            model.setValueAt(sdf.format(lista.get(i).getData()), i, 3);
+            model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
+            model.setValueAt(sdf.format(lista.get(i).getVencimento()), i, 5);
+        }
+    }
+
+    public void tabelaSaidasVistaPeriodo(Date data, Date fim) {
+        DefaultTableModel model = (DefaultTableModel) tblSaida.getModel();
+        CPagarDAO cpDAO = new CPagarDAO();
+        List<CPagar> lista = cpDAO.listarCPagarVistaPeriodo((java.sql.Date) data, (java.sql.Date) fim);
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            model.setValueAt(lista.get(i).getP().getNome(), i, 0);
+            model.setValueAt(lista.get(i).getFatura(), i, 1);
+            model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
+            model.setValueAt(sdf.format(lista.get(i).getData()), i, 3);
+            model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
+            model.setValueAt(sdf.format(lista.get(i).getVencimento()), i, 5);
+        }
+    }
+
+    public void tabelaEntradasPrazoPeriodo(Date data, Date fim) {
+        DefaultTableModel model = (DefaultTableModel) tblEntrada.getModel();
+        CReceberDAO crDAO = new CReceberDAO();
+        List<CReceber> lista = crDAO.listarCReceberPrazoPeriodo((java.sql.Date) data, (java.sql.Date) fim);
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            model.setValueAt(lista.get(i).getP().getNome(), i, 0);
+            model.setValueAt(lista.get(i).getFatura(), i, 1);
+            model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
+            model.setValueAt(sdf.format(lista.get(i).getData()), i, 3);
+            model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
+            model.setValueAt(sdf.format(lista.get(i).getVencimento()), i, 5);
+        }
+    }
+
+    public void tabelaSaidasPrazoPeriodo(Date data, Date fim) {
+        DefaultTableModel model = (DefaultTableModel) tblSaida.getModel();
+        CPagarDAO cpDAO = new CPagarDAO();
+        List<CPagar> lista = cpDAO.listarCPagarPrazoPeriodo((java.sql.Date) data, (java.sql.Date) fim);
         model.setNumRows(0);
         for (int i = 0; i < lista.size(); i++) {
             model.addRow(new Object[]{});
@@ -501,10 +564,26 @@ public class TelaCaixa extends javax.swing.JDialog {
         }
     }
 
-    public void tabelaSaidas() {
+    public void tabelaSaidas(Date data) {
         DefaultTableModel model = (DefaultTableModel) tblSaida.getModel();
         CPagarDAO cpDAO = new CPagarDAO();
         List<CPagar> lista = cpDAO.listarCPagarAVista(dt);
+        model.setNumRows(0);
+        for (int i = 0; i < lista.size(); i++) {
+            model.addRow(new Object[]{});
+            model.setValueAt(lista.get(i).getP().getNome(), i, 0);
+            model.setValueAt(lista.get(i).getFatura(), i, 1);
+            model.setValueAt(lista.get(i).getFormPagamento(), i, 2);
+            model.setValueAt(sdf.format(lista.get(i).getData()), i, 3);
+            model.setValueAt(df.format(lista.get(i).getTotal()), i, 4);
+            model.setValueAt(sdf.format(lista.get(i).getVencimento()), i, 5);
+        }
+    }
+
+    public void tabelaSaidasPrazo(Date data) {
+        DefaultTableModel model = (DefaultTableModel) tblSaida.getModel();
+        CPagarDAO cpDAO = new CPagarDAO();
+        List<CPagar> lista = cpDAO.listarCPagarPrazo(dt);
         model.setNumRows(0);
         for (int i = 0; i < lista.size(); i++) {
             model.addRow(new Object[]{});
@@ -526,6 +605,9 @@ public class TelaCaixa extends javax.swing.JDialog {
             resultado += valor;
         }
         lblEntrada.setText(df.format(resultado) + "");
+        if (lblEntrada.getText().equals(",00")) {
+            lblEntrada.setText("0,00");
+        }
     }
 
     public void somaSaidas() {
@@ -537,6 +619,9 @@ public class TelaCaixa extends javax.swing.JDialog {
             resultado += valor;
         }
         lblSaida.setText(df.format(resultado) + "");
+        if (lblSaida.getText().equals(",00")) {
+            lblSaida.setText("0,00");
+        }
     }
 
     public void caixa() {
@@ -544,6 +629,9 @@ public class TelaCaixa extends javax.swing.JDialog {
         Double saida = Double.parseDouble(lblSaida.getText().replace(",", "."));
         Double resultado = entrada - saida;
         lblCaixa.setText(df.format(resultado));
+        if (lblCaixa.getText().equals(",00")) {
+            lblCaixa.setText("0,00");
+        }
     }
 
     /**
@@ -623,8 +711,6 @@ public class TelaCaixa extends javax.swing.JDialog {
     private javax.swing.JLabel lblSaida;
     private javax.swing.JRadioButton rbtnEntradaAVista;
     private javax.swing.JRadioButton rbtnEntradaPrazo;
-    private javax.swing.JRadioButton rbtnSaidaAVista;
-    private javax.swing.JRadioButton rbtnSaidaPrazo;
     private javax.swing.JTable tblEntrada;
     private javax.swing.JTable tblSaida;
     private javax.swing.JFormattedTextField txtData;

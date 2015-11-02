@@ -1,6 +1,7 @@
 package dao;
 
 import entity.CPagar;
+import entity.CReceber;
 import entity.Pessoa;
 import java.sql.Connection;
 import java.sql.Date;
@@ -216,4 +217,126 @@ public class CPagarDAO extends MySQL {
         }
         return listarCPagar;
     }  
+    
+    public List<CPagar> listarCPagarPrazo(Date data) {
+        List<CPagar> listarCPagar = new ArrayList<>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("select formPagamento, fatura, total, data, vencimento, parcelas, pessoa.nome, cpagar.idpessoa"
+                    + " from cpagar inner join pessoa on cpagar.idpessoa = pessoa.idpessoa where aVista = 0 and data = ?");
+            ps.setDate(1, data);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CPagar cp = new CPagar();
+                Pessoa p = new Pessoa();
+                cp.setFormPagamento(rs.getString("formPagamento"));
+                cp.setFatura(rs.getString("fatura"));
+                cp.setTotal(rs.getDouble("Total"));
+                cp.setData(rs.getDate("Data"));
+                cp.setVencimento(rs.getDate("Vencimento"));
+                cp.setParcelas(rs.getInt("parcelas"));
+                cp.setIdPessoa(rs.getInt("idPessoa"));
+                p.setNome(rs.getString("Nome"));
+                p.setIdPessoa(rs.getInt("idPessoa"));
+                cp.setP(p);
+                listarCPagar.add(cp);
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listarCPagar;
+    }  
+    
+     public List<CPagar> listarCPagarPrazoPeriodo(Date data, Date fim) {
+        List<CPagar> listarCPagar = new ArrayList<>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("select formPagamento, fatura, total, data, vencimento, parcelas, pessoa.nome, cpagar.idpessoa"
+                    + " from cpagar inner join pessoa on cpagar.idpessoa = pessoa.idpessoa where aVista = 0 and data between ? and ?");
+            ps.setDate(1, data);
+            ps.setDate(2, fim);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CPagar cp = new CPagar();
+                Pessoa p = new Pessoa();
+                cp.setFormPagamento(rs.getString("formPagamento"));
+                cp.setFatura(rs.getString("fatura"));
+                cp.setTotal(rs.getDouble("Total"));
+                cp.setData(rs.getDate("Data"));
+                cp.setVencimento(rs.getDate("Vencimento"));
+                cp.setParcelas(rs.getInt("parcelas"));
+                cp.setIdPessoa(rs.getInt("idPessoa"));
+                p.setNome(rs.getString("Nome"));
+                p.setIdPessoa(rs.getInt("idPessoa"));
+                cp.setP(p);
+                listarCPagar.add(cp);
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listarCPagar;
+    }
+     
+     public List<CPagar> listarCPagarVistaPeriodo(Date data, Date fim) {
+        List<CPagar> listarCPagar = new ArrayList<>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("select formPagamento, fatura, total, data, vencimento, parcelas, pessoa.nome, cpagar.idpessoa"
+                    + " from cPagar inner join pessoa on cpagar.idpessoa = pessoa.idpessoa where aVista = 1 and data between ? and ?");
+            ps.setDate(1, data);
+            ps.setDate(2, fim);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CPagar cp = new CPagar();
+                Pessoa p = new Pessoa();
+                cp.setFormPagamento(rs.getString("formPagamento"));
+                cp.setFatura(rs.getString("fatura"));
+                cp.setTotal(rs.getDouble("Total"));
+                cp.setData(rs.getDate("Data"));
+                cp.setVencimento(rs.getDate("Vencimento"));
+                cp.setParcelas(rs.getInt("parcelas"));
+                cp.setIdPessoa(rs.getInt("idPessoa"));
+                p.setNome(rs.getString("Nome"));
+                p.setIdPessoa(rs.getInt("idPessoa"));
+                cp.setP(p);
+                listarCPagar.add(cp);
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listarCPagar;
+    }
 }

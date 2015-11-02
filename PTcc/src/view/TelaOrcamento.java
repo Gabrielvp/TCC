@@ -221,9 +221,17 @@ public class TelaOrcamento extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Cd Produto", "Produto", "Qtd", "R$ Unit.", "R$ Total"
+                "Cd Produto", "Produto", "Qtd", "R$ Unit.", "Desc.", "R$ Total"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, true, true, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblProduto);
         if (tblProduto.getColumnModel().getColumnCount() > 0) {
             tblProduto.getColumnModel().getColumn(0).setResizable(false);
@@ -233,7 +241,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
             tblProduto.getColumnModel().getColumn(2).setPreferredWidth(20);
             tblProduto.getColumnModel().getColumn(3).setResizable(false);
             tblProduto.getColumnModel().getColumn(3).setPreferredWidth(50);
-            tblProduto.getColumnModel().getColumn(4).setPreferredWidth(60);
+            tblProduto.getColumnModel().getColumn(4).setResizable(false);
+            tblProduto.getColumnModel().getColumn(4).setPreferredWidth(30);
+            tblProduto.getColumnModel().getColumn(5).setPreferredWidth(60);
         }
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 214, 616, 320));
@@ -395,8 +405,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jPanel1.add(btnLimpaDescontoOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 550, -1, 30));
 
         jLabel10.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel10.setText("* Clique para alternar entre % e R$");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
+        jLabel10.setText("* Clique em \"Desconto\" para alternar entre % e R$");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1, -1));
 
         btnLimpaProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
         btnLimpaProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -637,14 +647,16 @@ public class TelaOrcamento extends javax.swing.JDialog {
                     this.dispose();
                 }
                 for (int i = 0; i < linhas; i++) {
-                    String vlTotal = tblProduto.getValueAt(i, 4).toString().replaceAll(",", ".");
-                    String vlUnit = tblProduto.getValueAt(i, 3).toString().replaceAll(",", ".");
-                    String quantidade = tblProduto.getValueAt(i, 2).toString().replaceAll(",", ".");
                     po.setIdProduto(Integer.parseInt(tblProduto.getValueAt(i, 0).toString()));
-                    po.setIdOrcamento(orcamento.getIdOrcamento());
                     po.setProduto(tblProduto.getValueAt(i, 1).toString());
+                    String quantidade = tblProduto.getValueAt(i, 2).toString().replaceAll(",", ".");
+                    String vlUnit = tblProduto.getValueAt(i, 3).toString().replaceAll(",", ".");
+                    String vlDesc = tblProduto.getValueAt(i, 4).toString().replaceAll(",", ".");
+                    String vlTotal = tblProduto.getValueAt(i, 5).toString().replaceAll(",", ".");
+                    po.setIdOrcamento(orcamento.getIdOrcamento());
                     po.setQuantidade(Double.parseDouble(quantidade));
                     po.setValor(Double.parseDouble(vlUnit));
+                    po.setDesconto(Double.parseDouble(vlDesc));
                     po.setTotal(Double.parseDouble(vlTotal));
                     if (alterar == false) {
                         poDAO.insert(po);
@@ -731,6 +743,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         tblProduto.getColumnModel().getColumn(2).setCellRenderer(esquerda);
         tblProduto.getColumnModel().getColumn(3).setCellRenderer(esquerda);
         tblProduto.getColumnModel().getColumn(4).setCellRenderer(esquerda);
+        tblProduto.getColumnModel().getColumn(5).setCellRenderer(esquerda);
         try {
             o.setData(sdfD.parse(txtData.getText()));
         } catch (ParseException ex) {
@@ -765,7 +778,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 model.setValueAt(tela.listaPOrcamento.get(i).getProduto(), i, 1);
                 model.setValueAt(tela.listaPOrcamento.get(i).getQuantidade(), i, 2);
                 model.setValueAt(df.format(tela.listaPOrcamento.get(i).getValor()), i, 3);
-                model.setValueAt(df.format(tela.listaPOrcamento.get(i).getTotal()), i, 4);
+                model.setValueAt(df.format(tela.listaPOrcamento.get(i).getDesconto()), i, 4);
+                model.setValueAt(df.format(tela.listaPOrcamento.get(i).getTotal()), i, 5);
             }
         }
     }//GEN-LAST:event_txtPesquisaOrcamentoActionPerformed
@@ -907,7 +921,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         tblProduto.getColumnModel().getColumn(3).setCellRenderer(esquerda);
         tblProduto.getColumnModel().getColumn(4).setCellRenderer(esquerda);
         p = pDAO.getProdutoById(id);
-        tbl.addRow(new Object[]{p.getIdProduto(), p.getDescricao(), txtQtdProduto.getText(), txtValor.getText(), df.format(resultado) + ""});
+        tbl.addRow(new Object[]{p.getIdProduto(), p.getDescricao(), txtQtdProduto.getText(), txtValor.getText(), txtDescontoProduto.getText(), df.format(resultado) + ""});
     }
 
     public void limpaProduto() {

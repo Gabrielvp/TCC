@@ -210,7 +210,7 @@ public class OrcamentoDAO extends MySQL {
                 orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
                 orcamento.setData(rs.getDate("Data"));
                 orcamento.setNome(rs.getString("Cliente"));
-                orcamento.setIdPessoa(rs.getInt("idPessoa"));
+                orcamento.setAprovado(rs.getBoolean("Aprovado"));
                 orcamento.setTotal(rs.getDouble("Total"));
 
                 listaOrcamentoId.add(orcamento);

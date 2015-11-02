@@ -52,9 +52,8 @@ public class TelaOrcamento extends javax.swing.JDialog {
             txtNome.setText(ps.getNome());
         } else {
 
-        }        
+        }
     }
-    
 
     Pessoa ps = new Pessoa();
     ProdutoDAO pDAO = new ProdutoDAO();
@@ -656,7 +655,9 @@ public class TelaOrcamento extends javax.swing.JDialog {
                     po.setIdOrcamento(orcamento.getIdOrcamento());
                     po.setQuantidade(Double.parseDouble(quantidade));
                     po.setValor(Double.parseDouble(vlUnit));
-                    po.setDesconto(Double.parseDouble(vlDesc));
+                    if (!txtDescontoProduto.getText().equals("")) {
+                        po.setDesconto(Double.parseDouble(vlDesc));
+                    }
                     po.setTotal(Double.parseDouble(vlTotal));
                     if (alterar == false) {
                         poDAO.insert(po);

@@ -395,6 +395,39 @@ public class OrcamentoDAO extends MySQL {
         }
         return orcamento;
     }
+    
+    public Orcamento getOrcamentoIdPO(int id, int cd) {
+        Connection c = this.getConnection();
+
+        Orcamento orcamento = new Orcamento();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT orcamento.idOrcamento, orcamento.data, orcamento.idPessoa, orcamento.cliente,"
+                    + "orcamento.total, orcamento.aprovado FROM orcamento WHERE idPessoa = ? and idOrcamento = ?");
+            ps.setInt(1, id);
+            ps.setInt(2, cd);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
+                orcamento.setData(rs.getDate("Data"));
+                orcamento.setNome(rs.getString("Cliente"));
+                orcamento.setIdPessoa(rs.getInt("idPessoa"));
+                orcamento.setTotal(rs.getDouble("Total"));
+                orcamento.setAprovado(rs.getBoolean("Aprovado"));
+            }
+            rs.close();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return orcamento;
+    }
 
     public List<Orcamento> getOrcamentoNome(String nome) {
         Connection c = this.getConnection();

@@ -50,7 +50,7 @@ public class TelaCaixa extends javax.swing.JDialog {
         btnAtualizar.setVisible(false);
         tabelaSaidas(dt);
         somaSaidas();
-        caixa();
+        caixa();       
     }
 
     DecimalFormat df = new DecimalFormat("####.00");
@@ -82,15 +82,11 @@ public class TelaCaixa extends javax.swing.JDialog {
         lblCaixa = new javax.swing.JLabel();
         txtData = new javax.swing.JFormattedTextField();
         lblData = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         txtDataFim = new javax.swing.JFormattedTextField();
         btnAtualizar = new javax.swing.JButton();
         rbtnEntradaAVista = new javax.swing.JRadioButton();
         rbtnEntradaPrazo = new javax.swing.JRadioButton();
+        jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnEntrada = new javax.swing.JButton();
@@ -172,7 +168,7 @@ public class TelaCaixa extends javax.swing.JDialog {
                 txtDataKeyPressed(evt);
             }
         });
-        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 108, -1));
+        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 108, -1));
 
         lblData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblData.setText("Data:");
@@ -181,22 +177,7 @@ public class TelaCaixa extends javax.swing.JDialog {
                 lblDataMouseClicked(evt);
             }
         });
-        jPanel1.add(lblData, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
-
-        jLabel6.setText("Nome");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 125, -1, -1));
-
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 141, 260, 25));
-
-        jLabel7.setText("Fatura");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 172, -1, -1));
-
-        jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 188, 98, 25));
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 188, -1, -1));
+        jPanel1.add(lblData, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
 
         txtDataFim.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
@@ -210,7 +191,7 @@ public class TelaCaixa extends javax.swing.JDialog {
                 txtDataFimKeyPressed(evt);
             }
         });
-        jPanel1.add(txtDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 108, -1));
+        jPanel1.add(txtDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 108, -1));
 
         btnAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Refresh.png"))); // NOI18N
         btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -218,7 +199,7 @@ public class TelaCaixa extends javax.swing.JDialog {
                 btnAtualizarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 40, -1));
+        jPanel1.add(btnAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, 40, -1));
 
         buttonGroup1.add(rbtnEntradaAVista);
         rbtnEntradaAVista.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
@@ -240,6 +221,10 @@ public class TelaCaixa extends javax.swing.JDialog {
             }
         });
         jPanel1.add(rbtnEntradaPrazo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, -1, -1));
+
+        jLabel6.setForeground(new java.awt.Color(204, 0, 0));
+        jLabel6.setText("* Clique em \"Data\" para pesquisar por periodo");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 153));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -350,6 +335,8 @@ public class TelaCaixa extends javax.swing.JDialog {
         }
         dt = new java.sql.Date(d.getTime());
         tabelaEntradas(dt);
+        somaEntradas();
+        caixa();
     }//GEN-LAST:event_btnEntradaActionPerformed
 
     private void btnSaidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaidaActionPerformed
@@ -362,6 +349,8 @@ public class TelaCaixa extends javax.swing.JDialog {
         }
         dt = new java.sql.Date(d.getTime());
         tabelaSaidas(dt);
+        somaSaidas();
+        caixa();
     }//GEN-LAST:event_btnSaidaActionPerformed
 
     private void txtDataKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataKeyPressed
@@ -376,7 +365,7 @@ public class TelaCaixa extends javax.swing.JDialog {
                 tabelaEntradas(dt);
                 somaEntradas();
             } else if (rbtnEntradaPrazo.isSelected()) {
-                tabelaEntradasPrazo(d);
+                tabelaEntradasPrazo(dt);
                 somaEntradas();
             }
         }
@@ -690,21 +679,17 @@ public class TelaCaixa extends javax.swing.JDialog {
     private javax.swing.JButton btnSaida;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblCaixa;
     private javax.swing.JLabel lblData;
     private javax.swing.JLabel lblEntrada;

@@ -111,7 +111,9 @@ public class TelaPesquisaOrcamentoNome extends javax.swing.JDialog {
 
     private void tblOrcamentoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOrcamentoMousePressed
         if (evt.getClickCount() == 2) {
-            o = oDAO.getOrcamentoIdPessoa(codigo);
+            int linha  = tblOrcamento.getSelectedRow();
+            int cd = Integer.parseInt(tblOrcamento.getValueAt(linha, 1).toString());
+            o = oDAO.getOrcamentoIdPO(codigo, cd);
             this.dispose();
         }
     }//GEN-LAST:event_tblOrcamentoMousePressed

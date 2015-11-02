@@ -193,7 +193,7 @@ public class TelaCaixa extends javax.swing.JDialog {
         });
         jPanel1.add(txtDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 108, -1));
 
-        btnAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Refresh.png"))); // NOI18N
+        btnAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
         btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtualizarActionPerformed(evt);
@@ -363,10 +363,16 @@ public class TelaCaixa extends javax.swing.JDialog {
             dt = new java.sql.Date(d.getTime());
             if (rbtnEntradaAVista.isSelected()) {
                 tabelaEntradas(dt);
+                tabelaSaidas(dt);
                 somaEntradas();
+                somaSaidas();
+                caixa();
             } else if (rbtnEntradaPrazo.isSelected()) {
                 tabelaEntradasPrazo(dt);
+                tabelaSaidas(dt);
                 somaEntradas();
+                somaSaidas();
+                caixa();
             }
         }
     }//GEN-LAST:event_txtDataKeyPressed
@@ -454,6 +460,7 @@ public class TelaCaixa extends javax.swing.JDialog {
         caixa();
         txtDataFim.setVisible(false);
         txtDataFim.setText("");
+        lblData.setText("Data:");
         btnAtualizar.setVisible(false);
     }//GEN-LAST:event_btnAtualizarActionPerformed
 

@@ -297,7 +297,7 @@
         <Component class="javax.swing.JButton" name="btnAtualizar">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/images/Refresh.png"/>
+              <Image iconType="3" name="/images/pincel.png"/>
             </Property>
           </Properties>
           <Events>

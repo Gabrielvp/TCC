@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -77,7 +78,7 @@ public class agendamentoDAO extends MySQL {
         return false;
     }
 
-    public void deletePessoa(int id) {
+    public void deletePessoa(int id){
         Connection c = this.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("DELETE FROM agendamento "
@@ -89,7 +90,7 @@ public class agendamentoDAO extends MySQL {
             ps.close();
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            ex.printStackTrace();            
         } finally {
             try {
                 c.close();

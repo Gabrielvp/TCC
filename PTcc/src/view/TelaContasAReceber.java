@@ -657,6 +657,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     private void cbFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFormaPagamentoActionPerformed
         String desc = cbFormaPagamento.getSelectedItem().toString();
         combo2(desc);
+        limparParcelado();
     }//GEN-LAST:event_cbFormaPagamentoActionPerformed
 
     private void txtEntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEntradaKeyPressed
@@ -703,6 +704,15 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         txtValorParcela.setText("");
         txtEntrada.setText("");
         txtIntervalo.setText("");
+        model.setNumRows(0);
+    }
+    
+    public void limparParcelado(){
+        DefaultTableModel model = (DefaultTableModel)tblParcelas.getModel();
+        txtEntrada.setText("");
+        txtIntervalo.setText("");
+        txtParcelas.setText("");
+        txtValorParcela.setText("");
         model.setNumRows(0);
     }
 

@@ -655,8 +655,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
                     po.setIdOrcamento(orcamento.getIdOrcamento());
                     po.setQuantidade(Double.parseDouble(quantidade));
                     po.setValor(Double.parseDouble(vlUnit));
-                    if (!txtDescontoProduto.getText().equals("")) {
+                    if (!tblProduto.getValueAt(i, 4).toString().equals("")) {
                         po.setDesconto(Double.parseDouble(vlDesc));
+                    } else if (tblProduto.getValueAt(i, 4).toString().equals("")) {
+                        po.setDesconto(0.0);
                     }
                     po.setTotal(Double.parseDouble(vlTotal));
                     if (alterar == false) {
@@ -779,7 +781,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 model.setValueAt(tela.listaPOrcamento.get(i).getProduto(), i, 1);
                 model.setValueAt(tela.listaPOrcamento.get(i).getQuantidade(), i, 2);
                 model.setValueAt(df.format(tela.listaPOrcamento.get(i).getValor()), i, 3);
-                model.setValueAt(df.format(tela.listaPOrcamento.get(i).getDesconto()), i, 4);
+                if (tela.listaPOrcamento.get(i).getDesconto() == 0.0) {
+                    model.setValueAt("", i, 4);
+                } else {
+                    model.setValueAt(df.format(tela.listaPOrcamento.get(i).getDesconto()), i, 4);
+                }
                 model.setValueAt(df.format(tela.listaPOrcamento.get(i).getTotal()), i, 5);
             }
         }
@@ -791,6 +797,56 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 int cd = Integer.parseInt(txtOrcamento.getText());
                 TelaPesquisaOrcamento tela = new TelaPesquisaOrcamento(null, rootPaneCheckingEnabled, cd);
                 tela.setVisible(true);
+
+                Orcamento o = new Orcamento();
+                limpaProduto();
+                DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
+                esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
+                tblProduto.getColumnModel().getColumn(2).setCellRenderer(esquerda);
+                tblProduto.getColumnModel().getColumn(3).setCellRenderer(esquerda);
+                tblProduto.getColumnModel().getColumn(4).setCellRenderer(esquerda);
+                tblProduto.getColumnModel().getColumn(5).setCellRenderer(esquerda);
+                try {
+                    o.setData(sdfD.parse(txtData.getText()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                alterar = tela.alterar;
+                if (alterar) {
+                    txtOrcamento.setEditable(false);
+                }
+                boolean aprovado = tela.o.isAprovado();
+                if (tela.o.getIdOrcamento() == 0 || tela.o.getIdPessoa() == 0) {
+                    limparTela();
+                    String data = sdfD.format(new Date());
+                    txtData.setText(data);
+                } else {
+                    if (aprovado) {
+                        botao();
+                    } else if (!aprovado) {
+                        botaoVisible();
+                    }
+                    txtData.setText(sdfD.format(tela.o.getData()));
+                    txtOrcamento.setText(tela.o.getIdOrcamento() + "");
+                    txtCodPessoa.setText(tela.o.getIdPessoa() + "");
+                    txtNome.setText(tela.o.getNome());
+                    lblTotalOrcamento.setText(df.format(tela.o.getTotal()) + "");
+                    model.setNumRows(0);
+                    for (int i = 0; i < tela.listaPOrcamento.size(); i++) {
+                        model.addRow(new Object[]{});
+                        model.setValueAt(tela.listaPOrcamento.get(i).getIdProduto(), i, 0);
+                        model.setValueAt(tela.listaPOrcamento.get(i).getProduto(), i, 1);
+                        model.setValueAt(tela.listaPOrcamento.get(i).getQuantidade(), i, 2);
+                        model.setValueAt(df.format(tela.listaPOrcamento.get(i).getValor()), i, 3);
+                        if (tela.listaPOrcamento.get(i).getDesconto() == 0.0) {
+                            model.setValueAt("", i, 4);
+                        } else {
+                            model.setValueAt(df.format(tela.listaPOrcamento.get(i).getDesconto()), i, 4);
+                        }
+                        model.setValueAt(df.format(tela.listaPOrcamento.get(i).getTotal()), i, 5);
+                    }
+                }
             } catch (NumberFormatException e) {
             }
         }

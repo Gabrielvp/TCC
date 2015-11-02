@@ -94,10 +94,11 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         btnConfiguracao = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tela Principal - Agenda Financeira");
@@ -335,6 +336,15 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         });
 
         jMenu1.setText("Cadastros");
+
+        jMenuItem3.setText("Forma de Pagamento");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Financeiro");
@@ -346,6 +356,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
+        jMenu2.add(jSeparator1);
 
         jMenuItem1.setText("Contas a Receber");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -354,14 +365,6 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem1);
-
-        jMenuItem3.setText("Forma de Pagamento");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
 
@@ -851,6 +854,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel lblDiaSemana;
     private javax.swing.JTable tblPrincipal;
     private com.toedter.calendar.JDateChooser txtData;

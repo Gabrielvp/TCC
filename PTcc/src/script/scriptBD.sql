@@ -218,14 +218,6 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracoes` (
   PRIMARY KEY (`idConfiguracao`)
   );
 
-create table forma_pagamento(
-    idForma_pagamento int not null primary key auto_increment,
-    descricao varchar(50) not null,
-    parcela int not null,
-    intervalo int not null
-);
-
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

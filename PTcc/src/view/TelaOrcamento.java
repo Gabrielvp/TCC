@@ -900,6 +900,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtProduto.setText(tela.p.getDescricao());
                 txtValor.setText(df.format(tela.p.getValorVenda()) + "");
                 txtQtdProduto.requestFocus();
+                lblEstoque.setText(tela.p.getQtd() + "");
                 if (txtProduto.getText().equals("")) {
                     limpaProduto();
                 }

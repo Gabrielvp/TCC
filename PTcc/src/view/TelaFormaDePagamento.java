@@ -28,6 +28,7 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
         atualizaTabela();
     }
     FormaPagamentoDAO fDAO = new FormaPagamentoDAO();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,10 +70,26 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
         jLabel2.setText("Parcela");
 
         txtParcela.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtParcela.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtParcelaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtParcelaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtParcelaKeyTyped(evt);
+            }
+        });
 
         jLabel3.setText("Intervalo");
 
         txtIntervalo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtIntervalo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIntervaloKeyReleased(evt);
+            }
+        });
 
         jLabel4.setText("Dias");
 
@@ -156,7 +173,7 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAddFormaPagamento)
                     .addComponent(btnExcluiFormaPagamento))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 8, -1, -1));
@@ -177,8 +194,6 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        tblFormaPagamento.setShowHorizontalLines(true);
-        tblFormaPagamento.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblFormaPagamento);
         if (tblFormaPagamento.getColumnModel().getColumnCount() > 0) {
             tblFormaPagamento.getColumnModel().getColumn(0).setResizable(false);
@@ -206,32 +221,72 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFormaPagamentoActionPerformed
-        FormaPagamento fp = new FormaPagamento();
-        fp.setDescricao(txtDescricao.getText());
-        fp.setParcela(Integer.parseInt(txtParcela.getText()));
-        fp.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
-        if(rbtnAVista.isSelected()){
-            fp.setaVista(true);
-        }else if(rbtnPrazo.isSelected()){
-            fp.setaVista(false);
+        if (txtDescricao.getText().equals("") || txtIntervalo.getText().equals("") || txtParcela.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+        } else {
+            FormaPagamento fp = new FormaPagamento();
+            fp.setDescricao(txtDescricao.getText());
+            fp.setParcela(Integer.parseInt(txtParcela.getText()));
+            fp.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
+            if (rbtnAVista.isSelected()) {
+                fp.setaVista(true);
+            } else if (rbtnPrazo.isSelected()) {
+                fp.setaVista(false);
+            }
+            fDAO.insert(fp);
+            limpar();
+            atualizaTabela();
         }
-        
-        fDAO.insert(fp);
-        atualizaTabela();
     }//GEN-LAST:event_btnAddFormaPagamentoActionPerformed
 
     private void btnExcluiFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluiFormaPagamentoActionPerformed
         int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja excluir forma de pagamento?", "Exclusão", 0, 0);
         if (confirmacao == 0) {
-        int linha = tblFormaPagamento.getSelectedRow();
-        String desc = tblFormaPagamento.getValueAt(linha, 0).toString();
-        fDAO.delete(desc);
-        atualizaTabela();
+            int linha = tblFormaPagamento.getSelectedRow();
+            String desc = tblFormaPagamento.getValueAt(linha, 0).toString();
+            fDAO.delete(desc);
+            atualizaTabela();
         }
     }//GEN-LAST:event_btnExcluiFormaPagamentoActionPerformed
 
-    public void atualizaTabela(){
-        DefaultTableModel model = (DefaultTableModel)tblFormaPagamento.getModel();
+    private void txtParcelaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelaKeyTyped
+
+    }//GEN-LAST:event_txtParcelaKeyTyped
+
+    private void txtParcelaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelaKeyPressed
+
+    }//GEN-LAST:event_txtParcelaKeyPressed
+
+    private void txtParcelaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelaKeyReleased
+        if (txtParcela.getText().isEmpty()) {
+
+        } else {
+            int parcela = Integer.parseInt(txtParcela.getText());
+
+            if (parcela > 0) {
+                rbtnPrazo.setSelected(true);
+            } else {
+                rbtnAVista.setSelected(true);
+            }
+        }
+    }//GEN-LAST:event_txtParcelaKeyReleased
+
+    private void txtIntervaloKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIntervaloKeyReleased
+       if (txtIntervalo.getText().isEmpty()) {
+
+        } else {
+            int intervalo = Integer.parseInt(txtIntervalo.getText());
+
+            if (intervalo > 0) {
+                rbtnPrazo.setSelected(true);
+            } else {
+                rbtnAVista.setSelected(true);
+            }
+        }
+    }//GEN-LAST:event_txtIntervaloKeyReleased
+
+    public void atualizaTabela() {
+        DefaultTableModel model = (DefaultTableModel) tblFormaPagamento.getModel();
         List<FormaPagamento> lista = fDAO.lista();
         model.setNumRows(0);
         for (int i = 0; i < lista.size(); i++) {
@@ -241,7 +296,13 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
             model.setValueAt(lista.get(i).getIntervalo(), i, 2);
         }
     }
-    
+
+    public void limpar() {
+        txtDescricao.setText("");
+        txtIntervalo.setText("");
+        txtParcela.setText("");
+    }
+
     /**
      * @param args the command line arguments
      */

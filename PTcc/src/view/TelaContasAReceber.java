@@ -734,6 +734,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }
 
     public void combo() {
+        cbFormaPagamento.removeAll();
         cbFormaPagamento.removeAllItems();
         cbFormaPagamento.addItem("Selecione a Forma de Pagamento");
         FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();

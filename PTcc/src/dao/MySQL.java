@@ -18,8 +18,8 @@ public class MySQL {
             String nomeServidor = "localhost";
             String database = "db_tcc";
             String url = "jdbc:mysql://" + "127.0.0.1" + "/" + "db_tcc";
-            String username = "root";
-            String password = "";
+            String username = "tools";
+            String password = "tools";
 
             return DriverManager.getConnection(url, username, password);
         } catch (ClassNotFoundException e) {

@@ -68,6 +68,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel4 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -86,13 +87,13 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         btnProximo = new javax.swing.JButton();
         btnDataDia = new javax.swing.JButton();
         txtData = new com.toedter.calendar.JDateChooser();
-        btnCadCliente = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        btnConfiguracao = new javax.swing.JButton();
+        btnCaixa = new javax.swing.JButton();
+        btnFinanceiro = new javax.swing.JButton();
         btnOrcamento = new javax.swing.JButton();
         btnProduto = new javax.swing.JButton();
-        btnFinanceiro = new javax.swing.JButton();
-        btnCaixa = new javax.swing.JButton();
-        btnConfiguracao = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        btnCadCliente = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -103,8 +104,13 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tela Principal - Agenda Financeira");
+        setBackground(new java.awt.Color(153, 153, 153));
+        setForeground(new java.awt.Color(153, 153, 153));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
+        jPanel4.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
@@ -188,7 +194,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
                 btnExcluirActionPerformed(evt);
             }
         });
-        jPanel2.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(544, 599, -1, -1));
+        jPanel2.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 610, -1, -1));
 
         tblPrincipal.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 153)));
         tblPrincipal.setModel(new javax.swing.table.DefaultTableModel(
@@ -219,18 +225,6 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblPrincipal);
-        if (tblPrincipal.getColumnModel().getColumnCount() > 0) {
-            tblPrincipal.getColumnModel().getColumn(0).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(0).setPreferredWidth(25);
-            tblPrincipal.getColumnModel().getColumn(1).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(1).setPreferredWidth(10);
-            tblPrincipal.getColumnModel().getColumn(2).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(2).setPreferredWidth(150);
-            tblPrincipal.getColumnModel().getColumn(3).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(3).setPreferredWidth(200);
-            tblPrincipal.getColumnModel().getColumn(4).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(4).setPreferredWidth(70);
-        }
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 211, 630, 382));
 
@@ -286,11 +280,30 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         jPanel2.add(btnDataDia, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, -1, -1));
         jPanel2.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 130, -1));
 
-        btnCadCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_add.png"))); // NOI18N
-        btnCadCliente.setText("Cad. Pessoa");
-        btnCadCliente.addActionListener(new java.awt.event.ActionListener() {
+        jPanel3.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+
+        btnConfiguracao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configuração.png"))); // NOI18N
+        btnConfiguracao.setText("Configurações");
+        btnConfiguracao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadClienteActionPerformed(evt);
+                btnConfiguracaoActionPerformed(evt);
+            }
+        });
+
+        btnCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Financeiro 16.png"))); // NOI18N
+        btnCaixa.setText("Caixa");
+        btnCaixa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCaixaActionPerformed(evt);
+            }
+        });
+
+        btnFinanceiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/financeiro.png"))); // NOI18N
+        btnFinanceiro.setText("Financeiro");
+        btnFinanceiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinanceiroActionPerformed(evt);
             }
         });
 
@@ -310,42 +323,68 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnFinanceiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/financeiro.png"))); // NOI18N
-        btnFinanceiro.setText("Financeiro");
-        btnFinanceiro.addActionListener(new java.awt.event.ActionListener() {
+        btnCadCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_add.png"))); // NOI18N
+        btnCadCliente.setText("Cad. Pessoa");
+        btnCadCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFinanceiroActionPerformed(evt);
+                btnCadClienteActionPerformed(evt);
             }
         });
-
-        btnCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Financeiro 16.png"))); // NOI18N
-        btnCaixa.setText("Caixa");
-        btnCaixa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCaixaActionPerformed(evt);
-            }
-        });
-
-        btnConfiguracao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configuração.png"))); // NOI18N
-        btnConfiguracao.setText("Configurações");
-        btnConfiguracao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConfiguracaoActionPerformed(evt);
-            }
-        });
-
-        jPanel3.setBackground(new java.awt.Color(102, 102, 102));
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCaixa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnFinanceiro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnOrcamento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCadCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnConfiguracao, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 11, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnCadCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(btnProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(btnOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(btnFinanceiro, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(btnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(btnConfiguracao, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1377, 1377, 1377))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Cadastros");
@@ -387,40 +426,11 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnOrcamento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnConfiguracao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
-                    .addComponent(btnFinanceiro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCaixa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCadCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1307, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCadCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnFinanceiro, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnConfiguracao, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -446,50 +456,64 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         p.setVisible(true);
     }//GEN-LAST:event_btnProdutoActionPerformed
 
-    private void tblPrincipalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPrincipalMousePressed
-        DataHora dt = new DataHora();
-        DefaultTableModel mode = (DefaultTableModel) tblPrincipal.getModel();
-        SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
-        Agenda a = new Agenda();
-        Pessoa p = new Pessoa();
-        int linha = tblPrincipal.getSelectedRow();
-
-        if (evt.getClickCount() == 2) {
-            dt.setData(txtData.getDate());
-            try {
-                dt.setHorario(sdfH.parse(tblPrincipal.getValueAt(linha, 0).toString()));
-            } catch (ParseException ex) {
-                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            dt.setDia(lblDiaSemana.getText());
-
-            if (tblPrincipal.getValueAt(linha, 1).toString().equals("")) {
-                novo = true;
-                TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, null);
-                tela.setVisible(true);                
-            } else {
-                novo = false;
-                p.setIdPessoa(Integer.parseInt(tblPrincipal.getValueAt(linha, 1).toString()));
-                p.setNome(tblPrincipal.getValueAt(linha, 2).toString());
-                p.setTelCelular(tblPrincipal.getValueAt(linha, 4).toString());
-                a.setDescricao(tblPrincipal.getValueAt(linha, 3).toString());
-                a.setPessoa(p);
-                TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, a);
-                tela.setVisible(true);                
-            }
-        }
-        limparTabela();
-        atualizaTabela();
-        atualizaDiaSemanaTela();
-
-
-    }//GEN-LAST:event_tblPrincipalMousePressed
-
     private void btnCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaixaActionPerformed
         TelaCaixa c = new TelaCaixa(this, rootPaneCheckingEnabled);
         c.setVisible(true);
     }//GEN-LAST:event_btnCaixaActionPerformed
+
+    private void btnConfiguracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracaoActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tblPrincipal.getModel();
+        TelaConfiguracoes c = new TelaConfiguracoes(this, rootPaneCheckingEnabled);
+        c.setVisible(true);
+        configuracao();
+        model.setNumRows(0);
+        Calendar cl = Calendar.getInstance();
+        int dia = cl.get(Calendar.DAY_OF_WEEK);
+        List<Configuracao> lista = cDAO.listarConfiguracaoDia(dia);
+        if (!lista.isEmpty()) {
+            tabelaPrincipal();
+            atualizaTabela();
+        }
+    }//GEN-LAST:event_btnConfiguracaoActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        TelaContasAPagar tela = new TelaContasAPagar(this, rootPaneCheckingEnabled);
+        tela.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        TelaContasAReceber tela = new TelaContasAReceber(this, rootPaneCheckingEnabled, null);
+        tela.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        TelaFormaDePagamento tela = new TelaFormaDePagamento(this, novo);
+        tela.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void btnPesquisaHoraMarcadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaHoraMarcadaActionPerformed
+        if (txtNome.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Insira um nome ou parte dele para fazer a pesquisa!");
+        } else {
+            String nome = txtNome.getText();
+            TelaPesquisaAgendamento tela = new TelaPesquisaAgendamento(this, rootPaneCheckingEnabled, nome, antigas);
+            tela.setVisible(true);
+        }
+        limparTela();
+    }//GEN-LAST:event_btnPesquisaHoraMarcadaActionPerformed
+
+    private void ckbConsultasRealizadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbConsultasRealizadasActionPerformed
+        if (ckbConsultasRealizadas.isSelected()) {
+            antigas = true;
+        } else {
+            antigas = false;
+        }
+    }//GEN-LAST:event_ckbConsultasRealizadasActionPerformed
+
+    private void txtHorarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtHorarioMousePressed
+        txtHorario.setSelectionStart(0);
+        txtHorario.setSelectionEnd(5);
+    }//GEN-LAST:event_txtHorarioMousePressed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int sel = tblPrincipal.getSelectedRow();
@@ -530,16 +554,44 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         atualizaDiaSemanaTela();
     }//GEN-LAST:event_tblPrincipalMouseExited
 
-    private void btnPesquisaHoraMarcadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaHoraMarcadaActionPerformed
-        if (txtNome.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Insira um nome ou parte dele para fazer a pesquisa!");
-        } else {
-            String nome = txtNome.getText();
-            TelaPesquisaAgendamento tela = new TelaPesquisaAgendamento(this, rootPaneCheckingEnabled, nome, antigas);
-            tela.setVisible(true);
+    private void tblPrincipalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPrincipalMousePressed
+        DataHora dt = new DataHora();
+        DefaultTableModel mode = (DefaultTableModel) tblPrincipal.getModel();
+        SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
+        Agenda a = new Agenda();
+        Pessoa p = new Pessoa();
+        int linha = tblPrincipal.getSelectedRow();
+
+        if (evt.getClickCount() == 2) {
+            dt.setData(txtData.getDate());
+            try {
+                dt.setHorario(sdfH.parse(tblPrincipal.getValueAt(linha, 0).toString()));
+            } catch (ParseException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            dt.setDia(lblDiaSemana.getText());
+
+            if (tblPrincipal.getValueAt(linha, 1).toString().equals("")) {
+                novo = true;
+                TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, null);
+                tela.setVisible(true);
+            } else {
+                novo = false;
+                p.setIdPessoa(Integer.parseInt(tblPrincipal.getValueAt(linha, 1).toString()));
+                p.setNome(tblPrincipal.getValueAt(linha, 2).toString());
+                p.setTelCelular(tblPrincipal.getValueAt(linha, 4).toString());
+                a.setDescricao(tblPrincipal.getValueAt(linha, 3).toString());
+                a.setPessoa(p);
+                TelaAgendamento tela = new TelaAgendamento(this, rootPaneCheckingEnabled, dt, novo, a);
+                tela.setVisible(true);
+            }
         }
-        limparTela();
-    }//GEN-LAST:event_btnPesquisaHoraMarcadaActionPerformed
+        limparTabela();
+        atualizaTabela();
+        atualizaDiaSemanaTela();
+
+    }//GEN-LAST:event_tblPrincipalMousePressed
 
     private void btnProximoHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoHorarioActionPerformed
         if (txtHorario.getText().equals("  :  ")) {
@@ -560,18 +612,18 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnProximoHorarioActionPerformed
 
-    private void ckbConsultasRealizadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbConsultasRealizadasActionPerformed
-        if (ckbConsultasRealizadas.isSelected()) {
-            antigas = true;
-        } else {
-            antigas = false;
-        }
-    }//GEN-LAST:event_ckbConsultasRealizadasActionPerformed
+    private void btnAnteriorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAnteriorMousePressed
+        GregorianCalendar calInicio = new GregorianCalendar();
+        cont -= 1;
+        Date dt = txtData.getDate();
+        calInicio.add(GregorianCalendar.DAY_OF_MONTH, cont);
+        dt = calInicio.getTime();
+        txtData.setDate(dt);
 
-    private void txtHorarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtHorarioMousePressed
-        txtHorario.setSelectionStart(0);
-        txtHorario.setSelectionEnd(5);
-    }//GEN-LAST:event_txtHorarioMousePressed
+        limparTabela();
+        atualizaTabela();
+        atualizaDiaSemanaTela();
+    }//GEN-LAST:event_btnAnteriorMousePressed
 
     private void btnProximoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProximoMousePressed
         GregorianCalendar calInicio = new GregorianCalendar();
@@ -585,6 +637,10 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         atualizaTabela();
         atualizaDiaSemanaTela();
     }//GEN-LAST:event_btnProximoMousePressed
+
+    private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnProximoActionPerformed
 
     private void btnDataDiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataDiaMouseClicked
         // TODO add your handling code here:
@@ -601,53 +657,6 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     private void btnDataDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataDiaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDataDiaActionPerformed
-
-    private void btnAnteriorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAnteriorMousePressed
-        GregorianCalendar calInicio = new GregorianCalendar();
-        cont -= 1;
-        Date dt = txtData.getDate();
-        calInicio.add(GregorianCalendar.DAY_OF_MONTH, cont);
-        dt = calInicio.getTime();
-        txtData.setDate(dt);
-
-        limparTabela();
-        atualizaTabela();
-        atualizaDiaSemanaTela();
-    }//GEN-LAST:event_btnAnteriorMousePressed
-
-    private void btnConfiguracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracaoActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tblPrincipal.getModel();
-        TelaConfiguracoes c = new TelaConfiguracoes(this, rootPaneCheckingEnabled);
-        c.setVisible(true);
-        configuracao();
-        model.setNumRows(0);
-        Calendar cl = Calendar.getInstance();
-        int dia = cl.get(Calendar.DAY_OF_WEEK);
-        List<Configuracao> lista = cDAO.listarConfiguracaoDia(dia);
-        if (!lista.isEmpty()) {
-            tabelaPrincipal();
-            atualizaTabela();
-        }
-    }//GEN-LAST:event_btnConfiguracaoActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        TelaContasAPagar tela = new TelaContasAPagar(this, rootPaneCheckingEnabled);
-        tela.setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        TelaContasAReceber tela = new TelaContasAReceber(this, rootPaneCheckingEnabled, null);
-        tela.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        TelaFormaDePagamento tela = new TelaFormaDePagamento(this, novo);
-        tela.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnProximoActionPerformed
 
     String inicio;
     String fim;
@@ -833,6 +842,12 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -868,6 +883,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel lblDiaSemana;

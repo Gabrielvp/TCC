@@ -111,10 +111,10 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153), 2));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "", 0, 2));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 12), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", 0, 2, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
 
         jLabel3.setText("Nome:");
 
@@ -226,6 +226,18 @@ public final class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblPrincipal);
+        if (tblPrincipal.getColumnModel().getColumnCount() > 0) {
+            tblPrincipal.getColumnModel().getColumn(0).setResizable(false);
+            tblPrincipal.getColumnModel().getColumn(0).setPreferredWidth(6);
+            tblPrincipal.getColumnModel().getColumn(1).setResizable(false);
+            tblPrincipal.getColumnModel().getColumn(1).setPreferredWidth(5);
+            tblPrincipal.getColumnModel().getColumn(2).setResizable(false);
+            tblPrincipal.getColumnModel().getColumn(2).setPreferredWidth(140);
+            tblPrincipal.getColumnModel().getColumn(3).setResizable(false);
+            tblPrincipal.getColumnModel().getColumn(3).setPreferredWidth(170);
+            tblPrincipal.getColumnModel().getColumn(4).setResizable(false);
+            tblPrincipal.getColumnModel().getColumn(4).setPreferredWidth(50);
+        }
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 211, 630, 382));
 
@@ -375,7 +387,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1356, 1356, 1356))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -743,6 +755,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
     public void atualizaTabela() {
         direita.setHorizontalAlignment(SwingConstants.RIGHT);
+        tblPrincipal.getColumnModel().getColumn(0).setCellRenderer(direita);
         tblPrincipal.getColumnModel().getColumn(1).setCellRenderer(direita);
         DefaultTableModel model
                 = (DefaultTableModel) this.tblPrincipal.getModel();

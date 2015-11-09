@@ -48,6 +48,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         tblPrincipal.setShowHorizontalLines(true);
         tblPrincipal.setShowVerticalLines(true);
+        
     }
 
     agendamentoDAO aDAO = new agendamentoDAO();

@@ -462,6 +462,9 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisaClienteActionPerformed
 
     private void btnPesquisaOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaOrcamentoActionPerformed
+        if(txtNome.getText().equals("") || txtCodigoPessoa.getText().equals("")){
+            JOptionPane.showMessageDialog(rootPane, "Insira uma pessoa para pesquisa");
+        }else{
         int cdPessoa = Integer.parseInt(txtCodigoPessoa.getText());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         TelaPesquisaOrcamentoNome tela = new TelaPesquisaOrcamentoNome(null, rootPaneCheckingEnabled, cdPessoa);
@@ -477,6 +480,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
 
         String data = formatter.format(new Date());
         txtVencimento.setText(data);
+        }
     }//GEN-LAST:event_btnPesquisaOrcamentoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed

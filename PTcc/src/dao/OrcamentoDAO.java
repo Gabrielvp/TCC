@@ -195,6 +195,38 @@ public class OrcamentoDAO extends MySQL {
         }
         return listarOrcamentos;
     }
+    
+    public List<Orcamento> listarOrcamentosPessoaNaoAprovado(int id) {
+        List<Orcamento> listarOrcamentos = new ArrayList<Orcamento>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("select orcamento.data, orcamento.idOrcamento, orcamento.cliente, orcamento.total, orcamento.aprovado from orcamento where idPessoa = ? and aprovado = 0");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Orcamento orcamento = new Orcamento();
+                orcamento.setData(rs.getDate("Data"));
+                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
+                orcamento.setNome(rs.getString("Cliente"));
+                orcamento.setTotal(rs.getDouble("Total"));
+                orcamento.setAprovado(rs.getBoolean("Aprovado"));
+                listarOrcamentos.add(orcamento);
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listarOrcamentos;
+    }
 
     public List<Orcamento> listaOrcamentoId(int id) {
         List<Orcamento> listaOrcamentoId = new ArrayList<>();

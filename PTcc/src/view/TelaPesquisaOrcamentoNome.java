@@ -122,7 +122,7 @@ public class TelaPesquisaOrcamentoNome extends javax.swing.JDialog {
         esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
         tblOrcamento.getColumnModel().getColumn(3).setCellRenderer(esquerda);
         DefaultTableModel model = (DefaultTableModel) tblOrcamento.getModel();       
-            List<Orcamento> orcamento = oDAO.listarOrcamentosPessoa(codigo);
+            List<Orcamento> orcamento = oDAO.listarOrcamentosPessoaNaoAprovado(codigo);
             for (int i = 0; i < orcamento.size(); i++) {
                 model.addRow(new Object[]{});
                 tblOrcamento.setValueAt(sdfD.format(orcamento.get(i).getData()), i, 0);

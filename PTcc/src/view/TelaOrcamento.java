@@ -906,6 +906,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 if (p.getIdProduto() == 0 || p.getDescricao().equals(null)) {
                     JOptionPane.showMessageDialog(rootPane, "Produto não foi encontrado");
                     txtCodProduto.setText("");
+                    txtProduto.setText("");
                 } else {
                     txtCodProduto.setText(p.getIdProduto() + "");
                     txtProduto.setText(p.getDescricao());
@@ -933,6 +934,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                     if (p.getIdPessoa() == 0 || p.getNome().equals(null)) {
                         JOptionPane.showMessageDialog(rootPane, "Pessoa não encontrada");
                         txtCodPessoa.setText("");
+                        txtNome.setText("");
                     } else {
                         txtCodPessoa.setText(p.getIdPessoa() + "");
                         txtNome.setText(p.getNome());

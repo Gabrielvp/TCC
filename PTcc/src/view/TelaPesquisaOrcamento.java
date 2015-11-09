@@ -98,8 +98,6 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        tblOrcamento.setShowHorizontalLines(true);
-        tblOrcamento.setShowVerticalLines(true);
         tblOrcamento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblOrcamentoMousePressed(evt);
@@ -192,7 +190,7 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Data", "Codigo", "Nome", "Valor"
+                "Data", "Orçamento", "Nome", "Valor"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -203,8 +201,6 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        tblOrc.setShowHorizontalLines(true);
-        tblOrc.setShowVerticalLines(true);
         tblOrc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblOrcMouseClicked(evt);
@@ -235,6 +231,11 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
         jLabel3.setText("Nome");
 
         txtNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeKeyPressed(evt);
+            }
+        });
 
         jLabel4.setText("Período");
 
@@ -540,6 +541,10 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
         txtDataInicio.setSelectionStart(0);
         txtDataInicio.setSelectionEnd(10);
     }//GEN-LAST:event_txtDataFimFocusGained
+
+    private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
+      
+    }//GEN-LAST:event_txtNomeKeyPressed
 
     private void preencheTabela(int codigo) {
         esquerda.setHorizontalAlignment(SwingConstants.RIGHT);

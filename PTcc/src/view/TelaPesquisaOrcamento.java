@@ -495,6 +495,17 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
             } catch (ParseException ex) {
                 Logger.getLogger(TelaPesquisaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else if (!txtNome.equals("")) {
+            String nome = txtNome.getText();
+            List<Orcamento> lista = oDAO.getOrcamentoNome(nome);
+            model.setNumRows(0);
+            for (int i = 0; i < lista.size(); i++) {
+                model.addRow(new Object[]{});
+                tblOrc.setValueAt(sdfD.format(lista.get(i).getData()), i, 0);
+                tblOrc.setValueAt(lista.get(i).getIdOrcamento(), i, 1);
+                tblOrc.setValueAt(lista.get(i).getNome(), i, 2);
+                tblOrc.setValueAt(df.format(lista.get(i).getTotal()), i, 3);
+            }
         }
         txtCodigo.setText("");
         txtNome.setText("");
@@ -528,12 +539,12 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_txtDataInicioMouseClicked
 
     private void txtDataFimMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtDataFimMouseClicked
-       txtDataInicio.setSelectionStart(0);
+        txtDataInicio.setSelectionStart(0);
         txtDataInicio.setSelectionEnd(10);
     }//GEN-LAST:event_txtDataFimMouseClicked
 
     private void txtDataInicioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDataInicioFocusGained
-       txtDataInicio.setSelectionStart(0);
+        txtDataInicio.setSelectionStart(0);
         txtDataInicio.setSelectionEnd(10);
     }//GEN-LAST:event_txtDataInicioFocusGained
 
@@ -543,7 +554,7 @@ public class TelaPesquisaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_txtDataFimFocusGained
 
     private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
-      
+
     }//GEN-LAST:event_txtNomeKeyPressed
 
     private void preencheTabela(int codigo) {

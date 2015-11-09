@@ -195,7 +195,7 @@ public class OrcamentoDAO extends MySQL {
         }
         return listarOrcamentos;
     }
-    
+
     public List<Orcamento> listarOrcamentosPessoaNaoAprovado(int id) {
         List<Orcamento> listarOrcamentos = new ArrayList<Orcamento>();
         Connection c = this.getConnection();
@@ -326,7 +326,7 @@ public class OrcamentoDAO extends MySQL {
         }
         return lista;
     }
-    
+
     public List<Orcamento> listaOrcamentoPeriodo(Date inicio, Date fim) {
         Connection c = this.getConnection();
         List<Orcamento> lista = new ArrayList<>();
@@ -360,7 +360,7 @@ public class OrcamentoDAO extends MySQL {
         }
         return lista;
     }
-    
+
     public List<Orcamento> listaOrcamentoPeriodoPessoa(Date inicio, Date fim, int id) {
         Connection c = this.getConnection();
         List<Orcamento> lista = new ArrayList<>();
@@ -427,7 +427,7 @@ public class OrcamentoDAO extends MySQL {
         }
         return orcamento;
     }
-    
+
     public Orcamento getOrcamentoIdPO(int id, int cd) {
         Connection c = this.getConnection();
 
@@ -464,13 +464,13 @@ public class OrcamentoDAO extends MySQL {
     public List<Orcamento> getOrcamentoNome(String nome) {
         Connection c = this.getConnection();
         List<Orcamento> lista = new ArrayList<>();
-        Orcamento orcamento = new Orcamento();
         try {
             PreparedStatement ps = c.prepareStatement("SELECT orcamento.idOrcamento, orcamento.data, orcamento.idPessoa, orcamento.cliente,"
                     + "orcamento.total, orcamento.aprovado FROM orcamento WHERE cliente like ?");
             ps.setString(1, nome + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                Orcamento orcamento = new Orcamento();
                 orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
                 orcamento.setData(rs.getDate("Data"));
                 orcamento.setNome(rs.getString("Cliente"));

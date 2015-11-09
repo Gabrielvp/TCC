@@ -52,10 +52,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
             txtCodPessoa.setText(ps.getIdPessoa() + "");
             txtNome.setText(ps.getNome());
         } else {
-
+            
         }
     }
-
+    
     Pessoa ps = new Pessoa();
     ProdutoDAO pDAO = new ProdutoDAO();
     OrcamentoDAO oDAO = new OrcamentoDAO();
@@ -587,7 +587,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                     po.setQuantidade(Double.parseDouble(txtQtdProduto.getText()));
                     po.setValor(Double.parseDouble(txtValor.getText().replace(",", ".")));
                     if (txtDescontoProduto.getText().equals("")) {
-
+                        
                     } else {
                         po.setDesconto(Double.parseDouble(txtDescontoProduto.getText()));
                     }
@@ -621,7 +621,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         String cdCliente = txtCodPessoa.getText();
         String nome = txtNome.getText();
-
+        
         if (cdCliente.equals("") || nome.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Insira um Cliente");
         } else {
@@ -633,7 +633,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 ProdutoOrcamento po = new ProdutoOrcamento();
                 ProdutoOrcamentoDAO poDAO = new ProdutoOrcamentoDAO();
                 int linhas = tblProduto.getRowCount();
-
+                
                 try {
                     orcamento.setData(sdfD.parse(txtData.getText()));
                 } catch (ParseException ex) {
@@ -803,7 +803,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 int cd = Integer.parseInt(txtOrcamento.getText());
                 TelaPesquisaOrcamento tela = new TelaPesquisaOrcamento(null, rootPaneCheckingEnabled, cd);
                 tela.setVisible(true);
-
+                
                 Orcamento o = new Orcamento();
                 limpaProduto();
                 DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
@@ -817,7 +817,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 } catch (ParseException ex) {
                     Logger.getLogger(TelaOrcamento.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                
                 alterar = tela.alterar;
                 if (alterar) {
                     txtOrcamento.setEditable(false);
@@ -994,7 +994,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private void txtCodProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodProdutoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodProdutoActionPerformed
-
+    
     public void atualizaTabela(int id) {
         DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();
         esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -1004,7 +1004,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         p = pDAO.getProdutoById(id);
         tbl.addRow(new Object[]{p.getIdProduto(), p.getDescricao(), txtQtdProduto.getText(), txtValor.getText(), txtDescontoProduto.getText(), df.format(resultado) + ""});
     }
-
+    
     public void limpaProduto() {
         txtCodProduto.setText("");
         txtProduto.setText("");
@@ -1015,12 +1015,12 @@ public class TelaOrcamento extends javax.swing.JDialog {
         txtDescontoProduto.setEnabled(true);
         lblEstoque.setText("");
     }
-
+    
     public void limparPessoa() {
         txtCodPessoa.setText("");
         txtNome.setText("");
     }
-
+    
     public void botao() {
         btnAddProduto.setEnabled(false);
         btnAprovado.setEnabled(false);
@@ -1033,7 +1033,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         btnSalvar.setEnabled(false);
         lblAprovado.setVisible(true);
     }
-
+    
     public void botaoVisible() {
         btnAddProduto.setEnabled(true);
         btnAprovado.setEnabled(true);
@@ -1046,7 +1046,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
         btnSalvar.setEnabled(true);
         lblAprovado.setVisible(false);
     }
-
+    
     public void limparTela() {
         DefaultTableModel model = (DefaultTableModel) tblProduto.getModel();
         txtOrcamento.setText("");

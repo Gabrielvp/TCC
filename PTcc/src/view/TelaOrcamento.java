@@ -5,6 +5,7 @@
  */
 package view;
 
+import dao.CadastroClienteDAO;
 import dao.OrcamentoDAO;
 import dao.ProdutoDAO;
 import dao.ProdutoOrcamentoDAO;
@@ -156,7 +157,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtOrcamentoKeyReleased(evt);
             }
         });
-        jPanel1.add(txtOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 30, 80, 25));
+        jPanel1.add(txtOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 80, 25));
 
         jLabel3.setText("Data");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
@@ -184,6 +185,11 @@ public class TelaOrcamento extends javax.swing.JDialog {
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 115, -1, -1));
 
         txtCodProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtCodProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodProdutoActionPerformed(evt);
+            }
+        });
         txtCodProduto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtCodProdutoKeyPressed(evt);
@@ -888,43 +894,54 @@ public class TelaOrcamento extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAprovadoActionPerformed
 
     private void txtCodProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodProdutoKeyPressed
+        Produto p = new Produto();
+        ProdutoDAO pDAO = new ProdutoDAO();
         if (evt.getKeyCode() == evt.VK_ENTER) {
             if (txtCodProduto.getText().equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Digite um código para pesquisa");
                 txtCodProduto.setText("");
             } else {
                 int id = Integer.parseInt(txtCodProduto.getText());
-                TelaPesquisaProduto tela = new TelaPesquisaProduto(null, rootPaneCheckingEnabled, null, id);
-                tela.setVisible(true);
-                txtCodProduto.setText(tela.p.getIdProduto() + "");
-                txtProduto.setText(tela.p.getDescricao());
-                txtValor.setText(df.format(tela.p.getValorVenda()) + "");
-                txtQtdProduto.requestFocus();
-                lblEstoque.setText(tela.p.getQtd() + "");
-                if (txtProduto.getText().equals("")) {
-                    limpaProduto();
+                p = pDAO.getProdutoById(id);
+                if (p.getIdProduto() == 0 || p.getDescricao().equals(null)) {
+                    JOptionPane.showMessageDialog(rootPane, "Produto não foi encontrado");
+                    txtCodProduto.setText("");
+                } else {
+                    txtCodProduto.setText(p.getIdProduto() + "");
+                    txtProduto.setText(p.getDescricao());
+                    txtValor.setText(df.format(p.getValorVenda()) + "");
+                    txtQtdProduto.requestFocus();
+                    lblEstoque.setText(p.getQtd() + "");
+                    if (txtProduto.getText().equals("")) {
+                        limpaProduto();
+                    }
                 }
             }
         }
     }//GEN-LAST:event_txtCodProdutoKeyPressed
 
     private void txtCodPessoaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodPessoaKeyPressed
+        CadastroClienteDAO cDAO = new CadastroClienteDAO();
+        Pessoa p = new Pessoa();
         if (evt.getKeyCode() == evt.VK_ENTER) {
             if (txtCodPessoa.getText().equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Digite um código para pesquisa");
             } else {
                 int id = Integer.parseInt(txtCodPessoa.getText());
                 if (!txtCodPessoa.getText().equals("")) {
-                    TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, null, id);
-                    tela.setVisible(true);
-                    txtCodPessoa.setText(tela.p.getIdPessoa() + "");
-                    txtNome.setText(tela.p.getNome());
-                    if (txtCodPessoa.getText().equals("0")) {
-                        limparPessoa();
-                    }
-                    if (txtCodPessoa.getText().length() > 0) {
-                        txtCodProduto.requestFocus();
-
+                    p = cDAO.getPessoaById(id);
+                    if (p.getIdPessoa() == 0 || p.getNome().equals(null)) {
+                        JOptionPane.showMessageDialog(rootPane, "Pessoa não encontrada");
+                        txtCodPessoa.setText("");
+                    } else {
+                        txtCodPessoa.setText(p.getIdPessoa() + "");
+                        txtNome.setText(p.getNome());
+                        if (txtCodPessoa.getText().equals("0")) {
+                            limparPessoa();
+                        }
+                        if (txtCodPessoa.getText().length() > 0) {
+                            txtCodProduto.requestFocus();
+                        }
                     }
                 }
             }
@@ -971,6 +988,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
     private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel1KeyPressed
+
+    private void txtCodProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodProdutoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodProdutoActionPerformed
 
     public void atualizaTabela(int id) {
         DefaultTableModel tbl = (DefaultTableModel) this.tblProduto.getModel();

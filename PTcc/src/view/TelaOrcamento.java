@@ -472,6 +472,10 @@ public class TelaOrcamento extends javax.swing.JDialog {
             tela.setVisible(true);
             txtCodPessoa.setText(tela.p.getIdPessoa() + "");
             txtNome.setText(tela.p.getNome());
+            if(txtNome.getText().equals("")){
+                txtCodPessoa.setText("");
+                txtNome.requestFocus();
+            }
         }
     }//GEN-LAST:event_btnPesquisaClienteActionPerformed
 
@@ -959,8 +963,13 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome, 0);
                 tela.setVisible(true);
                 txtCodPessoa.setText(tela.p.getIdPessoa() + "");
-                txtNome.setText(tela.p.getNome());
+                txtNome.setText(tela.p.getNome());               
                 txtCodProduto.requestFocus();
+                if(txtNome.getText().equals("")){
+                    txtCodPessoa.setText("");
+                    txtNome.setText("");       
+                    txtNome.requestFocus();
+                }
             }
         }
     }//GEN-LAST:event_txtNomeKeyPressed

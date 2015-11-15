@@ -48,7 +48,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         tblPrincipal.setShowHorizontalLines(true);
         tblPrincipal.setShowVerticalLines(true);
-        
+
     }
 
     agendamentoDAO aDAO = new agendamentoDAO();
@@ -112,10 +112,10 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153), 2));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "", 0, 2));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", 0, 2, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 12), new java.awt.Color(0, 51, 153))); // NOI18N
 
         jLabel3.setText("Nome:");
 
@@ -270,25 +270,12 @@ public final class TelaPrincipal extends javax.swing.JFrame {
                 btnProximoMousePressed(evt);
             }
         });
-        btnProximo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProximoActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnProximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 180, -1, -1));
 
         btnDataDia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Refresh.png"))); // NOI18N
         btnDataDia.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDataDiaMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnDataDiaMousePressed(evt);
-            }
-        });
-        btnDataDia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDataDiaActionPerformed(evt);
             }
         });
         jPanel2.add(btnDataDia, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, -1, -1));
@@ -439,7 +426,7 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1307, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -626,50 +613,37 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProximoHorarioActionPerformed
 
     private void btnAnteriorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAnteriorMousePressed
+        DefaultTableModel model = (DefaultTableModel) tblPrincipal.getModel();
+        model.setNumRows(0);
         GregorianCalendar calInicio = new GregorianCalendar();
         cont -= 1;
         Date dt = txtData.getDate();
         calInicio.add(GregorianCalendar.DAY_OF_MONTH, cont);
         dt = calInicio.getTime();
         txtData.setDate(dt);
-
-        limparTabela();
-        atualizaTabela();
-        atualizaDiaSemanaTela();
+        configuracao2();
     }//GEN-LAST:event_btnAnteriorMousePressed
 
     private void btnProximoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProximoMousePressed
+        DefaultTableModel model = (DefaultTableModel) tblPrincipal.getModel();
+        model.setNumRows(0);
         GregorianCalendar calInicio = new GregorianCalendar();
         cont++;
         Date dt = txtData.getDate();
         calInicio.add(GregorianCalendar.DAY_OF_MONTH, cont);
         dt = calInicio.getTime();
         txtData.setDate(dt);
-
-        limparTabela();
-        atualizaTabela();
-        atualizaDiaSemanaTela();
+        configuracao2();
     }//GEN-LAST:event_btnProximoMousePressed
 
-    private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnProximoActionPerformed
-
-    private void btnDataDiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataDiaMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDataDiaMouseClicked
-
     private void btnDataDiaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDataDiaMousePressed
+        DefaultTableModel model = (DefaultTableModel) tblPrincipal.getModel();
+        model.setNumRows(0);
         limparTabela();
         dataTela();
-        atualizaTabela();
-        atualizaDiaSemanaTela();
+        configuracao2();
         cont = 0;
     }//GEN-LAST:event_btnDataDiaMousePressed
-
-    private void btnDataDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataDiaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDataDiaActionPerformed
 
     String inicio;
     String fim;
@@ -683,13 +657,42 @@ public final class TelaPrincipal extends javax.swing.JFrame {
         List<Configuracao> lista = cDAO.listarConfiguracaoDia(dia);
         if (lista.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "             DIA NÃO CONFIGURADO!\n\n Acesse o menu configurações para configurar\n o dia de trabalho");
+        } else {
+            for (int i = 0; i < lista.size(); i++) {
+                inicio = sdfH.format(lista.get(i).getHoraInicial());
+                fim = sdfH.format(lista.get(i).getHoraFinal().getTime());
+                intervalo = lista.get(i).getIntervalo();
+                in = Integer.parseInt(inicio.substring(0, 2));
+                f = Integer.parseInt(fim.substring(0, 2));
+            }
         }
-        for (int i = 0; i < lista.size(); i++) {
-            inicio = sdfH.format(lista.get(i).getHoraInicial());
-            fim = sdfH.format(lista.get(i).getHoraFinal().getTime());
-            intervalo = lista.get(i).getIntervalo();
-            in = Integer.parseInt(inicio.substring(0, 2));
-            f = Integer.parseInt(fim.substring(0, 2));
+    }
+
+    public void configuracao2() {
+        SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+        String diaTela = sdfD.format(txtData.getDate());
+        Date data = new Date(txtData.getDate().getTime());
+        Calendar c = new GregorianCalendar();
+        c.setTime(data);
+        int dia = c.get(c.DAY_OF_WEEK);
+        diaDaSemana(dia);
+
+        int diaa = c.get(dia);
+        List<Configuracao> lista = cDAO.listarConfiguracaoDia(dia);
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "             DIA NÃO CONFIGURADO!\n\n Acesse o menu configurações para configurar\n o dia de trabalho");
+        } else {
+            for (int i = 0; i < lista.size(); i++) {
+                inicio = sdfH.format(lista.get(i).getHoraInicial());
+                fim = sdfH.format(lista.get(i).getHoraFinal().getTime());
+                intervalo = lista.get(i).getIntervalo();
+                in = Integer.parseInt(inicio.substring(0, 2));
+                f = Integer.parseInt(fim.substring(0, 2));
+            }
+            tabelaPrincipal();
+            limparTabela();
+            atualizaTabela();
+            atualizaDiaSemanaTela();
         }
     }
 

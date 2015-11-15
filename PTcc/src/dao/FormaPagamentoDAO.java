@@ -49,6 +49,34 @@ public class FormaPagamentoDAO extends MySQL {
         }
         return false;
     }
+    
+    public void update(FormaPagamento fp, String d, int p, int i) {
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("UPDATE forma_pagamento set descricao = ?, parcela = ?, intervalo = ?, aVista = ?"
+                    + " WHERE descricao = ? and parcela = ? and intervalo = ?");            
+            ps.setString(1, fp.getDescricao());
+            ps.setInt(2, fp.getParcela());
+            ps.setInt(3, fp.getIntervalo());
+            ps.setBoolean(4, fp.isaVista());
+            ps.setString(5, d);
+            ps.setInt(6, p);
+            ps.setInt(7, i);
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(null, "Alterado com Sucesso!");
+        }
+    }
 
     public List<FormaPagamento> lista() {
         List<FormaPagamento> lista = new ArrayList<>();

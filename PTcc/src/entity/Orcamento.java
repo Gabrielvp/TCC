@@ -22,6 +22,15 @@ public class Orcamento {
     private int idPessoa;
     private List<ProdutoOrcamento> produto;
     private boolean aprovado;
+    private boolean lancado;
+
+    public boolean isLancado() {
+        return lancado;
+    }
+
+    public void setLancado(boolean lancado) {
+        this.lancado = lancado;
+    }
 
     public List<ProdutoOrcamento> getProduto() {
         return produto;

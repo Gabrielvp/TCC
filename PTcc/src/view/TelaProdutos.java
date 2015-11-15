@@ -6,8 +6,10 @@
 package view;
 
 import dao.ProdutoDAO;
+import dao.ProdutoOrcamentoDAO;
 import entity.EnumUnidade;
 import entity.Produto;
+import entity.ProdutoOrcamento;
 import java.awt.AWTKeyStroke;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
@@ -381,32 +383,36 @@ public class TelaProdutos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        p.setDescricao(txtDescricao.getText());
-        p.setCodBarras(txtCdBarras.getText());
-        p.setQtd(Double.parseDouble(txtQtd.getText()));
-        p.setValorVenda(Double.parseDouble(txtValorVenda.getText().replace(",", ".")));
-        p.setValorCompra(Double.parseDouble(txtValorCompra.getText().replace(",", ".")));
-        p.setUnidade((EnumUnidade) cbUnidade.getSelectedItem());
-        p.setMarca(txtMarca.getText());
-        p.setModelo(txtModelo.getText());
-        p.setFornecedor(txtFornecedor.getText());
-        p.setReferencia(txtReferencia.getText());
-        if (ckbInativo.isSelected()) {
-            p.setAtivo(true);
+        if (verificaCadastroCompleto()) {
+            p.setDescricao(txtDescricao.getText());
+            p.setCodBarras(txtCdBarras.getText());
+            p.setQtd(Double.parseDouble(txtQtd.getText()));
+            p.setValorVenda(Double.parseDouble(txtValorVenda.getText().replace(",", ".")));
+            p.setValorCompra(Double.parseDouble(txtValorCompra.getText().replace(",", ".")));
+            p.setUnidade((EnumUnidade) cbUnidade.getSelectedItem());
+            p.setMarca(txtMarca.getText());
+            p.setModelo(txtModelo.getText());
+            p.setFornecedor(txtFornecedor.getText());
+            p.setReferencia(txtReferencia.getText());
+            if (ckbInativo.isSelected()) {
+                p.setAtivo(true);
+            } else {
+                p.setAtivo(false);
+            }
+            if (alterar == false) {
+                pDAO.insert(p);
+                JOptionPane.showMessageDialog(rootPane, "Cadastrado com Sucesso!");
+            } else if (alterar == true) {
+                int id = Integer.parseInt(txtCodigo.getText());
+                pDAO.update(p, id);
+                JOptionPane.showMessageDialog(rootPane, "Alterado com Sucesso!");
+                alterar = false;
+            }
+            limpar();
+            habilitarCampos();
         } else {
-            p.setAtivo(false);
+            JOptionPane.showMessageDialog(rootPane, "Cadastro incompleto, Preencha todos os campos");
         }
-        if (alterar == false) {
-            pDAO.insert(p);
-            JOptionPane.showMessageDialog(rootPane, "Cadastrado com Sucesso!");
-        } else if (alterar == true) {
-            int id = Integer.parseInt(txtCodigo.getText());
-            pDAO.update(p, id);
-            JOptionPane.showMessageDialog(rootPane, "Alterado com Sucesso!");
-            alterar = false;
-        }
-        limpar();
-        habilitarCampos();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyPressed
@@ -468,18 +474,32 @@ public class TelaProdutos extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         limpar();
         habilitarCampos();
+        alterar = false;
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        String desc = txtDescricao.getText();
-        int m = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir o produto\n" + desc + "?", "Exclusão!", 0, 0);
-        if (m == 0) {
-            int id = Integer.parseInt(txtCodigo.getText());
-            pDAO.delete(id);
-            limpar();
-            JOptionPane.showMessageDialog(rootPane, "Produto Excluído!");
-        } else {
+        ProdutoOrcamentoDAO poDAO = new ProdutoOrcamentoDAO();
 
+        if (txtCodigo.getText().equals("") || txtDescricao.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira um produto para excluir");
+        } else {
+            int cd = Integer.parseInt(txtCodigo.getText());
+            List<ProdutoOrcamento> lista = poDAO.verificaOrcamentosProduto(cd);
+            if (!lista.isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "Produto não pode ser excluído..\n Há orçamento com seu registro");
+                alterar = false;
+            } else {
+                String desc = txtDescricao.getText();
+                int m = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir o produto\n" + desc + "?", "Exclusão!", 0, 0);
+                if (m == 0) {
+                    int id = Integer.parseInt(txtCodigo.getText());
+                    pDAO.delete(id);
+                    limpar();
+                    JOptionPane.showMessageDialog(rootPane, "Produto Excluído!");
+                } else {
+
+                }
+            }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -487,6 +507,29 @@ public class TelaProdutos extends javax.swing.JDialog {
         String desc = txtDescricao.getText();
         buscaProduto(desc);
     }//GEN-LAST:event_txtDescricaoKeyPressed
+
+    public boolean verificaCadastroCompleto() {
+        if (txtDescricao.getText().equals("")) {
+            return false;
+        } else if (txtCdBarras.getText().equals("")) {
+            return false;
+        } else if (txtQtd.getText().equals("")) {
+            return false;
+        } else if (txtValorVenda.getText().equals("")) {
+            return false;
+        } else if (txtValorCompra.getText().equals("")) {
+            return false;
+        } else if (txtMarca.getText().equals("")) {
+            return false;
+        } else if (txtModelo.getText().equals("")) {
+            return false;
+        } else if (txtFornecedor.getText().equals("")) {
+            return false;
+        } else if (txtReferencia.getText().equals("")) {
+            return false;
+        }
+        return true;
+    }
 
     public void buscaProduto(String descricao) {
         ProdutoDAO pDAO = new ProdutoDAO();
@@ -540,7 +583,7 @@ public class TelaProdutos extends javax.swing.JDialog {
         txtQtd.setText("");
         txtValorVenda.setText("");
         txtValorCompra.setText("");
-        cbUnidade.setSelectedIndex(-1);
+        cbUnidade.setSelectedIndex(0);
         txtMarca.setText("");
         txtModelo.setText("");
         txtFornecedor.setText("");

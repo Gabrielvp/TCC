@@ -28,6 +28,10 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
         atualizaTabela();
     }
     FormaPagamentoDAO fDAO = new FormaPagamentoDAO();
+    boolean alterar = false;
+    String d;
+    int p;
+    int i;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -194,6 +198,11 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblFormaPagamento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblFormaPagamentoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblFormaPagamento);
         if (tblFormaPagamento.getColumnModel().getColumnCount() > 0) {
             tblFormaPagamento.getColumnModel().getColumn(0).setResizable(false);
@@ -233,9 +242,16 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
             } else if (rbtnPrazo.isSelected()) {
                 fp.setaVista(false);
             }
-            fDAO.insert(fp);
-            limpar();
-            atualizaTabela();
+            if (alterar == false) {
+                fDAO.insert(fp);
+                limpar();
+                atualizaTabela();
+            } else if (alterar) {
+                fDAO.update(fp, d, p, i);
+                limpar();
+                atualizaTabela();
+                alterar = false;
+            }
         }
     }//GEN-LAST:event_btnAddFormaPagamentoActionPerformed
 
@@ -272,7 +288,7 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
     }//GEN-LAST:event_txtParcelaKeyReleased
 
     private void txtIntervaloKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIntervaloKeyReleased
-       if (txtIntervalo.getText().isEmpty()) {
+        if (txtIntervalo.getText().isEmpty()) {
 
         } else {
             int intervalo = Integer.parseInt(txtIntervalo.getText());
@@ -284,6 +300,24 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_txtIntervaloKeyReleased
+
+    private void tblFormaPagamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFormaPagamentoMouseClicked
+        if (evt.getClickCount() == 2) {
+            int linha = tblFormaPagamento.getSelectedRow();
+            d = tblFormaPagamento.getValueAt(linha, 0).toString();
+            p = Integer.parseInt(tblFormaPagamento.getValueAt(linha, 1).toString());
+            i = Integer.parseInt(tblFormaPagamento.getValueAt(linha, 2).toString());
+            if(p > 0 || i > 0){
+                rbtnPrazo.setSelected(true);
+            }else if(p == 0 || i == 0){
+                rbtnAVista.setSelected(true);
+            }
+            txtDescricao.setText(d);
+            txtParcela.setText(p+"");
+            txtIntervalo.setText(i+"");
+            alterar = true;
+        }
+    }//GEN-LAST:event_tblFormaPagamentoMouseClicked
 
     public void atualizaTabela() {
         DefaultTableModel model = (DefaultTableModel) tblFormaPagamento.getModel();
@@ -301,6 +335,7 @@ public class TelaFormaDePagamento extends javax.swing.JDialog {
         txtDescricao.setText("");
         txtIntervalo.setText("");
         txtParcela.setText("");
+        rbtnAVista.setSelected(true);
     }
 
     /**

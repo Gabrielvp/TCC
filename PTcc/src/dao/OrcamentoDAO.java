@@ -27,14 +27,15 @@ public class OrcamentoDAO extends MySQL {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO orcamento (data, cliente, total, desconto, idPessoa, aprovado)"
-                            + "VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                    = c.prepareStatement("INSERT INTO orcamento (data, cliente, total, desconto, idPessoa, aprovado, lancado)"
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, sdfD.format(orcamento.getData()));
             ps.setString(2, orcamento.getNome());
             ps.setDouble(3, orcamento.getTotal());
             ps.setDouble(4, orcamento.getDesconto());
             ps.setInt(5, orcamento.getIdPessoa());
             ps.setBoolean(6, orcamento.isAprovado());
+            ps.setBoolean(7, orcamento.isLancado());
 
             ps.execute();
 
@@ -63,6 +64,27 @@ public class OrcamentoDAO extends MySQL {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET aprovado = true WHERE idOrcamento = ? ");
+            Orcamento orcamento = new Orcamento();
+            ps.setInt(1, id);
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void updateLancado(int id) {
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("UPDATE orcamento SET lancado = true WHERE idOrcamento = ? ");
             Orcamento orcamento = new Orcamento();
             ps.setInt(1, id);
 
@@ -195,12 +217,12 @@ public class OrcamentoDAO extends MySQL {
         }
         return listarOrcamentos;
     }
-
-    public List<Orcamento> listarOrcamentosPessoaNaoAprovado(int id) {
+    
+    public List<Orcamento> verificaOrcamentosPessoa(int id) {
         List<Orcamento> listarOrcamentos = new ArrayList<Orcamento>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("select orcamento.data, orcamento.idOrcamento, orcamento.cliente, orcamento.total, orcamento.aprovado from orcamento where idPessoa = ? and aprovado = 0");
+            PreparedStatement ps = c.prepareStatement("select orcamento.data, orcamento.idOrcamento, orcamento.cliente, orcamento.total, orcamento.aprovado from orcamento where idPessoa = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -210,6 +232,39 @@ public class OrcamentoDAO extends MySQL {
                 orcamento.setNome(rs.getString("Cliente"));
                 orcamento.setTotal(rs.getDouble("Total"));
                 orcamento.setAprovado(rs.getBoolean("Aprovado"));
+                listarOrcamentos.add(orcamento);
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listarOrcamentos;
+    }   
+
+    public List<Orcamento> listarOrcamentosPessoaNaoAprovado(int id) {
+        List<Orcamento> listarOrcamentos = new ArrayList<Orcamento>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("select orcamento.data, orcamento.idOrcamento, orcamento.cliente, orcamento.total, orcamento.aprovado, orcamento.lancado from orcamento where idPessoa = ? and lancado = 0");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Orcamento orcamento = new Orcamento();
+                orcamento.setData(rs.getDate("Data"));
+                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));
+                orcamento.setNome(rs.getString("Cliente"));
+                orcamento.setTotal(rs.getDouble("Total"));
+                orcamento.setAprovado(rs.getBoolean("Aprovado"));
+                orcamento.setLancado(rs.getBoolean("Lancado"));
                 listarOrcamentos.add(orcamento);
             }
 
@@ -292,7 +347,7 @@ public class OrcamentoDAO extends MySQL {
             }
         }
         return orcamento;
-    }
+    }   
 
     public List<Orcamento> listaOrcamentoIdPessoa(int id) {
         Connection c = this.getConnection();

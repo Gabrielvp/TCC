@@ -648,6 +648,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 String vl = lblTotalOrcamento.getText().replaceAll(",", ".");
                 orcamento.setTotal(Double.parseDouble(vl));
                 orcamento.setAprovado(false);
+                orcamento.setLancado(false);
                 if (alterar == false) {
                     oDAO.insert(orcamento);
                 } else if (alterar) {

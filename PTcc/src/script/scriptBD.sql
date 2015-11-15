@@ -137,6 +137,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Orcamento` (
   `desconto` double DEFAULT NULL,
   `idPessoa` int(11) NOT NULL,
   `aprovado` tinyint(1) DEFAULT NULL,
+   lancado boolean not null,  
   PRIMARY KEY (`idOrcamento`),
   KEY `fk_orcamento_pessoa` (`idPessoa`),
   CONSTRAINT `fk_orcamento_pessoa` FOREIGN KEY (`idPessoa`) REFERENCES `pessoa` (`idPessoa`)

@@ -7,6 +7,7 @@ package view;
 
 import dao.CReceberDAO;
 import dao.FormaPagamentoDAO;
+import dao.OrcamentoDAO;
 import dao.Parcelas_CReceberDAO;
 import entity.CReceber;
 import entity.FormaPagamento;
@@ -108,8 +109,8 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         jLabel13 = new javax.swing.JLabel();
         txtCodigoPessoa = new javax.swing.JTextField();
         btnPesquisaOrcamento1 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Contas a Receber - Agenda Financeira");
@@ -137,7 +138,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         });
         jPanel1.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 400, -1, -1));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Parcelas", 0, 2, new java.awt.Font("sansserif", 1, 10), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Parcelas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 10), new java.awt.Color(0, 51, 153))); // NOI18N
 
         jLabel10.setText("Entrada");
 
@@ -230,17 +231,17 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8)
-                    .addComponent(txtParcelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtValorParcela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtParcelas, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtValorParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel11)
-                        .addComponent(txtIntervalo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtIntervalo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel10)
-                        .addComponent(txtEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(81, Short.MAX_VALUE))
+                        .addComponent(txtEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(67, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -248,7 +249,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 700, 170));
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Dados", 0, 2, new java.awt.Font("sansserif", 1, 10), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Dados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 10), new java.awt.Color(0, 51, 153))); // NOI18N
 
         txtNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
@@ -317,13 +318,6 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Create.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -377,34 +371,31 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                                .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel9)
-                        .addComponent(txtOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtOrcamento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnPesquisaCliente)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel1)
-                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel13)
-                                .addComponent(txtCodigoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtCodigoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnPesquisaOrcamento, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel12)
-                                .addComponent(jButton1)))))
+                                .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel12)))))
                 .addGap(7, 7, 7)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -412,18 +403,18 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                             .addComponent(btnPesquisaOrcamento1)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel3)
-                                .addComponent(txtFatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtFatura, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))))
                 .addContainerGap())
         );
@@ -434,6 +425,15 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         jLabel2.setForeground(new java.awt.Color(0, 51, 153));
         jLabel2.setText("Contas a Receber");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
+        jButton1.setText("Limpar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 400, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -462,28 +462,30 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisaClienteActionPerformed
 
     private void btnPesquisaOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaOrcamentoActionPerformed
-        if(txtNome.getText().equals("") || txtCodigoPessoa.getText().equals("")){
+        if (txtNome.getText().equals("") || txtCodigoPessoa.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Insira uma pessoa para pesquisa");
-        }else{
-        int cdPessoa = Integer.parseInt(txtCodigoPessoa.getText());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        TelaPesquisaOrcamentoNome tela = new TelaPesquisaOrcamentoNome(null, rootPaneCheckingEnabled, cdPessoa);
-        tela.setVisible(true);
-        if (tela.o.getIdOrcamento() == 0) {
-            limparOrc();
         } else {
-            txtOrcamento.setText(tela.o.getIdOrcamento() + "");
-            txtData.setText(formatter.format(tela.o.getData()));
-            txtTotal.setText(df.format(tela.o.getTotal()) + "");
-            txtFatura.setText(tela.o.getIdOrcamento() + "");
-        }
+            int cdPessoa = Integer.parseInt(txtCodigoPessoa.getText());
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            TelaPesquisaOrcamentoNome tela = new TelaPesquisaOrcamentoNome(null, rootPaneCheckingEnabled, cdPessoa);
+            tela.setVisible(true);
+            if (tela.o.getIdOrcamento() == 0) {
+                limparOrc();
+            } else {
+                txtOrcamento.setText(tela.o.getIdOrcamento() + "");
+                txtData.setText(formatter.format(tela.o.getData()));
+                txtTotal.setText(df.format(tela.o.getTotal()) + "");
+                txtFatura.setText(tela.o.getIdOrcamento() + "");
+            }
 
-        String data = formatter.format(new Date());
-        txtVencimento.setText(data);
+            String data = formatter.format(new Date());
+            txtVencimento.setText(data);
         }
     }//GEN-LAST:event_btnPesquisaOrcamentoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+       if(verificaCadastroCompleto()){      
+        OrcamentoDAO oDAO = new OrcamentoDAO();
         CReceber cr = new CReceber();
         CReceberDAO crDAO = new CReceberDAO();
         FormaPagamento fPagamento = new FormaPagamento();
@@ -494,6 +496,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         if (cbFormaPagamento.getSelectedItem().toString().equals("Selecione a Forma de Pagamento")) {
             JOptionPane.showMessageDialog(rootPane, "Selecione a Forma de Pagamento!");
         } else {
+            int id = Integer.parseInt(txtCodigoPessoa.getText());
             String vl = txtTotal.getText().replaceAll(",", ".");
             cr.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
             cr.setPessoa(txtNome.getText());
@@ -520,10 +523,12 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             }
             if (txtParcelas.getText().equals("")) {
                 crDAO.insert(cr);
+                oDAO.updateLancado(id);
                 JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
                 limparTela();
             } else {
                 crDAO.insert(cr);
+                oDAO.updateLancado(id);
             }
 
             if (!txtParcelas.getText().equals("")) {
@@ -571,6 +576,9 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             } else {
             }
         }
+       }else{
+           JOptionPane.showMessageDialog(rootPane, "Preencha todos os dados");
+       }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed
@@ -672,7 +680,6 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     private void cbFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFormaPagamentoActionPerformed
         String desc = cbFormaPagamento.getSelectedItem().toString();
         combo2(desc);
-        limparParcelado();
     }//GEN-LAST:event_cbFormaPagamentoActionPerformed
 
     private void txtEntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEntradaKeyPressed
@@ -693,7 +700,6 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                     calInicio.add(GregorianCalendar.DAY_OF_MONTH, intervalo);
                     data = calInicio.getTime();
                     model.addRow(new Object[]{txtFatura.getText() + "/" + contador, txtValorParcela.getText(), sdfD.format(data)});
-
                 }
             } catch (ParseException ex) {
                 Logger.getLogger(TelaContasAReceber.class
@@ -703,10 +709,29 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }//GEN-LAST:event_txtEntradaKeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        TelaFormaDePagamento tela = new TelaFormaDePagamento(null, rootPaneCheckingEnabled);
-        tela.setVisible(true);
-        //combo();
+        limparTela();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    public boolean verificaCadastroCompleto() {
+        if (txtNome.getText().equals("")) {
+            return false;
+        } else if (txtCodigoPessoa.getText().equals("")) {
+            return false;
+        } else if (txtNome.getText().equals("")) {
+            return false;
+        } else if (txtOrcamento.getText().equals("")) {
+            return false;
+        } else if (txtFatura.getText().equals("")) {
+            return false;
+        } else if (txtTotal.getText().equals("")) {
+            return false;
+        } else if (txtData.getText().equals("")) {
+            return false;
+        } else if (txtVencimento.getText().equals("")) {
+            return false;
+        }
+        return true;
+    }
 
     public void limparOrc() {
         txtOrcamento.setText("");
@@ -725,6 +750,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         txtValorParcela.setText("");
         txtEntrada.setText("");
         txtIntervalo.setText("");
+        cbFormaPagamento.setSelectedIndex(0);
         model.setNumRows(0);
     }
 
@@ -749,6 +775,8 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }
 
     public void combo2(String desc) {
+        int contador = 0;
+        DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
         FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
         List<FormaPagamento> lista = fpDAO.listaDesc(desc);
         for (int i = 0; i < lista.size(); i++) {
@@ -761,16 +789,41 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                 txtIntervalo.setText("");
                 txtValorParcela.setText("");
             } else if (teste == false) {
-                txtEntrada.setEditable(true);
-                txtParcelas.setEditable(true);
-                txtIntervalo.setEditable(true);
-                txtParcelas.setText(lista.get(i).getParcela() + "");
-                txtIntervalo.setText(lista.get(i).getIntervalo() + "");
-                String vl = txtTotal.getText().replaceAll(",", ".");
-                double valor = Double.parseDouble(vl);
-                int parcelas = Integer.parseInt(txtParcelas.getText());
-                double resultado = valor / parcelas;
-                txtValorParcela.setText(df.format(resultado) + "");
+                if (txtFatura.getText().equals("") || txtTotal.getText().equals("")) {
+                    JOptionPane.showMessageDialog(rootPane, "Pagamento a Prazo..\n Indique a fatura e o total");
+                } else {
+                    txtEntrada.setEditable(true);
+                    txtParcelas.setEditable(true);
+                    txtIntervalo.setEditable(true);
+                    txtParcelas.setText(lista.get(i).getParcela() + "");
+                    txtIntervalo.setText(lista.get(i).getIntervalo() + "");
+                    txtEntrada.setText(sdfD.format(new Date()));
+                    String vl = txtTotal.getText().replaceAll(",", ".");
+                    double valor = Double.parseDouble(vl);
+                    int parcelas = Integer.parseInt(txtParcelas.getText());
+                    double resultado = valor / parcelas;
+                    txtValorParcela.setText(df.format(resultado) + "");
+                    esquerda.setHorizontalAlignment(SwingConstants.RIGHT);
+                    tblParcelas.getColumnModel().getColumn(1).setCellRenderer(esquerda);
+                    tblParcelas.getColumnModel().getColumn(2).setCellRenderer(esquerda);
+                    try {
+                        int intervalo = Integer.parseInt(txtIntervalo.getText());
+                        int p = Integer.parseInt(txtParcelas.getText());
+                        Date data = sdfD.parse(txtEntrada.getText());
+                        GregorianCalendar calInicio = new GregorianCalendar();
+                        model.setNumRows(0);
+                        for (int j = 0; j < p; j++) {
+                            contador++;
+                            calInicio.add(GregorianCalendar.DAY_OF_MONTH, intervalo);
+                            data = calInicio.getTime();
+                            model.addRow(new Object[]{txtFatura.getText() + "/" + contador, txtValorParcela.getText(), sdfD.format(data)});
+
+                        }
+                    } catch (ParseException ex) {
+                        Logger.getLogger(TelaContasAReceber.class
+                                .getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         }
     }

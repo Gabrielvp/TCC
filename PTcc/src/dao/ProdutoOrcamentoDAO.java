@@ -85,6 +85,35 @@ public class ProdutoOrcamentoDAO extends MySQL {
         return lista;
     }
    
+    public List<ProdutoOrcamento> verificaOrcamentosProduto(int id) {
+        List<ProdutoOrcamento> listarOrcamentos = new ArrayList<ProdutoOrcamento>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("select idProduto, idOrcamento from produto_orcamento where idProduto = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProdutoOrcamento orcamento = new ProdutoOrcamento();
+                orcamento.setIdProduto(rs.getInt("idProduto"));
+                orcamento.setIdOrcamento(rs.getInt("idOrcamento"));                
+                listarOrcamentos.add(orcamento);
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listarOrcamentos;
+    }
+    
     public void delete(int id) {
         Connection c = this.getConnection();
         try {

@@ -6,7 +6,9 @@
 package view;
 
 import dao.CadastroClienteDAO;
+import dao.OrcamentoDAO;
 import dao.agendamentoDAO;
+import entity.Orcamento;
 import entity.Pessoa;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -29,7 +31,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jTxtObservacoes.setLineWrap(true);
         jTxtObservacoes.setWrapStyleWord(true);
     }
-
+    
     CadastroClienteDAO pDAO = new CadastroClienteDAO();
     Pessoa p = new Pessoa();
     boolean alterar = false;
@@ -403,7 +405,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-
+        
         if (verificaCadastroCompleto()) {
             p.setNome(txtNome.getText());
             p.setBairro(txtBairro.getText());
@@ -420,17 +422,17 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             p.setTelComercial(txtFoneComercial.getText());
             p.setTelResidencial(txtFoneResidencial.getText());
             p.setObservacoes(jTxtObservacoes.getText());
-
+            
             if (alterar == false) {
                 pDAO.insert(p);
                 limparCampos();
-
+                
             } else {
                 pDAO.update(p);
                 limparCampos();
             }
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Cadastro incompleto, por favor preencha todos os dados");
+            JOptionPane.showMessageDialog(rootPane, "Cadastro incompleto, Preencha todos os dados");
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -442,28 +444,37 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }//GEN-LAST:event_ckbCadastroIncompletoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-
+        OrcamentoDAO oDAO = new OrcamentoDAO();
+        Orcamento o = new Orcamento();
         agendamentoDAO aDAO = new agendamentoDAO();
         int sel = tblPessoa.getSelectedRow();
         int linha = tblPessoa.getSelectedRow();
-        if (sel == -1) {
-            JOptionPane.showMessageDialog(this, "Selecione um cadastro a ser excluído");
+        int cd = Integer.parseInt(tblPessoa.getValueAt(linha, 0).toString());
+        List<Orcamento> lista = oDAO.verificaOrcamentosPessoa(cd);
+        if (!lista.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Pessoa não pode ser excluída,\n Há registros de orçamento em seu nome");
+            alterar = false;
         } else {
-            String tbl = tblPessoa.getValueAt(linha, 1).toString();
-            if ((tbl.equals(""))) {
-                JOptionPane.showMessageDialog(this, "Selecione um cadastro para exclusão");
+            if (sel == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um cadastro a ser excluído");
             } else {
-                int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o Cadastro?", "Exclusão", 0, 0);
-                if (confirmacao == 0) {
-                    int id = (int) tblPessoa.getValueAt(linha, 0);
-                    aDAO.deletePessoa(id);
-                    pDAO.delete(id);
+                String tbl = tblPessoa.getValueAt(linha, 1).toString();
+                if ((tbl.equals(""))) {
+                    JOptionPane.showMessageDialog(this, "Selecione um cadastro para exclusão");
+                } else {
+                    int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o Cadastro?", "Exclusão", 0, 0);
+                    if (confirmacao == 0) {
+                        int id = (int) tblPessoa.getValueAt(linha, 0);
+                        aDAO.deletePessoa(id);
+                        pDAO.delete(id);
+                        limparCampos();
+                    }
                 }
             }
         }
         limparCampos();
     }//GEN-LAST:event_btnExcluirActionPerformed
-
+    
 
     private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
         String nome = txtNome.getText();
@@ -472,6 +483,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
     private void btnSalvar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvar1ActionPerformed
         limparCampos();
+        alterar = false;
     }//GEN-LAST:event_btnSalvar1ActionPerformed
 
     private void tblPessoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPessoaMousePressed
@@ -507,8 +519,9 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         }
         return true;
     }
-
+    
     public void limparCampos() {
+        DefaultTableModel model = (DefaultTableModel) tblPessoa.getModel();
         txtEmail.setText("");
         txtCpf.setText("");
         txtRg.setText("");
@@ -523,9 +536,9 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         txtNumero.setText("");
         txtRua.setText("");
         jTxtObservacoes.setText("");
-
+        model.setNumRows(0);
     }
-
+    
     public void atualizaTabelaPessoa(String nome) {
         CadastroClienteDAO cDAO = new CadastroClienteDAO();
         if (ckbCadastroIncompleto.isSelected()) {
@@ -555,18 +568,18 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                     model.setValueAt(listaPessoaCompleto.get(i).getCpf(), i, 2);
                     model.setValueAt(listaPessoaCompleto.get(i).getEmail(), i, 3);
                     model.setValueAt(listaPessoaCompleto.get(i).getTelCelular(), i, 4);
-
+                    
                 }
             }
         }
     }
-
+    
     public void alterar() {
         alterar = true;
         int linha = tblPessoa.getSelectedRow();
         int id = (int) tblPessoa.getValueAt(linha, 0);
         p = pDAO.getPessoaById(id);
-
+        
         txtNome.setText(p.getNome());
         txtBairro.setText(p.getBairro());
         txtCep.setText(p.getCep());
@@ -597,7 +610,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
+                    
                 }
             }
         } catch (ClassNotFoundException ex) {

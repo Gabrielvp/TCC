@@ -51,6 +51,46 @@ public class ProdutoDAO extends MySQL {
         return false;
     }
 
+    public Produto getProdutoByIdAtivos(int id) {
+        Connection c = this.getConnection();
+        Produto produto = new Produto();
+        try {
+            PreparedStatement ps
+                    = c.prepareStatement("SELECT produto.idproduto, produto.descricao, produto.cod_barras, produto.quantidade, "
+                            + " produto.valor_venda, produto.valor_compra, produto.unidade, produto.marca, produto.modelo, produto.fornecedor, produto.referencia, produto.ativo"
+                            + " FROM produto where idproduto = ? and ativo = 0");
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                produto.setIdProduto(rs.getInt("Idproduto"));
+                produto.setDescricao(rs.getString("Descricao"));
+                produto.setCodBarras(rs.getString("Cod_barras"));
+                produto.setQtd(rs.getDouble("Quantidade"));
+                produto.setValorVenda(rs.getDouble("Valor_venda"));
+                produto.setValorCompra(rs.getDouble("Valor_compra"));
+                produto.setUnidade(EnumUnidade.LITRO.getEnumUnidade(rs.getInt("Unidade")));
+                produto.setMarca(rs.getString("Marca"));
+                produto.setModelo(rs.getString("Modelo"));
+                produto.setFornecedor(rs.getString("Fornecedor"));
+                produto.setReferencia(rs.getString("Referencia"));
+                produto.setAtivo(rs.getBoolean("Ativo"));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return produto;
+    }
+    
     public Produto getProdutoById(int id) {
         Connection c = this.getConnection();
         Produto produto = new Produto();

@@ -76,7 +76,7 @@ public class ConfiguracaoDAO extends MySQL {
         List<Configuracao> listaConfiguracoes = new ArrayList<>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("SELECT horaInicial, horaFinal, intervalo, dia FROM configuracoes");
+            PreparedStatement ps = c.prepareStatement("SELECT horaInicial, horaFinal, intervalo, dia FROM configuracoes ORDER BY dia asc");
           
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

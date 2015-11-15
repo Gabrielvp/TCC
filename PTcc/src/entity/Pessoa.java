@@ -22,6 +22,15 @@ public class Pessoa {
     private String telCelular;
     private String telComercial;
     private String observacoes;
+    private boolean inativo;
+
+    public boolean isInativo() {
+        return inativo;
+    }
+
+    public void setInativo(boolean inativo) {
+        this.inativo = inativo;
+    }
 
     public String getObservacoes() {
         return observacoes;

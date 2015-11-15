@@ -8,6 +8,7 @@ package view;
 import dao.CadastroClienteDAO;
 import dao.OrcamentoDAO;
 import dao.agendamentoDAO;
+import entity.Agenda;
 import entity.Orcamento;
 import entity.Pessoa;
 import java.util.List;
@@ -31,7 +32,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jTxtObservacoes.setLineWrap(true);
         jTxtObservacoes.setWrapStyleWord(true);
     }
-    
+
     CadastroClienteDAO pDAO = new CadastroClienteDAO();
     Pessoa p = new Pessoa();
     boolean alterar = false;
@@ -79,6 +80,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         btnSalvar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSalvar1 = new javax.swing.JButton();
+        ckbInativo = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         ckbCadastroIncompleto = new javax.swing.JCheckBox();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -269,6 +271,11 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             }
         });
 
+        ckbInativo.setBackground(new java.awt.Color(153, 0, 0));
+        ckbInativo.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        ckbInativo.setForeground(new java.awt.Color(153, 0, 0));
+        ckbInativo.setText("Inativo");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -285,15 +292,17 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSalvar1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(ckbInativo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalvar1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,7 +317,8 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnSalvar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSalvar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnExcluir))
+                    .addComponent(btnExcluir)
+                    .addComponent(ckbInativo, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -405,7 +415,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
         if (verificaCadastroCompleto()) {
             p.setNome(txtNome.getText());
             p.setBairro(txtBairro.getText());
@@ -422,18 +431,25 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             p.setTelComercial(txtFoneComercial.getText());
             p.setTelResidencial(txtFoneResidencial.getText());
             p.setObservacoes(jTxtObservacoes.getText());
-            
+            if (ckbInativo.isSelected()) {
+                p.setInativo(true);
+            } else {
+                p.setInativo(false);
+            }
             if (alterar == false) {
                 pDAO.insert(p);
                 limparCampos();
-                
+                habilitarCampos();
             } else {
                 pDAO.update(p);
                 limparCampos();
+                habilitarCampos();
+                ckbCadastroIncompleto.setSelected(false);
             }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Cadastro incompleto, Preencha todos os dados");
         }
+        ckbInativo.setSelected(false);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void ckbCadastroIncompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbCadastroIncompletoActionPerformed
@@ -447,20 +463,23 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         OrcamentoDAO oDAO = new OrcamentoDAO();
         Orcamento o = new Orcamento();
         agendamentoDAO aDAO = new agendamentoDAO();
+        Agenda a = new Agenda();
         int sel = tblPessoa.getSelectedRow();
         int linha = tblPessoa.getSelectedRow();
-        int cd = Integer.parseInt(tblPessoa.getValueAt(linha, 0).toString());
-        List<Orcamento> lista = oDAO.verificaOrcamentosPessoa(cd);
-        if (!lista.isEmpty()) {
-            JOptionPane.showMessageDialog(rootPane, "Pessoa não pode ser excluída,\n Há registros de orçamento em seu nome");
-            alterar = false;
+        if (sel == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um cadastro a ser excluído");
         } else {
-            if (sel == -1) {
-                JOptionPane.showMessageDialog(this, "Selecione um cadastro a ser excluído");
+            String tbl = tblPessoa.getValueAt(linha, 1).toString();
+            if ((tbl.equals(""))) {
+                JOptionPane.showMessageDialog(this, "Selecione um cadastro para exclusão");
             } else {
-                String tbl = tblPessoa.getValueAt(linha, 1).toString();
-                if ((tbl.equals(""))) {
-                    JOptionPane.showMessageDialog(this, "Selecione um cadastro para exclusão");
+                int cd = Integer.parseInt(tblPessoa.getValueAt(linha, 0).toString());
+                List<Orcamento> lista = oDAO.verificaOrcamentosPessoa(cd);
+                List<Agenda> agenda = aDAO.listarAgendamentoPessoa(cd);
+                if (!lista.isEmpty() || !agenda.isEmpty()) {
+                    JOptionPane.showMessageDialog(rootPane, "Pessoa não pode ser excluída,\n Há registros em seu nome");
+                    ckbCadastroIncompleto.setSelected(false);
+                    alterar = false;
                 } else {
                     int confirmacao = JOptionPane.showConfirmDialog(this, "Deseja Excluir o Cadastro?", "Exclusão", 0, 0);
                     if (confirmacao == 0) {
@@ -472,9 +491,10 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 }
             }
         }
+        habilitarCampos();
         limparCampos();
     }//GEN-LAST:event_btnExcluirActionPerformed
-    
+
 
     private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
         String nome = txtNome.getText();
@@ -483,6 +503,8 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
     private void btnSalvar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvar1ActionPerformed
         limparCampos();
+        habilitarCampos();
+        ckbCadastroIncompleto.setSelected(false);
         alterar = false;
     }//GEN-LAST:event_btnSalvar1ActionPerformed
 
@@ -519,7 +541,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         }
         return true;
     }
-    
+
     public void limparCampos() {
         DefaultTableModel model = (DefaultTableModel) tblPessoa.getModel();
         txtEmail.setText("");
@@ -538,7 +560,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         jTxtObservacoes.setText("");
         model.setNumRows(0);
     }
-    
+
     public void atualizaTabelaPessoa(String nome) {
         CadastroClienteDAO cDAO = new CadastroClienteDAO();
         if (ckbCadastroIncompleto.isSelected()) {
@@ -568,18 +590,18 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                     model.setValueAt(listaPessoaCompleto.get(i).getCpf(), i, 2);
                     model.setValueAt(listaPessoaCompleto.get(i).getEmail(), i, 3);
                     model.setValueAt(listaPessoaCompleto.get(i).getTelCelular(), i, 4);
-                    
+
                 }
             }
         }
     }
-    
+
     public void alterar() {
         alterar = true;
         int linha = tblPessoa.getSelectedRow();
         int id = (int) tblPessoa.getValueAt(linha, 0);
         p = pDAO.getPessoaById(id);
-        
+
         txtNome.setText(p.getNome());
         txtBairro.setText(p.getBairro());
         txtCep.setText(p.getCep());
@@ -594,6 +616,51 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         txtRg.setText(p.getRg());
         txtRua.setText(p.getRua());
         jTxtObservacoes.setText(p.getObservacoes());
+        if (p.isInativo()) {
+            ckbInativo.setSelected(true);
+            desabilitarCampos();
+        } else {
+            ckbInativo.setSelected(false);
+            habilitarCampos();
+        }
+    }
+
+    public void habilitarCampos() {
+        DefaultTableModel model = (DefaultTableModel) tblPessoa.getModel();
+        txtEmail.setEnabled(true);
+        txtCpf.setEnabled(true);
+        txtRg.setEnabled(true);
+        txtNome.setEnabled(true);
+        txtEstado.setEnabled(true);
+        txtBairro.setEnabled(true);
+        txtCep.setEnabled(true);
+        txtFoneCelular.setEnabled(true);
+        txtFoneComercial.setEnabled(true);
+        txtFoneResidencial.setEnabled(true);
+        txtCidade.setEnabled(true);
+        txtNumero.setEnabled(true);
+        txtRua.setEnabled(true);
+        jTxtObservacoes.setEnabled(true);
+        model.setNumRows(0);
+    }
+
+    public void desabilitarCampos() {
+        DefaultTableModel model = (DefaultTableModel) tblPessoa.getModel();
+        txtEmail.setEnabled(false);
+        txtCpf.setEnabled(false);
+        txtRg.setEnabled(false);
+        txtNome.setEnabled(false);
+        txtEstado.setEnabled(false);
+        txtBairro.setEnabled(false);
+        txtCep.setEnabled(false);
+        txtFoneCelular.setEnabled(false);
+        txtFoneComercial.setEnabled(false);
+        txtFoneResidencial.setEnabled(false);
+        txtCidade.setEnabled(false);
+        txtNumero.setEnabled(false);
+        txtRua.setEnabled(false);
+        jTxtObservacoes.setEnabled(false);
+        model.setNumRows(0);
     }
 
     /**
@@ -610,7 +677,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                    
+
                 }
             }
         } catch (ClassNotFoundException ex) {
@@ -647,6 +714,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnSalvar1;
     private javax.swing.JCheckBox ckbCadastroIncompleto;
+    private javax.swing.JCheckBox ckbInativo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

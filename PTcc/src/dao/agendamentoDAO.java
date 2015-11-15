@@ -78,7 +78,7 @@ public class agendamentoDAO extends MySQL {
         return false;
     }
 
-    public void deletePessoa(int id){
+    public void deletePessoa(int id) {
         Connection c = this.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("DELETE FROM agendamento "
@@ -90,7 +90,7 @@ public class agendamentoDAO extends MySQL {
             ps.close();
 
         } catch (SQLException ex) {
-            ex.printStackTrace();            
+            ex.printStackTrace();
         } finally {
             try {
                 c.close();
@@ -250,5 +250,34 @@ public class agendamentoDAO extends MySQL {
             }
         }
         return lista;
+    }
+
+    public List<Agenda> listarAgendamentoPessoa(int id) {
+        List<Agenda> listaAgendamento = new ArrayList<Agenda>();
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT idAgendamento FROM agendamento WHERE idPessoa = ? LIMIT 5");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Agenda a = new Agenda();
+                a.setIdAgenda(rs.getInt("idAgendamento"));
+
+                listaAgendamento.add(a);
+            }
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listaAgendamento;
     }
 }

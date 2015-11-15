@@ -5,8 +5,10 @@
  */
 package view;
 
+import dao.ConfiguracaoDAO;
 import dao.agendamentoDAO;
 import entity.Agenda;
+import entity.Configuracao;
 import entity.DataHora;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,14 +30,17 @@ public class TelaProximoHorario extends javax.swing.JDialog {
     /**
      * Creates new form TelaProximoHorario
      */
-    public TelaProximoHorario(java.awt.Frame parent, boolean modal, Date data, String hora) {
+    public TelaProximoHorario(java.awt.Frame parent, boolean modal, Date data, String hora, String diaS) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
         this.h = hora;
-        tabelaHorarioLivre();
         this.dt = data;
+        this.diaS = diaS;
+        Calendar c = new GregorianCalendar();
+        int dia = c.get(c.DAY_OF_WEEK);
+        configuracao2(dia);
         removeLinha();
 
     }
@@ -46,7 +51,8 @@ public class TelaProximoHorario extends javax.swing.JDialog {
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm");
     boolean novo = true;
-    int cont = 0;
+        String diaS;
+    int contador = 1;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -92,6 +98,11 @@ public class TelaProximoHorario extends javax.swing.JDialog {
         }
 
         btnAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Back.png"))); // NOI18N
+        btnAnterior.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnAnteriorMousePressed(evt);
+            }
+        });
 
         btnProximo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Forward.png"))); // NOI18N
         btnProximo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -165,9 +176,51 @@ public class TelaProximoHorario extends javax.swing.JDialog {
     }//GEN-LAST:event_tblHorarioLivreMousePressed
 
     private void btnProximoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProximoMousePressed
-        
+        contador++;       
+        Calendar c = new GregorianCalendar();
+        int dia = c.get(c.DAY_OF_WEEK);       
+        configuracao2(dia);
     }//GEN-LAST:event_btnProximoMousePressed
 
+    private void btnAnteriorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAnteriorMousePressed
+        contador--;
+        Calendar c = new GregorianCalendar();
+        int dia = c.get(c.DAY_OF_WEEK);        
+        configuracao2(dia);
+    }//GEN-LAST:event_btnAnteriorMousePressed
+    ConfiguracaoDAO cDAO = new ConfiguracaoDAO();
+
+    String inicio;
+    String fim;
+    int intervalo;
+    int in;
+    int f;
+
+    public void configuracao2(int diaS) {
+        DefaultTableModel model = (DefaultTableModel) tblHorarioLivre.getModel();
+        model.setNumRows(0);
+        SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+        Date data = new Date(dt.getTime());
+        Calendar c = new GregorianCalendar();
+        c.setTime(data);
+        int dia = c.get(c.DAY_OF_WEEK);         
+        List<Configuracao> lista = cDAO.listarConfiguracaoDia(diaS + contador);
+        if (lista.isEmpty()) {
+            contador++;
+            lista = cDAO.listarConfiguracaoDia(diaS + contador);
+        }
+
+        for (int i = 0; i < lista.size(); i++) {
+            inicio = sdfH.format(lista.get(i).getHoraInicial());
+            fim = sdfH.format(lista.get(i).getHoraFinal().getTime());
+            intervalo = lista.get(i).getIntervalo();
+            in = Integer.parseInt(inicio.substring(0, 2));
+            f = Integer.parseInt(fim.substring(0, 2));
+        }
+        tabelaHorarioLivre();
+
+    }
+    
     private void tabelaHorarioLivre() {
 
         agendamentoDAO aDAO = new agendamentoDAO();
@@ -175,14 +228,14 @@ public class TelaProximoHorario extends javax.swing.JDialog {
 
         if (h.equals("  :  ")) {
             Calendar inicial = Calendar.getInstance();
-            inicial.set(Calendar.HOUR_OF_DAY, 8);
+            inicial.set(Calendar.HOUR_OF_DAY, in);
             inicial.set(Calendar.MINUTE, 0);
 
             Calendar Final = Calendar.getInstance();
-            Final.set(Calendar.HOUR_OF_DAY, 18);
+            Final.set(Calendar.HOUR_OF_DAY, f);
             Final.set(Calendar.MINUTE, 0);
 
-            int minute = 30;
+            int minute = intervalo;
 
             int diaInicial = inicial.get(Calendar.DAY_OF_MONTH);
             int diaFinal = Final.get(Calendar.DAY_OF_MONTH);
@@ -194,13 +247,13 @@ public class TelaProximoHorario extends javax.swing.JDialog {
             }
 
             GregorianCalendar calInicio = new GregorianCalendar();
-            calInicio.add(GregorianCalendar.DAY_OF_MONTH, 1);
+            calInicio.add(GregorianCalendar.DAY_OF_MONTH, contador);
             dt = calInicio.getTime();
             java.sql.Date dia;
             dia = new java.sql.Date(dt.getTime());
             Calendar c = Calendar.getInstance();
             int diaSemanaInt = calInicio.get(calInicio.DAY_OF_WEEK);
-            System.out.println(calInicio);
+
             String diaDaSemana[] = {" ", "Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"};
             //pega o modelo da Tabela e coloca na variavel "model"
             DefaultTableModel model
@@ -221,13 +274,13 @@ public class TelaProximoHorario extends javax.swing.JDialog {
             int diaInicial = inicial.get(Calendar.DAY_OF_MONTH);
 
             GregorianCalendar calInicio = new GregorianCalendar();
-            calInicio.add(GregorianCalendar.DAY_OF_MONTH, 1);
+            calInicio.add(GregorianCalendar.DAY_OF_MONTH, contador);
             dt = calInicio.getTime();
             java.sql.Date dia;
             dia = new java.sql.Date(dt.getTime());
             Calendar c = Calendar.getInstance();
             int diaSemanaInt = calInicio.get(calInicio.DAY_OF_WEEK);
-            String diaDaSemana[] = {" ","Domingo", "Segunda-Feira", "Terça-Feira",
+            String diaDaSemana[] = {" ", "Domingo", "Segunda-Feira", "Terça-Feira",
                 "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"};
 
             listaPeriodo.add(String.format("%02d",
@@ -240,7 +293,7 @@ public class TelaProximoHorario extends javax.swing.JDialog {
                 model.setValueAt(diaDaSemana[diaSemanaInt], i, 0);
                 model.setValueAt(sdfD.format(dia), i, 1);
                 model.setValueAt(listaPeriodo.get(i), i, 2);
-                calInicio.add(GregorianCalendar.DAY_OF_MONTH, 1);
+                calInicio.add(GregorianCalendar.DAY_OF_MONTH, contador);
                 dt = calInicio.getTime();
                 dia = new java.sql.Date(dt.getTime());
                 listaPeriodo.add(String.format("%02d",
@@ -256,11 +309,11 @@ public class TelaProximoHorario extends javax.swing.JDialog {
 
     public void removeLinha() {
         DefaultTableModel model = (DefaultTableModel) this.tblHorarioLivre.getModel();
-        agendamentoDAO aDAO = new agendamentoDAO();       
+        agendamentoDAO aDAO = new agendamentoDAO();
 
         String verificaHora;
         String verificaData;
-        GregorianCalendar calInicio = new GregorianCalendar();           
+        GregorianCalendar calInicio = new GregorianCalendar();
         java.sql.Date data;
         data = new java.sql.Date(dt.getTime());
         for (int j = 0; j < tblHorarioLivre.getRowCount(); j++) {
@@ -310,7 +363,7 @@ public class TelaProximoHorario extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaProximoHorario dialog = new TelaProximoHorario(new javax.swing.JFrame(), true, null, null);
+                TelaProximoHorario dialog = new TelaProximoHorario(new javax.swing.JFrame(), true, null, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -22,8 +22,8 @@ public class CadastroClienteDAO extends MySQL {
             PreparedStatement ps
                     = c.prepareStatement("INSERT INTO pessoa "
                             + "(Nome,email, completo, rua, numero, cep, bairro, cidade, estado, cpf, rg, "
-                            + "telResidencial, telCelular,telComercial, observacoes )  "
-                            + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            + "telResidencial, telCelular,telComercial, observacoes, inativo )  "
+                            + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, pessoa.getNome());
             ps.setString(2, pessoa.getEmail());
             ps.setBoolean(3, pessoa.isCompleto());
@@ -39,6 +39,7 @@ public class CadastroClienteDAO extends MySQL {
             ps.setString(13, pessoa.getTelCelular());
             ps.setString(14, pessoa.getTelComercial());
             ps.setString(15, pessoa.getObservacoes());
+            ps.setBoolean(16, pessoa.isInativo());
 
             ps.execute();
             ps.close();
@@ -66,7 +67,7 @@ public class CadastroClienteDAO extends MySQL {
             PreparedStatement ps = c.prepareStatement("UPDATE pessoa "
                     + "Set nome = ?, email = ? , completo = ?, rua = ?, numero = ?, cep = ?, "
                     + "bairro = ?, cidade = ?, estado = ?, cpf = ?, rg = ?,  "
-                    + "telResidencial = ?, telCelular = ?,telComercial = ?, observacoes = ? "
+                    + "telResidencial = ?, telCelular = ?,telComercial = ?, observacoes = ?, inativo = ? "
                     + "WHERE idpessoa = ? ");
 
             ps.setString(1, pessoa.getNome());
@@ -84,7 +85,8 @@ public class CadastroClienteDAO extends MySQL {
             ps.setString(13, pessoa.getTelCelular());
             ps.setString(14, pessoa.getTelComercial());
             ps.setString(15, pessoa.getObservacoes());
-            ps.setInt(16, pessoa.getIdPessoa());
+            ps.setBoolean(16, pessoa.isInativo());
+            ps.setInt(17, pessoa.getIdPessoa());
 
             ps.execute();
             ps.close();
@@ -313,7 +315,7 @@ public class CadastroClienteDAO extends MySQL {
 
         try {
             PreparedStatement ps = c.prepareStatement("SELECT idPessoa, nome , email , completo, rua, numero, cep, "
-                    + "bairro, cidade, estado,cpf , rg ,telResidencial , telCelular, telComercial, observacoes "
+                    + "bairro, cidade, estado,cpf , rg ,telResidencial , telCelular, telComercial, observacoes, inativo "
                     + "FROM Pessoa WHERE idPessoa = ?");
 
             ps.setInt(1, id);
@@ -336,6 +338,7 @@ public class CadastroClienteDAO extends MySQL {
                 objPessoa.setTelCelular(rs.getString("telCelular"));
                 objPessoa.setTelComercial(rs.getString("telComercial"));
                 objPessoa.setObservacoes(rs.getString("observacoes"));
+                objPessoa.setInativo(rs.getBoolean("Inativo"));
 
             }
             rs.close();

@@ -907,7 +907,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 txtCodProduto.setText("");
             } else {
                 int id = Integer.parseInt(txtCodProduto.getText());
-                p = pDAO.getProdutoById(id);
+                p = pDAO.getProdutoByIdAtivos(id);
                 if (p.getIdProduto() == 0 || p.getDescricao().equals(null)) {
                     JOptionPane.showMessageDialog(rootPane, "Produto não foi encontrado");
                     txtCodProduto.setText("");

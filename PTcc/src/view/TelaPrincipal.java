@@ -594,16 +594,17 @@ public final class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_tblPrincipalMousePressed
 
     private void btnProximoHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoHorarioActionPerformed
+        String diaS = lblDiaSemana.getText();
         if (txtHorario.getText().equals("  :  ")) {
             Date data = txtData.getDate();
-            TelaProximoHorario tela = new TelaProximoHorario(this, rootPaneCheckingEnabled, data, "  :  ");
+            TelaProximoHorario tela = new TelaProximoHorario(this, rootPaneCheckingEnabled, data, "  :  ", diaS);
             tela.setVisible(true);
             limparTela();
         } else {
             Date data = txtData.getDate();
             String hora = txtHorario.getText();
             if (cDt.verificaHorario(hora)) {
-                TelaProximoHorario tela = new TelaProximoHorario(this, rootPaneCheckingEnabled, data, hora);
+                TelaProximoHorario tela = new TelaProximoHorario(this, rootPaneCheckingEnabled, data, hora, diaS);
                 tela.setVisible(true);
                 limparTela();
             } else {
@@ -670,14 +671,13 @@ public final class TelaPrincipal extends javax.swing.JFrame {
 
     public void configuracao2() {
         SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
-        String diaTela = sdfD.format(txtData.getDate());
+       
         Date data = new Date(txtData.getDate().getTime());
         Calendar c = new GregorianCalendar();
         c.setTime(data);
         int dia = c.get(c.DAY_OF_WEEK);
         diaDaSemana(dia);
 
-        int diaa = c.get(dia);
         List<Configuracao> lista = cDAO.listarConfiguracaoDia(dia);
         if (lista.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "             DIA NÃO CONFIGURADO!\n\n Acesse o menu configurações para configurar\n o dia de trabalho");

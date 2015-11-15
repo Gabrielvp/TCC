@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Pessoa` (
   `telCelular` VARCHAR(45) NULL,
   `telComercial` VARCHAR(45) NULL,
   `observacoes` VARCHAR(300) NULL,
+    inativo boolean not null,
   PRIMARY KEY (`idPessoa`)
   );
 

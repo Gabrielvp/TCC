@@ -57,6 +57,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         }
         combo();
     }
+    boolean alterar = false;
     Orcamento orc;
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat df = new DecimalFormat("####.00");
@@ -64,6 +65,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     Pessoa p = new Pessoa();
     CReceberDAO crDAO = new CReceberDAO();
     Parcelas_CReceberDAO pcrDAO = new Parcelas_CReceberDAO();
+    String fatUpdate;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -484,101 +486,101 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisaOrcamentoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-       if(verificaCadastroCompleto()){      
-        OrcamentoDAO oDAO = new OrcamentoDAO();
-        CReceber cr = new CReceber();
-        CReceberDAO crDAO = new CReceberDAO();
-        FormaPagamento fPagamento = new FormaPagamento();
-        Parcelas_CReceber pCR = new Parcelas_CReceber();
-        Parcelas_CReceberDAO pCRDAO = new Parcelas_CReceberDAO();
-        FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
+        if (verificaCadastroCompleto()) {
+            OrcamentoDAO oDAO = new OrcamentoDAO();
+            CReceber cr = new CReceber();
+            CReceberDAO crDAO = new CReceberDAO();
+            FormaPagamento fPagamento = new FormaPagamento();
+            Parcelas_CReceber pCR = new Parcelas_CReceber();
+            Parcelas_CReceberDAO pCRDAO = new Parcelas_CReceberDAO();
+            FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
 
-        if (cbFormaPagamento.getSelectedItem().toString().equals("Selecione a Forma de Pagamento")) {
-            JOptionPane.showMessageDialog(rootPane, "Selecione a Forma de Pagamento!");
-        } else {
-            int id = Integer.parseInt(txtCodigoPessoa.getText());
-            String vl = txtTotal.getText().replaceAll(",", ".");
-            cr.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
-            cr.setPessoa(txtNome.getText());
-            cr.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
-            List<FormaPagamento> lista = fpDAO.listaDesc(cbFormaPagamento.getSelectedItem().toString());
-            for (int i = 0; i < lista.size(); i++) {
-                if (lista.get(i).isaVista()) {
-                    cr.setaVista(true);
-                } else {
-                    cr.setaVista(false);
-                }
-            }
-            cr.setFatura(txtFatura.getText());
-            cr.setTotal(Double.parseDouble(vl));
-            try {
-                cr.setData(sdfD.parse(txtData.getText()));
-            } catch (ParseException ex) {
-                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                cr.setVencimento(sdfD.parse(txtVencimento.getText()));
-            } catch (ParseException ex) {
-                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (txtParcelas.getText().equals("")) {
-                crDAO.insert(cr);
-                oDAO.updateLancado(id);
-                JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
-                limparTela();
+            if (cbFormaPagamento.getSelectedItem().toString().equals("Selecione a Forma de Pagamento")) {
+                JOptionPane.showMessageDialog(rootPane, "Selecione a Forma de Pagamento!");
             } else {
-                crDAO.insert(cr);
-                oDAO.updateLancado(id);
-            }
-
-            if (!txtParcelas.getText().equals("")) {
-                if (txtValorParcela.getText().equals("")) {
-                    JOptionPane.showMessageDialog(rootPane, "Insira o número de parcelas e pressione enter");
-                } else if (txtEntrada.getText().equals("  /  /    ")) {
-                    JOptionPane.showMessageDialog(rootPane, "Insira a data da entrada");
-                } else if (txtIntervalo.getText().equals("")) {
-                    JOptionPane.showMessageDialog(rootPane, "Insira o intervalo entre as parcelas");
-                } else if (tblParcelas.getRowCount() == 0) {
-                    JOptionPane.showMessageDialog(rootPane, "Insira o intervalo entre as parcelas e pressione enter");
-                } else {
-                    int linhas = tblParcelas.getRowCount();
-                    for (int i = 0; i < linhas; i++) {
-                        String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
-                        pCR.setFatura(txtFatura.getText());
-                        pCR.setParcelas(tblParcelas.getValueAt(i, 0).toString());
-                        pCR.setValor(Double.parseDouble(valor));
-                        cr.setParcelas(Integer.parseInt(txtParcelas.getText()));
-                        crDAO.updateParcela(cr);
-                        try {
-                            pCR.setEntrada(sdfD.parse(txtEntrada.getText()));
-                        } catch (ParseException ex) {
-                            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        try {
-                            pCR.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
-                        } catch (ParseException ex) {
-                            Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        pCR.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
-                        if (txtOrcamento.getText().equals("")) {
-                            pCR.setIdOrcamento(0);
-                        } else {
-                            pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
-                        }
-                        pCR.setIdCReceber(cr.getIdCReceber());
-
-                        pCRDAO.insert(pCR);
+                int id = Integer.parseInt(txtCodigoPessoa.getText());
+                String vl = txtTotal.getText().replaceAll(",", ".");
+                cr.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
+                cr.setPessoa(txtNome.getText());
+                cr.setFormPagamento(cbFormaPagamento.getSelectedItem().toString());
+                List<FormaPagamento> lista = fpDAO.listaDesc(cbFormaPagamento.getSelectedItem().toString());
+                for (int i = 0; i < lista.size(); i++) {
+                    if (lista.get(i).isaVista()) {
+                        cr.setaVista(true);
+                    } else {
+                        cr.setaVista(false);
                     }
+                }
+                cr.setFatura(txtFatura.getText());
+                cr.setTotal(Double.parseDouble(vl));
+                try {
+                    cr.setData(sdfD.parse(txtData.getText()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    cr.setVencimento(sdfD.parse(txtVencimento.getText()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (txtParcelas.getText().equals("")) {
+                    crDAO.insert(cr);
+                    oDAO.updateLancado(id);
                     JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
                     limparTela();
+                } else {
+                    crDAO.insert(cr);
+                    oDAO.updateLancado(id);
                 }
 
-            } else {
+                if (!txtParcelas.getText().equals("")) {
+                    if (txtValorParcela.getText().equals("")) {
+                        JOptionPane.showMessageDialog(rootPane, "Insira o número de parcelas e pressione enter");
+                    } else if (txtEntrada.getText().equals("  /  /    ")) {
+                        JOptionPane.showMessageDialog(rootPane, "Insira a data da entrada");
+                    } else if (txtIntervalo.getText().equals("")) {
+                        JOptionPane.showMessageDialog(rootPane, "Insira o intervalo entre as parcelas");
+                    } else if (tblParcelas.getRowCount() == 0) {
+                        JOptionPane.showMessageDialog(rootPane, "Insira o intervalo entre as parcelas e pressione enter");
+                    } else {
+                        int linhas = tblParcelas.getRowCount();
+                        for (int i = 0; i < linhas; i++) {
+                            String valor = tblParcelas.getValueAt(i, 1).toString().replaceAll(",", ".");
+                            pCR.setFatura(txtFatura.getText());
+                            pCR.setParcelas(tblParcelas.getValueAt(i, 0).toString());
+                            pCR.setValor(Double.parseDouble(valor));
+                            cr.setParcelas(Integer.parseInt(txtParcelas.getText()));
+                            crDAO.updateParcela(cr);
+                            try {
+                                pCR.setEntrada(sdfD.parse(txtEntrada.getText()));
+                            } catch (ParseException ex) {
+                                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            try {
+                                pCR.setVencimento(sdfD.parse(tblParcelas.getValueAt(i, 2).toString()));
+                            } catch (ParseException ex) {
+                                Logger.getLogger(TelaContasAReceber.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            pCR.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
+                            if (txtOrcamento.getText().equals("")) {
+                                pCR.setIdOrcamento(0);
+                            } else {
+                                pCR.setIdOrcamento(Integer.parseInt(txtOrcamento.getText()));
+                            }
+                            pCR.setIdCReceber(cr.getIdCReceber());
+
+                            pCRDAO.insert(pCR);
+                        }
+                        JOptionPane.showMessageDialog(rootPane, "Salvo com Sucesso!");
+                        limparTela();
+                    }
+
+                } else {
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Preencha todos os dados");
         }
-       }else{
-           JOptionPane.showMessageDialog(rootPane, "Preencha todos os dados");
-       }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtParcelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParcelasKeyPressed
@@ -638,6 +640,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnPesquisaOrcamento1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaOrcamento1ActionPerformed
+        alterar = true;
         if (txtCodigoPessoa.getText().equals("") || txtNome.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Insira uma pessoa para pesquisa");
         } else {
@@ -647,7 +650,7 @@ public class TelaContasAReceber extends javax.swing.JDialog {
             TelaPesquisaFatura tela = new TelaPesquisaFatura(null, rootPaneCheckingEnabled, id, p, 1);
             tela.setVisible(true);
             String fatura = tela.coluna;
-
+            fatUpdate = txtFatura.getText();
             DefaultTableModel model = (DefaultTableModel) tblParcelas.getModel();
             List<CReceber> lista = crDAO.listarCReceberString(fatura);
             List<Parcelas_CReceber> listaParcelas = pcrDAO.listarParcelasString(fatura);

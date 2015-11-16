@@ -215,6 +215,7 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
             }
             c.setIntervalo(Integer.parseInt(txtIntervalo.getText()));
             c.setDia((EnumDiaSemana) cbDia.getSelectedItem());
+            c.setConfigurado(true);
 
             String dia = cbDia.getSelectedItem().toString();
             cDAO.insert(c);

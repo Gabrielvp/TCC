@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -80,6 +81,38 @@ public class CReceberDAO extends MySQL {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+    
+    public void update(CReceber creceber, String fatura) {
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("UPDATE CReceber SET formPagamento = ?, fatura = ?, total = ?, data = ?, vencimento = ?, parcelas = ?"
+                    + " idPessoa = ?, pessoa = ? aVista = ? WHERE fatura = ? ");
+
+            ps.setString(1, creceber.getFormPagamento());
+            ps.setString(2, creceber.getFatura());
+            ps.setDouble(3, creceber.getTotal());
+            ps.setString(4, sdfD.format(creceber.getData()));
+            ps.setString(5, sdfD.format(creceber.getVencimento()));
+            ps.setInt(6, creceber.getParcelas());
+            ps.setInt(7, creceber.getIdPessoa());
+            ps.setString(8, creceber.getPessoa());
+            ps.setBoolean(9, creceber.isaVista());
+            ps.setString(10, fatura);
+
+            ps.execute();
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(null, "Alterado com Sucesso!");
         }
     }
 

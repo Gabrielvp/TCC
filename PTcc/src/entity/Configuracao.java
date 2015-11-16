@@ -17,6 +17,15 @@ public class Configuracao {
     private Date HoraInicial;
     private Date HoraFinal;
     private int intervalo;
+    private boolean configurado;
+
+    public boolean isConfigurado() {
+        return configurado;
+    }
+
+    public void setConfigurado(boolean configurado) {
+        this.configurado = configurado;
+    }
 
     public EnumDiaSemana getDia() {
         return dia;

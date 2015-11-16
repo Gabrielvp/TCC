@@ -626,7 +626,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }
 
     public void habilitarCampos() {
-        DefaultTableModel model = (DefaultTableModel) tblPessoa.getModel();
         txtEmail.setEnabled(true);
         txtCpf.setEnabled(true);
         txtRg.setEnabled(true);
@@ -641,11 +640,9 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         txtNumero.setEnabled(true);
         txtRua.setEnabled(true);
         jTxtObservacoes.setEnabled(true);
-        model.setNumRows(0);
     }
 
     public void desabilitarCampos() {
-        DefaultTableModel model = (DefaultTableModel) tblPessoa.getModel();
         txtEmail.setEnabled(false);
         txtCpf.setEnabled(false);
         txtRg.setEnabled(false);
@@ -660,7 +657,6 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         txtNumero.setEnabled(false);
         txtRua.setEnabled(false);
         jTxtObservacoes.setEnabled(false);
-        model.setNumRows(0);
     }
 
     /**

@@ -318,6 +318,7 @@ public class TelaAgendamento extends javax.swing.JDialog {
             p.setNome(txtNome.getText());
             p.setTelCelular(txtCelular.getText());
             p.setCompleto(false);
+            p.setInativo(false);
             a.setDescricao(txtaDescricao.getText());
             a.setDia(lblDia.getText());
             try {

@@ -5,10 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import java.util.ArrayList;
-import java.util.List;
-import view.TelaAgendamento;
 
 /**
  *
@@ -21,11 +17,12 @@ public class pessoaAgendamentoDAO extends MySQL {
         try {
             PreparedStatement ps
                     = c.prepareStatement("INSERT INTO pessoa "
-                            + "(Nome, Completo, telCelular)  "
-                            + "VALUES ( ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                            + "(Nome, Completo, telCelular, inativo)  "
+                            + "VALUES ( ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, pessoa.getNome());
             ps.setBoolean(2, pessoa.isCompleto());
             ps.setString(3, pessoa.getTelCelular());
+            ps.setBoolean(4, pessoa.isInativo());
 
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();

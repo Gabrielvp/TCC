@@ -65,7 +65,7 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Configurações - Agenda Financeira");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Horas:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 12), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Horas:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Horário Inicial:");
@@ -113,6 +113,11 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
 
         cbDia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbDia.setBorder(null);
+        cbDia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbDiaActionPerformed(evt);
+            }
+        });
         jPanel2.add(cbDia, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 47, 234, -1));
 
         jLabel6.setText("Dia:");
@@ -132,20 +137,12 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
         tblConfiguracao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         tblConfiguracao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Dia", "Inicio", "Fim", "Intervalo"
             }
         ));
-        tblConfiguracao.setShowHorizontalLines(true);
-        tblConfiguracao.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblConfiguracao);
         if (tblConfiguracao.getColumnModel().getColumnCount() > 0) {
             tblConfiguracao.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -265,6 +262,21 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
         txtIntervalo.setSelectionEnd(3);
     }//GEN-LAST:event_txtIntervaloMousePressed
 
+    private void cbDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDiaActionPerformed
+        String dia = cbDia.getSelectedItem().toString();
+        removeItemCombo(dia);
+    }//GEN-LAST:event_cbDiaActionPerformed
+
+    public void removeItemCombo(String dia) {
+        String teste;
+        for (int i = 0; i < tblConfiguracao.getRowCount(); i++) {
+            teste = tblConfiguracao.getValueAt(i, 0).toString();
+            if (dia.equals(teste)) {
+                JOptionPane.showMessageDialog(rootPane, "Dia já configurado");
+            }
+        }
+    }
+
     public void limparTabela() {
         DefaultTableModel model
                 = (DefaultTableModel) this.tblConfiguracao.getModel();
@@ -287,7 +299,9 @@ public class TelaConfiguracoes extends javax.swing.JDialog {
         ConfiguracaoDAO cDAO = new ConfiguracaoDAO();
         List<Configuracao> listaConfiguracoes = cDAO.listarConfiguracao();
         DefaultTableModel model = (DefaultTableModel) this.tblConfiguracao.getModel();
+        model.setNumRows(0);
         for (int i = 0; i < listaConfiguracoes.size(); i++) {
+            model.addRow(new Object[]{});
             model.setValueAt(listaConfiguracoes.get(i).getDia(), i, 0);
             model.setValueAt(listaConfiguracoes.get(i).getHoraInicial(), i, 1);
             model.setValueAt(listaConfiguracoes.get(i).getHoraFinal(), i, 2);

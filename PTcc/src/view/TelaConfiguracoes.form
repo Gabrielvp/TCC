@@ -187,6 +187,9 @@
               <Border info="null"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbDiaActionPerformed"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="11" y="47" width="234" height="-1"/>
@@ -243,7 +246,7 @@
               </Border>
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="7">
+              <Table columnCount="4" rowCount="0">
                 <Column editable="true" title="Dia" type="java.lang.Object"/>
                 <Column editable="true" title="Inicio" type="java.lang.Object"/>
                 <Column editable="true" title="Fim" type="java.lang.Object"/>

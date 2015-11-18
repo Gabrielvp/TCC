@@ -217,8 +217,7 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracoes` (
   `horaFinal` TIME NOT NULL,
   `intervalo` INT NOT NULL,  
   `dia` INT NOT NULL,
-   configurado boolean not null,
-  PRIMARY KEY (`idConfiguracao`)
+    PRIMARY KEY (`idConfiguracao`)
   );
 
 SET SQL_MODE=@OLD_SQL_MODE;

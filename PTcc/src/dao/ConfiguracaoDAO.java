@@ -27,13 +27,12 @@ public class ConfiguracaoDAO extends MySQL {
         try {
             PreparedStatement ps
                     = c.prepareStatement("INSERT INTO configuracoes "
-                            + "(horaInicial, horaFinal, intervalo, dia, configurado)  "
-                            + "VALUES ( ?, ?, ?, ?, ?)");
+                            + "(horaInicial, horaFinal, intervalo, dia)  "
+                            + "VALUES ( ?, ?, ?, ?)");
             ps.setString(1, sdfH.format(configuracao.getHoraInicial()));
             ps.setString(2, sdfH.format(configuracao.getHoraFinal()));
             ps.setInt(3, configuracao.getIntervalo());
-            ps.setInt(4, configuracao.getDia().getCodigo());
-            ps.setBoolean(4, configuracao.isConfigurado());
+            ps.setInt(4, configuracao.getDia().getCodigo());            
 
             ps.execute();
             ps.close();
@@ -77,7 +76,7 @@ public class ConfiguracaoDAO extends MySQL {
         List<Configuracao> listaConfiguracoes = new ArrayList<>();
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("SELECT horaInicial, horaFinal, intervalo, dia, configurado FROM configuracoes ORDER BY dia asc");
+            PreparedStatement ps = c.prepareStatement("SELECT horaInicial, horaFinal, intervalo, dia FROM configuracoes ORDER BY dia asc");
           
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -87,7 +86,7 @@ public class ConfiguracaoDAO extends MySQL {
                 configuracao.setHoraFinal(rs.getTime("HoraFinal"));
                 configuracao.setIntervalo(rs.getInt("Intervalo"));
                 configuracao.setDia(EnumDiaSemana.DOMINGO.getEnumDiaPorCodigo(rs.getInt("Dia")));
-                configuracao.setConfigurado(rs.getBoolean("Configurado"));
+               
 
                 listaConfiguracoes.add(configuracao);
 

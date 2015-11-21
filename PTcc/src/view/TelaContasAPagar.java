@@ -442,6 +442,8 @@ public class TelaContasAPagar extends javax.swing.JDialog {
 
             if (cbFormaPagamento.getSelectedItem().toString().equals("Selecione a Forma de Pagamento")) {
                 JOptionPane.showMessageDialog(rootPane, "Selecione a Forma de Pagamento!");
+            } else if (txtVencimento.getText().equals("  /  /    ")) {
+                JOptionPane.showMessageDialog(rootPane, "Insira o Vencimento");
             } else {
                 String vl = txtTotal.getText().replaceAll(",", ".");
                 cp.setIdPessoa(Integer.parseInt(txtCodigo.getText()));

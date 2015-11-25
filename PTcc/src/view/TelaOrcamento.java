@@ -682,6 +682,7 @@ public class TelaOrcamento extends javax.swing.JDialog {
                 }
                 limparTela();
                 alterar = false;
+                totalOrçamento = 0;
             }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed

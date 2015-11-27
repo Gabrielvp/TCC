@@ -113,10 +113,10 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "", 0, 2));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 12), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", 0, 2, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
 
         jLabel3.setText("Nome:");
 
@@ -234,11 +234,10 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
             tblPrincipal.getColumnModel().getColumn(1).setResizable(false);
             tblPrincipal.getColumnModel().getColumn(1).setPreferredWidth(5);
             tblPrincipal.getColumnModel().getColumn(2).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(2).setPreferredWidth(140);
-            tblPrincipal.getColumnModel().getColumn(3).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(3).setPreferredWidth(170);
+            tblPrincipal.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tblPrincipal.getColumnModel().getColumn(3).setPreferredWidth(630);
             tblPrincipal.getColumnModel().getColumn(4).setResizable(false);
-            tblPrincipal.getColumnModel().getColumn(4).setPreferredWidth(50);
+            tblPrincipal.getColumnModel().getColumn(4).setPreferredWidth(60);
         }
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 1290, 370));
@@ -303,6 +302,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/estoque2.png"))); // NOI18N
+        lblProduto.setToolTipText("Cadastro de Produtos");
         lblProduto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblProdutoMouseClicked(evt);
@@ -317,6 +317,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         jPanel5.add(lblProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 1, -1, -1));
 
         lblOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/orcamento2.png"))); // NOI18N
+        lblOrcamento.setToolTipText("Orçamento");
         lblOrcamento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblOrcamentoMouseClicked(evt);
@@ -331,6 +332,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         jPanel5.add(lblOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 1, -1, -1));
 
         lblPessoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_add2.png"))); // NOI18N
+        lblPessoa.setToolTipText("Cadastro de Pessoas");
         lblPessoa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblPessoaMouseClicked(evt);
@@ -345,6 +347,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         jPanel5.add(lblPessoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
         lblCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Financeiro 162.png"))); // NOI18N
+        lblCaixa.setToolTipText("Fluxo de Caixa");
         lblCaixa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblCaixaMouseClicked(evt);
@@ -359,6 +362,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         jPanel5.add(lblCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(271, 1, -1, -1));
 
         lblConfiguracao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configuração2.png"))); // NOI18N
+        lblConfiguracao.setToolTipText("Configurações");
         lblConfiguracao.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblConfiguracaoMouseClicked(evt);
@@ -373,6 +377,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         jPanel5.add(lblConfiguracao, new org.netbeans.lib.awtextra.AbsoluteConstraints(342, 1, -1, -1));
 
         lblFinanceiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/financeiro2.png"))); // NOI18N
+        lblFinanceiro.setToolTipText("Contas a Receber");
         lblFinanceiro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblFinanceiroMouseClicked(evt);

@@ -226,7 +226,15 @@ INSERT INTO pessoa
 
 INSERT INTO produto
 	(descricao, cod_barras, quantidade, valor_venda, valor_compra, unidade, marca, modelo, fornecedor, referencia, ativo)
-	VALUES ('exemplo', '123456789', '50', 100, 50, '1', 'Exemplo', 'AB123', 'Exemplo', 'CD456', 1);
+	VALUES ('exemplo', '123456789', '50', 100, 50, '1', 'Exemplo', 'AB123', 'Exemplo', 'CD456', 0);
+
+INSERT INTO forma_pagamento
+	(descricao, parcela, intervalo, aVista)
+	VALUES ('A Vista', 0, 0, 1);
+
+INSERT INTO forma_pagamento
+	(descricao, parcela, intervalo, aVista)
+	VALUES ('A Prazo 10x', 10, 30, 0);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

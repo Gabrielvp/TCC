@@ -220,6 +220,14 @@ CREATE TABLE IF NOT EXISTS `db_tcc`.`Configuracoes` (
     PRIMARY KEY (`idConfiguracao`)
   );
 
+INSERT INTO pessoa
+	(Nome,email, completo, rua, numero, cep, bairro, cidade, estado, cpf, rg, telResidencial, telCelular,telComercial, observacoes, inativo )
+    VALUES ('Exemplo da Silva', 'exemplo@exemplo.com.br', 1, 'Rua do Exemplo', 123, '88111-888', 'exemplo', 'exemplo', 'EX', '123.456.789-98', '12345678', '(48)3223-3223', '(48)8463-6384', '(48)3243-4332',' ', 0);
+
+INSERT INTO produto
+	(descricao, cod_barras, quantidade, valor_venda, valor_compra, unidade, marca, modelo, fornecedor, referencia, ativo)
+	VALUES ('exemplo', '123456789', '50', 100, 50, '1', 'Exemplo', 'AB123', 'Exemplo', 'CD456', 1);
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

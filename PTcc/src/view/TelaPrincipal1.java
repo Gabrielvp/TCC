@@ -13,6 +13,7 @@ import entity.Configuracao;
 import entity.DataHora;
 import entity.Pessoa;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
     public TelaPrincipal1() {
         initComponents();
         setLocationRelativeTo(null);
+        ajustaTela();
         dataTela();
         configuracao();
         tabelaPrincipal();
@@ -91,6 +93,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         btnProximo = new javax.swing.JButton();
         btnDataDia = new javax.swing.JButton();
         txtData = new com.toedter.calendar.JDateChooser();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
         jPanel5 = new javax.swing.JPanel();
         lblProduto = new javax.swing.JLabel();
         lblOrcamento = new javax.swing.JLabel();
@@ -105,6 +108,10 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tela Principal - Agenda Financeira");
@@ -113,10 +120,10 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "", 0, 2));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", 0, 2, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)), "Consulta Horário Agendado", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 12), new java.awt.Color(0, 51, 153))); // NOI18N
 
         jLabel3.setText("Nome:");
 
@@ -280,6 +287,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         });
         jPanel2.add(btnDataDia, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, -1, -1));
         jPanel2.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 130, -1));
+        jPanel2.add(filler2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 170, -1, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -295,7 +303,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
@@ -314,7 +322,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
                 lblProdutoMouseExited(evt);
             }
         });
-        jPanel5.add(lblProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 1, -1, -1));
+        jPanel5.add(lblProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, -1, -1));
 
         lblOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/orcamento2.png"))); // NOI18N
         lblOrcamento.setToolTipText("Orçamento");
@@ -329,7 +337,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
                 lblOrcamentoMouseExited(evt);
             }
         });
-        jPanel5.add(lblOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 1, -1, -1));
+        jPanel5.add(lblOrcamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 0, -1, -1));
 
         lblPessoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_add2.png"))); // NOI18N
         lblPessoa.setToolTipText("Cadastro de Pessoas");
@@ -359,7 +367,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
                 lblCaixaMouseExited(evt);
             }
         });
-        jPanel5.add(lblCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(271, 1, -1, -1));
+        jPanel5.add(lblCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, -1, -1));
 
         lblConfiguracao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configuração2.png"))); // NOI18N
         lblConfiguracao.setToolTipText("Configurações");
@@ -374,7 +382,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
                 lblConfiguracaoMouseExited(evt);
             }
         });
-        jPanel5.add(lblConfiguracao, new org.netbeans.lib.awtextra.AbsoluteConstraints(342, 1, -1, -1));
+        jPanel5.add(lblConfiguracao, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 0, -1, -1));
 
         lblFinanceiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/financeiro2.png"))); // NOI18N
         lblFinanceiro.setToolTipText("Contas a Receber");
@@ -389,7 +397,7 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
                 lblFinanceiroMouseExited(evt);
             }
         });
-        jPanel5.add(lblFinanceiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 1, -1, -1));
+        jPanel5.add(lblFinanceiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, -1, -1));
 
         jMenu1.setText("Cadastros");
 
@@ -421,6 +429,27 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem1);
+        jMenu2.add(jSeparator2);
+
+        jMenu3.setText("Baixa");
+
+        jMenuItem4.setText("Baixa Contas a Pagar");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem4);
+
+        jMenuItem5.setText("Baixa Contas a Receber");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem5);
+
+        jMenu2.add(jMenu3);
 
         jMenuBar1.add(jMenu2);
 
@@ -437,8 +466,8 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -703,11 +732,30 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
         lblConfiguracao.setBorder(null);
     }//GEN-LAST:event_lblConfiguracaoMouseExited
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+       TelaBaixaContasAPagar tela = new TelaBaixaContasAPagar(this, novo);
+       tela.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        TelaBaixaContasAReceber tela = new TelaBaixaContasAReceber(this, novo, null);
+        tela.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     String inicio;
     String fim;
     int intervalo;
     int in;
     int f;
+
+    public void ajustaTela() {
+        int largura = Toolkit.getDefaultToolkit().getScreenSize().width;
+        int altura = Toolkit.getDefaultToolkit().getScreenSize().height;
+
+        JFrame quadro = new JFrame();
+        quadro.setSize(largura, altura);
+        quadro.pack();
+    }
 
     public void configuracao() {
         Calendar c = Calendar.getInstance();
@@ -947,21 +995,26 @@ public final class TelaPrincipal1 extends javax.swing.JFrame {
     private javax.swing.JButton btnProximo;
     private javax.swing.JButton btnProximoHorario;
     private javax.swing.JCheckBox ckbConsultasRealizadas;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lblCaixa;
     private javax.swing.JLabel lblConfiguracao;
     private javax.swing.JLabel lblDiaSemana;

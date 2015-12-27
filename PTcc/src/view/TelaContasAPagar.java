@@ -6,6 +6,7 @@
 package view;
 
 import dao.CPagarDAO;
+import dao.CadastroClienteDAO;
 import dao.FormaPagamentoDAO;
 import dao.Parcelas_CPagarDAO;
 import entity.CPagar;
@@ -41,7 +42,7 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         setResizable(false);
         String data = sdfD.format(new Date());
         txtData.setText(data);
-        combo();
+        combo();       
     }
 
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
@@ -238,6 +239,11 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Dados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 10), new java.awt.Color(0, 51, 153))); // NOI18N
 
         txtNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeKeyPressed(evt);
+            }
+        });
 
         jLabel1.setText("Nome:");
 
@@ -294,6 +300,11 @@ public class TelaContasAPagar extends javax.swing.JDialog {
         jLabel13.setText("Código:");
 
         txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -639,6 +650,51 @@ public class TelaContasAPagar extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         limparTela();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void txtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyPressed
+        CadastroClienteDAO cDAO = new CadastroClienteDAO();
+        Pessoa p = new Pessoa();
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            if (txtCodigo.getText().equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite um código para pesquisa");
+            } else {
+                int id = Integer.parseInt(txtCodigo.getText());
+                if (!txtCodigo.getText().equals("")) {
+                    p = cDAO.getPessoaById(id);
+                    if (p.getIdPessoa() == 0 || p.getNome().equals(null)) {
+                        JOptionPane.showMessageDialog(rootPane, "Pessoa não encontrada");
+                        txtCodigo.setText("");
+                        txtNome.setText("");
+                    } else {
+                        txtCodigo.setText(p.getIdPessoa() + "");
+                        txtNome.setText(p.getNome());
+                        if (txtCodigo.getText().equals("0")) {
+                            limparPessoa();
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_txtCodigoKeyPressed
+
+    private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            String nome = txtNome.getText();
+            if (nome.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+            } else {
+                TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome, 0);
+                tela.setVisible(true);
+                txtNome.setText(tela.p.getNome());
+                txtCodigo.setText(tela.p.getIdPessoa() + "");
+            }
+        }
+    }//GEN-LAST:event_txtNomeKeyPressed
+
+    public void limparPessoa() {
+        txtCodigo.setText("");
+        txtNome.setText("");
+    }
 
     public boolean verificaCadastroCompleto() {
         if (txtNome.getText().equals("")) {

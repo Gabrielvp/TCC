@@ -6,6 +6,7 @@
 package view;
 
 import dao.CReceberDAO;
+import dao.CadastroClienteDAO;
 import dao.FormaPagamentoDAO;
 import dao.OrcamentoDAO;
 import dao.Parcelas_CReceberDAO;
@@ -254,6 +255,11 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Dados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 10), new java.awt.Color(0, 51, 153))); // NOI18N
 
         txtNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeKeyPressed(evt);
+            }
+        });
 
         jLabel1.setText("Nome:");
 
@@ -312,6 +318,11 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         jLabel13.setText("Código:");
 
         txtCodigoPessoa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtCodigoPessoa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoPessoaKeyPressed(evt);
+            }
+        });
 
         btnPesquisaOrcamento1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
         btnPesquisaOrcamento1.addActionListener(new java.awt.event.ActionListener() {
@@ -715,6 +726,52 @@ public class TelaContasAReceber extends javax.swing.JDialog {
         limparTela();
     }//GEN-LAST:event_btnLimparActionPerformed
 
+    private void txtCodigoPessoaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoPessoaKeyPressed
+        CadastroClienteDAO cDAO = new CadastroClienteDAO();
+        Pessoa p = new Pessoa();
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            if (txtCodigoPessoa.getText().equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite um código para pesquisa");
+            } else {
+                int id = Integer.parseInt(txtCodigoPessoa.getText());
+                if (!txtCodigoPessoa.getText().equals("")) {
+                    p = cDAO.getPessoaById(id);
+                    if (p.getIdPessoa() == 0 || p.getNome().equals(null)) {
+                        JOptionPane.showMessageDialog(rootPane, "Pessoa não encontrada");
+                        txtCodigoPessoa.setText("");
+                        txtNome.setText("");
+                    } else {
+                        txtCodigoPessoa.setText(p.getIdPessoa() + "");
+                        txtNome.setText(p.getNome());
+                        if (txtCodigoPessoa.getText().equals("0")) {
+                            limparPessoa();
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_txtCodigoPessoaKeyPressed
+
+    private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            String nome = txtNome.getText();
+            if (nome.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+                limparPessoa();
+            } else {
+                TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome, 0);
+                tela.setVisible(true);
+                txtCodigoPessoa.setText(tela.p.getIdPessoa() + "");
+                txtNome.setText(tela.p.getNome());
+            }
+        }
+    }//GEN-LAST:event_txtNomeKeyPressed
+
+    public void limparPessoa() {
+        txtCodigoPessoa.setText("");
+        txtNome.setText("");
+    }
+
     public boolean verificaCadastroCompleto() {
         if (txtNome.getText().equals("")) {
             return false;
@@ -791,6 +848,8 @@ public class TelaContasAReceber extends javax.swing.JDialog {
                 txtParcelas.setText("");
                 txtIntervalo.setText("");
                 txtValorParcela.setText("");
+                txtEntrada.setText("");
+                model.setNumRows(0);
             } else if (teste == false) {
                 if (txtFatura.getText().equals("") || txtTotal.getText().equals("")) {
                     JOptionPane.showMessageDialog(rootPane, "Pagamento a Prazo..\n Indique a fatura e o total");

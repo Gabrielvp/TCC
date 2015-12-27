@@ -9,13 +9,16 @@ import dao.CPagarDAO;
 import dao.CadastroClienteDAO;
 import dao.FormaPagamentoDAO;
 import dao.Parcelas_CPagarDAO;
+import entity.CPagar;
 import entity.FormaPagamento;
+import entity.Parcelas_CPagar;
 import entity.Pessoa;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -32,9 +35,9 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         setResizable(false);
         combo();
-
+        lblDescjuros.setVisible(false);
     }
-
+    
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat df = new DecimalFormat("####.00");
     DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
@@ -73,11 +76,14 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         cbFormaPagamento = new javax.swing.JComboBox();
         jLabel13 = new javax.swing.JLabel();
         txtCodigoPessoa = new javax.swing.JTextField();
-        btnPesquisaOrcamento1 = new javax.swing.JButton();
+        btnPesquisaFatura = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         txtValorPago = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         txtParcela = new javax.swing.JTextField();
+        lblDescJur = new javax.swing.JLabel();
+        txtDescJuros = new javax.swing.JTextField();
+        lblDescjuros = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Contas a Pagar - Agenda Financeira");
@@ -124,16 +130,27 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Dados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 10), new java.awt.Color(0, 51, 153))); // NOI18N
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeKeyPressed(evt);
+            }
+        });
+        jPanel3.add(txtNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 69, 397, 25));
 
         jLabel1.setText("Nome:");
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(182, 73, -1, -1));
 
         txtFatura.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel3.add(txtFatura, new org.netbeans.lib.awtextra.AbsoluteConstraints(61, 112, 96, 25));
 
         txtTotal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel3.add(txtTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 201, 126, 25));
 
         jLabel6.setText("Total R$");
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 205, -1, -1));
 
         txtVencimento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
@@ -141,8 +158,10 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jPanel3.add(txtVencimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(411, 158, 106, 25));
 
         jLabel5.setText("Vencimento:");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(331, 162, -1, -1));
 
         txtDataPgto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
@@ -150,10 +169,13 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jPanel3.add(txtDataPgto, new org.netbeans.lib.awtextra.AbsoluteConstraints(113, 244, 106, 25));
 
-        jLabel4.setText("Data Pagametno:");
+        jLabel4.setText("Data Pagamento:");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 248, -1, -1));
 
         jLabel3.setText("Fatura:");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 116, -1, -1));
 
         btnPesquisaCliente.setBackground(new java.awt.Color(255, 255, 255));
         btnPesquisaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
@@ -162,16 +184,20 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
                 btnPesquisaClienteActionPerformed(evt);
             }
         });
+        jPanel3.add(btnPesquisaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(628, 66, -1, -1));
 
         jLabel12.setText("Forma Pagamento:");
+        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 116, -1, -1));
 
         cbFormaPagamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbFormaPagamentoActionPerformed(evt);
             }
         });
+        jPanel3.add(cbFormaPagamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(362, 112, 225, 25));
 
         jLabel13.setText("Código:");
+        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 73, -1, -1));
 
         txtCodigoPessoa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         txtCodigoPessoa.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -179,126 +205,42 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
                 txtCodigoPessoaKeyPressed(evt);
             }
         });
+        jPanel3.add(txtCodigoPessoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 69, 97, 25));
 
-        btnPesquisaOrcamento1.setBackground(new java.awt.Color(255, 255, 255));
-        btnPesquisaOrcamento1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
-        btnPesquisaOrcamento1.addActionListener(new java.awt.event.ActionListener() {
+        btnPesquisaFatura.setBackground(new java.awt.Color(255, 255, 255));
+        btnPesquisaFatura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
+        btnPesquisaFatura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisaOrcamento1ActionPerformed(evt);
+                btnPesquisaFaturaActionPerformed(evt);
             }
         });
+        jPanel3.add(btnPesquisaFatura, new org.netbeans.lib.awtextra.AbsoluteConstraints(163, 112, -1, -1));
 
         jLabel14.setText("Valor Pago R$");
+        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(322, 205, -1, -1));
 
         txtValorPago.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtValorPago.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtValorPagoKeyPressed(evt);
+            }
+        });
+        jPanel3.add(txtValorPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(411, 201, 106, 25));
 
         jLabel15.setText("Parcela:");
+        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 162, -1, -1));
 
         txtParcela.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel3.add(txtParcela, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 158, 127, 25));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtCodigoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtFatura, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addGap(25, 25, 25)
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnPesquisaCliente))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnPesquisaOrcamento1)
-                                        .addGap(43, 43, 43)
-                                        .addComponent(jLabel12)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel15)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(453, 453, 453)))
-                        .addContainerGap(23, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDataPgto, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addGap(10, 10, 10)))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtValorPago)
-                            .addComponent(txtVencimento, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
-                        .addGap(219, 219, 219))))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel13)
-                        .addComponent(txtCodigoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnPesquisaCliente))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(txtFatura, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnPesquisaOrcamento1)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel12)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(txtParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtValorPago, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtDataPgto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(56, Short.MAX_VALUE))
-        );
+        lblDescJur.setText("Desc / Juros");
+        jPanel3.add(lblDescJur, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 248, -1, -1));
+
+        txtDescJuros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        jPanel3.add(txtDescJuros, new org.netbeans.lib.awtextra.AbsoluteConstraints(411, 244, 106, 25));
+
+        lblDescjuros.setText("Desc / Juros");
+        jPanel3.add(lblDescjuros, new org.netbeans.lib.awtextra.AbsoluteConstraints(523, 248, -1, -1));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 700, 330));
 
@@ -325,13 +267,22 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-
+        txtCodigoPessoa.setText("");
+        txtNome.setText("");
+        txtFatura.setText("");
+        txtDataPgto.setText("");
+        txtParcela.setText("");
+        txtTotal.setText("");
+        txtValorPago.setText("");
+        txtVencimento.setText("");
+        cbFormaPagamento.setSelectedIndex(0);
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnPesquisaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaClienteActionPerformed
         String nome = txtNome.getText();
         if (nome.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+            limparPessoa();
         } else {
             TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome, 0);
             tela.setVisible(true);
@@ -344,9 +295,29 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
 
     }//GEN-LAST:event_cbFormaPagamentoActionPerformed
 
-    private void btnPesquisaOrcamento1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaOrcamento1ActionPerformed
-
-    }//GEN-LAST:event_btnPesquisaOrcamento1ActionPerformed
+    private void btnPesquisaFaturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaFaturaActionPerformed
+        if (txtCodigoPessoa.getText().equals("") || txtNome.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Insira uma pessoa para pesquisa");
+        } else {
+            int id = Integer.parseInt(txtCodigoPessoa.getText());
+            p.setIdPessoa(Integer.parseInt(txtCodigoPessoa.getText()));
+            p.setNome(txtNome.getText());
+            TelaPesquisaFatura tela = new TelaPesquisaFatura(null, rootPaneCheckingEnabled, id, p, 2);
+            tela.setVisible(true);
+            String fatura = tela.coluna;
+            
+            List<CPagar> lista = cpDAO.listarCPagarString(fatura);
+            List<Parcelas_CPagar> listaParcelas = pcpDAO.listarParcelasString(fatura);
+            for (int i = 0; i < lista.size(); i++) {
+                txtFatura.setText(lista.get(i).getFatura());
+                txtTotal.setText(df.format(lista.get(i).getTotal()) + "");
+                txtVencimento.setText(sdfD.format(lista.get(i).getVencimento()));
+                txtParcela.setText(lista.get(i).getParcelas()+"");
+                cbFormaPagamento.setSelectedItem(lista.get(i).getFormPagamento().toString());
+            }
+            txtValorPago.requestFocus();
+        }
+    }//GEN-LAST:event_btnPesquisaFaturaActionPerformed
 
     private void txtCodigoPessoaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoPessoaKeyPressed
         CadastroClienteDAO cDAO = new CadastroClienteDAO();
@@ -354,6 +325,7 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         if (evt.getKeyCode() == evt.VK_ENTER) {
             if (txtCodigoPessoa.getText().equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Digite um código para pesquisa");
+                limparPessoa();
             } else {
                 int id = Integer.parseInt(txtCodigoPessoa.getText());
                 if (!txtCodigoPessoa.getText().equals("")) {
@@ -374,6 +346,66 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_txtCodigoPessoaKeyPressed
 
+    private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            String nome = txtNome.getText();
+            if (nome.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+                limparPessoa();
+            } else {
+                TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome, 0);
+                tela.setVisible(true);
+                txtNome.setText(tela.p.getNome());
+                txtCodigoPessoa.setText(tela.p.getIdPessoa() + "");
+            }
+        }
+    }//GEN-LAST:event_txtNomeKeyPressed
+
+    private void txtValorPagoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorPagoKeyPressed
+         if (evt.getKeyCode() == evt.VK_ENTER) {
+            Double total = Double.parseDouble(txtTotal.getText().replace(",", "."));
+            Double pago = Double.parseDouble(txtValorPago.getText().replace(",", "."));
+            Double resultado;
+            Double juros;
+            if (pago > total) {
+                resultado = pago - total;
+                txtDescJuros.setText(df.format(resultado) + "");
+                lblDescJur.setText("Juros R$");
+                Double jurosDesc = Double.parseDouble(txtDescJuros.getText().replace(",", "."));
+                juros = jurosDesc * 100 / total;
+                txtValorPago.setText(df.format(pago));
+                lblDescjuros.setVisible(true);
+                lblDescjuros.setText(df.format(juros) + "%");
+                txtDataPgto.requestFocus();
+                if (juros < 1) {
+                    String dJ = lblDescjuros.getText();
+                    lblDescjuros.setText("0" + dJ);
+                }
+            } else if (total > pago) {
+                resultado = total - pago;
+                txtDescJuros.setText(df.format(resultado) + "");
+                lblDescJur.setText("Desconto R$");
+                Double jurosDesc = Double.parseDouble(txtDescJuros.getText().replace(",", "."));
+                juros = jurosDesc * 100 / total;
+                txtValorPago.setText(df.format(pago));
+                lblDescjuros.setVisible(true);
+                lblDescjuros.setText(df.format(juros) + "%");
+                txtDataPgto.requestFocus();
+                if (juros < 1) {
+                    String dJ = lblDescjuros.getText();
+                    lblDescjuros.setText("0" + dJ);
+                }
+            } else  {
+                lblDescJur.setText("Desc / Juros");
+                txtDescJuros.setText("");
+                lblDescjuros.setVisible(false);
+                txtValorPago.setText(df.format(pago));
+                txtDataPgto.requestFocus();
+            }
+            txtDataPgto.requestFocus();
+        }
+    }//GEN-LAST:event_txtValorPagoKeyPressed
+    
     public void combo() {
         cbFormaPagamento.removeAll();
         cbFormaPagamento.removeAllItems();
@@ -384,7 +416,7 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
             cbFormaPagamento.addItem(fp.getDescricao());
         }
     }
-
+    
     public void limparPessoa() {
         txtCodigoPessoa.setText("");
         txtNome.setText("");
@@ -451,7 +483,7 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnPesquisaCliente;
-    private javax.swing.JButton btnPesquisaOrcamento1;
+    private javax.swing.JButton btnPesquisaFatura;
     private javax.swing.JButton btnSalvar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cbFormaPagamento;
@@ -467,8 +499,11 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lblDescJur;
+    private javax.swing.JLabel lblDescjuros;
     private javax.swing.JTextField txtCodigoPessoa;
     private javax.swing.JFormattedTextField txtDataPgto;
+    private javax.swing.JTextField txtDescJuros;
     private javax.swing.JTextField txtFatura;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtParcela;

@@ -73,7 +73,9 @@ create table parcelas_cPagar(
     vencimento Date not null,
     intervalo int,   
     idCPagar int not null,
-    
+    quitado boolean not null,
+    valor_pago double,
+    data_pgto date,
     constraint fk_cPagar foreign key (idCPagar) references cPagar (idCPagar)
 );
 
@@ -102,6 +104,9 @@ create table parcelas_cReceber(
     intervalo int,
     idOrcamento int not null,
     idCReceber int not null,
+    quitado boolean not null,
+    valor_pago double,
+    data_pgto date,
     
     constraint FK_orcamento foreign key (idOrcamento) references orcamento(idOrcamento),
     constraint fk_cReceber foreign key (idCReceber) references cReceber (idCReceber)

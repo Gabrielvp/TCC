@@ -6,10 +6,15 @@
 package view;
 
 import dao.CPagarDAO;
+import dao.CadastroClienteDAO;
+import dao.FormaPagamentoDAO;
 import dao.Parcelas_CPagarDAO;
+import entity.FormaPagamento;
 import entity.Pessoa;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -26,7 +31,8 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
-       
+        combo();
+
     }
 
     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
@@ -50,7 +56,7 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         btnSalvar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         txtNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -59,7 +65,7 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         txtVencimento = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtData = new javax.swing.JFormattedTextField();
+        txtDataPgto = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnPesquisaCliente = new javax.swing.JButton();
@@ -69,9 +75,9 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         txtCodigoPessoa = new javax.swing.JTextField();
         btnPesquisaOrcamento1 = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
-        txtTotal1 = new javax.swing.JTextField();
+        txtValorPago = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        txtFatura1 = new javax.swing.JTextField();
+        txtParcela = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Contas a Pagar - Agenda Financeira");
@@ -106,15 +112,15 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         jLabel2.setText("Baixa Contas a Pagar");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
-        jButton1.setText("Limpar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLimpar.setBackground(new java.awt.Color(255, 255, 255));
+        btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pincel.png"))); // NOI18N
+        btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnLimparActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 400, -1, -1));
+        jPanel1.add(btnLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 400, -1, -1));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)), "Dados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 10), new java.awt.Color(0, 51, 153))); // NOI18N
@@ -138,9 +144,9 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
 
         jLabel5.setText("Vencimento:");
 
-        txtData.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtDataPgto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
         try {
-            txtData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            txtDataPgto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -168,6 +174,11 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
         jLabel13.setText("Código:");
 
         txtCodigoPessoa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtCodigoPessoa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoPessoaKeyPressed(evt);
+            }
+        });
 
         btnPesquisaOrcamento1.setBackground(new java.awt.Color(255, 255, 255));
         btnPesquisaOrcamento1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Find.png"))); // NOI18N
@@ -179,11 +190,11 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
 
         jLabel14.setText("Valor Pago R$");
 
-        txtTotal1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtValorPago.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
         jLabel15.setText("Parcela:");
 
-        txtFatura1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
+        txtParcela.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 153)));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -226,7 +237,7 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel15)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtFatura1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel6)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -236,7 +247,7 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDataPgto, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -246,7 +257,7 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
                                 .addComponent(jLabel14)
                                 .addGap(10, 10, 10)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtTotal1)
+                            .addComponent(txtValorPago)
                             .addComponent(txtVencimento, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
                         .addGap(219, 219, 219))))
         );
@@ -273,19 +284,19 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(txtFatura1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(txtTotal1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtValorPago, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDataPgto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(56, Short.MAX_VALUE))
         );
 
@@ -306,19 +317,27 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-       
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-      
+
     }//GEN-LAST:event_btnExcluirActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+
+    }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnPesquisaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaClienteActionPerformed
-
+        String nome = txtNome.getText();
+        if (nome.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Digite uma letra para pesquisa");
+        } else {
+            TelaPesquisaPessoa tela = new TelaPesquisaPessoa(null, rootPaneCheckingEnabled, nome, 0);
+            tela.setVisible(true);
+            txtNome.setText(tela.p.getNome());
+            txtCodigoPessoa.setText(tela.p.getIdPessoa() + "");
+        }
     }//GEN-LAST:event_btnPesquisaClienteActionPerformed
 
     private void cbFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFormaPagamentoActionPerformed
@@ -329,7 +348,47 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnPesquisaOrcamento1ActionPerformed
 
-   
+    private void txtCodigoPessoaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoPessoaKeyPressed
+        CadastroClienteDAO cDAO = new CadastroClienteDAO();
+        Pessoa p = new Pessoa();
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            if (txtCodigoPessoa.getText().equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Digite um código para pesquisa");
+            } else {
+                int id = Integer.parseInt(txtCodigoPessoa.getText());
+                if (!txtCodigoPessoa.getText().equals("")) {
+                    p = cDAO.getPessoaById(id);
+                    if (p.getIdPessoa() == 0 || p.getNome().equals(null)) {
+                        JOptionPane.showMessageDialog(rootPane, "Pessoa não encontrada");
+                        txtCodigoPessoa.setText("");
+                        txtNome.setText("");
+                    } else {
+                        txtCodigoPessoa.setText(p.getIdPessoa() + "");
+                        txtNome.setText(p.getNome());
+                        if (txtCodigoPessoa.getText().equals("0")) {
+                            limparPessoa();
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_txtCodigoPessoaKeyPressed
+
+    public void combo() {
+        cbFormaPagamento.removeAll();
+        cbFormaPagamento.removeAllItems();
+        cbFormaPagamento.addItem("Selecione a Forma de Pagamento");
+        FormaPagamentoDAO fpDAO = new FormaPagamentoDAO();
+        List<FormaPagamento> lista = fpDAO.lista();
+        for (FormaPagamento fp : lista) {
+            cbFormaPagamento.addItem(fp.getDescricao());
+        }
+    }
+
+    public void limparPessoa() {
+        txtCodigoPessoa.setText("");
+        txtNome.setText("");
+    }
 
     /**
      * @param args the command line arguments
@@ -390,12 +449,12 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnPesquisaCliente;
     private javax.swing.JButton btnPesquisaOrcamento1;
     private javax.swing.JButton btnSalvar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cbFormaPagamento;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -409,12 +468,12 @@ public class TelaBaixaContasAPagar extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField txtCodigoPessoa;
-    private javax.swing.JFormattedTextField txtData;
+    private javax.swing.JFormattedTextField txtDataPgto;
     private javax.swing.JTextField txtFatura;
-    private javax.swing.JTextField txtFatura1;
     private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtParcela;
     private javax.swing.JTextField txtTotal;
-    private javax.swing.JTextField txtTotal1;
+    private javax.swing.JTextField txtValorPago;
     private javax.swing.JFormattedTextField txtVencimento;
     // End of variables declaration//GEN-END:variables
 }
